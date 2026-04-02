@@ -1,7 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
-import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn } from "lucide-react";
+import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn, MapPin, Phone, Mail, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SiSamsung, SiLg, SiGarmin } from "react-icons/si";
 import sunnyLogo from "@assets/image_1775118121182.png";
 import productsPhoto from "@assets/001_1775118159591.jpg";
 
@@ -26,6 +27,7 @@ export default function Home() {
             <a href="#products" className="hover:text-foreground transition-colors" data-testid="link-solutions">Solutions</a>
             <a href="#industries" className="hover:text-foreground transition-colors" data-testid="link-industries">Industries</a>
             <a href="#quality" className="hover:text-foreground transition-colors" data-testid="link-quality">Quality</a>
+            <a href="#contact" className="hover:text-foreground transition-colors" data-testid="link-contact">Contact</a>
             <Button data-testid="button-partners-portal" className="gap-2">
               <LogIn className="w-4 h-4" />
               Partners Portal Log In
@@ -79,29 +81,58 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-6 border-y border-border bg-muted/30">
+      <section className="py-8 border-y border-border bg-muted/30">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="flex items-center justify-center gap-3 mb-8">
             <div className="h-px flex-1 bg-border" />
             <p className="text-xs font-semibold text-muted-foreground tracking-[0.2em] uppercase whitespace-nowrap">
               Trusted by Global Industry Leaders
             </p>
             <div className="h-px flex-1 bg-border" />
           </div>
-          <div className="flex flex-wrap justify-center gap-10 md:gap-20">
-            {[
-              { name: 'LG', sub: 'Electronics' },
-              { name: 'Samsung', sub: 'Electronics' },
-              { name: 'Garmin', sub: 'International' },
-              { name: 'Foxconn', sub: 'Technology' },
-              { name: 'Flex', sub: 'Ltd.' },
-              { name: 'Jabil', sub: 'Inc.' }
-            ].map((brand) => (
-              <div key={brand.name} className="text-center opacity-50 hover:opacity-100 transition-opacity duration-300">
-                <div className="text-xl font-display font-bold text-foreground">{brand.name}</div>
-                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">{brand.sub}</div>
+          <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16">
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <SiLg className="w-8 h-8 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">LG</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Electronics</div>
               </div>
-            ))}
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <SiSamsung className="w-10 h-8 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Samsung</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Electronics</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <SiGarmin className="w-7 h-7 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Garmin</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">International</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <Factory className="w-6 h-6 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Foxconn</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Technology</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <Globe2 className="w-6 h-6 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Flex</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Ltd.</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <Cpu className="w-6 h-6 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Jabil</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Inc.</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -410,25 +441,115 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-border py-12 bg-background">
+      <section id="contact" className="py-24 md:py-32 bg-slate-950 text-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs font-semibold tracking-wider uppercase mb-6">
+              Get in Touch
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Contact Us</h2>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+              Reach out to our team at either of our locations in South Korea. We look forward to discussing how we can support your next project.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="p-8 rounded-2xl bg-white/5 border border-white/10"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-display font-bold">Seoul Office</h3>
+                  <span className="text-sm text-slate-400">Headquarters</span>
+                </div>
+              </div>
+              <div className="space-y-4 text-slate-300">
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-slate-500 mt-1 flex-shrink-0" />
+                  <span>GFC Building, Seoul, South Korea</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                  <a href="mailto:info@sunnykr.com" className="hover:text-primary transition-colors">info@sunnykr.com</a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <ExternalLink className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                  <a href="https://www.sunnykr.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">www.sunnykr.com</a>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="p-8 rounded-2xl bg-white/5 border border-white/10"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                  <Factory className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-display font-bold">Chungju Office</h3>
+                  <span className="text-sm text-slate-400">Operations</span>
+                </div>
+              </div>
+              <div className="space-y-4 text-slate-300">
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-slate-500 mt-1 flex-shrink-0" />
+                  <span>Chungju, Chungcheongbuk-do, South Korea</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                  <a href="mailto:info@sunnykr.com" className="hover:text-primary transition-colors">info@sunnykr.com</a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <ExternalLink className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                  <a href="https://www.sunnykr.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">www.sunnykr.com</a>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="text-center">
+            <Button size="lg" className="h-14 px-8 text-lg" data-testid="button-send-inquiry">
+              <Mail className="w-5 h-5 mr-2" />
+              Send an Inquiry
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-white/10 py-10 bg-slate-950 text-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-3">
               <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-8 w-auto" />
               <div className="flex flex-col leading-tight">
                 <span className="font-display font-bold tracking-tight">Sunny Electronics Corp.</span>
-                <span className="text-[10px] text-muted-foreground">KRX: 004770</span>
+                <span className="text-[10px] text-slate-400">KRX: 004770</span>
               </div>
             </div>
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <a href="#about" className="hover:text-foreground transition-colors">About</a>
-              <a href="#products" className="hover:text-foreground transition-colors">Products</a>
-              <a href="#industries" className="hover:text-foreground transition-colors">Industries</a>
-              <a href="#quality" className="hover:text-foreground transition-colors">Quality</a>
+            <div className="flex items-center gap-6 text-sm text-slate-400">
+              <a href="#about" className="hover:text-white transition-colors">About</a>
+              <a href="#products" className="hover:text-white transition-colors">Products</a>
+              <a href="#industries" className="hover:text-white transition-colors">Industries</a>
+              <a href="#quality" className="hover:text-white transition-colors">Quality</a>
+              <a href="#contact" className="hover:text-white transition-colors">Contact</a>
             </div>
-            <div className="text-sm text-muted-foreground text-center md:text-right">
+            <div className="text-sm text-slate-400 text-center md:text-right">
               <div>© {new Date().getFullYear()} Sunny Electronics Corp.</div>
-              <div className="text-xs mt-1">Established 1966 | Seoul, Korea</div>
+              <div className="text-xs mt-1">Established 1966 | Seoul, Korea |{" "}
+                <a href="https://www.sunnykr.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">sunnykr.com</a>
+              </div>
             </div>
           </div>
         </div>
