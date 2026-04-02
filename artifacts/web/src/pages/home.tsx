@@ -28,10 +28,12 @@ export default function Home() {
             <a href="#industries" className="hover:text-foreground transition-colors" data-testid="link-industries">Industries</a>
             <a href="#quality" className="hover:text-foreground transition-colors" data-testid="link-quality">Quality</a>
             <a href="#contact" className="hover:text-foreground transition-colors" data-testid="link-contact">Contact</a>
-            <Button data-testid="button-partners-portal" className="gap-2">
-              <LogIn className="w-4 h-4" />
-              Partners Portal Log In
-            </Button>
+            <Link href="/request-access">
+              <Button data-testid="button-partners-portal" className="gap-2">
+                <LogIn className="w-4 h-4" />
+                Partners Portal Log In
+              </Button>
+            </Link>
           </div>
         </div>
       </nav>
