@@ -1,0 +1,20 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "l99gxUpovzJMytE5iZfr2"
+uri = "file://artifacts/web/public/hero-bg.png"
+type = "image"
+title = "Macro crystal oscillator microchip"
+
+[[generated]]
+id = "UKb6TOzvqLiZma0tHTlJL"
+uri = "file://artifacts/web/public/product-resonator.png"
+type = "image"
+title = "Electronic resonator macro"
+
+[[generated]]
+id = "TxJAOP3qBo8E06Vd4aY2M"
+uri = "file://artifacts/web/public/lab-rd.png"
+type = "image"
+title = "Modern semiconductor cleanroom"
