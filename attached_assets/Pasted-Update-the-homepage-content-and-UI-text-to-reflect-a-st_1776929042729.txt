@@ -1,0 +1,146 @@
+Update the homepage content and UI text to reflect a stronger Tier-1 global positioning for Sunny Electronics Corp.
+
+Apply the following changes across the entire site:
+
+1) STOCK LISTING (CRITICAL – APPLY EVERYWHERE)
+Replace ALL mentions of:
+- "KRX: 004770"
+- "Publicly Traded (KRX: 004770)"
+- "KRX 004770"
+
+WITH:
+"KOSPI-listed company (KRX: 004770)"
+
+Short format (for tight spaces like header):
+"KOSPI-listed (KRX: 004770)"
+
+---
+
+2) HERO / HEADER SECTION
+Under company name:
+Change:
+"KRX: 004770"
+→
+"KOSPI-listed (KRX: 004770)"
+
+---
+
+3) ICON / STATS SECTION (4 BLOCKS)
+
+Keep:
+"58+ Years of Excellence"
+
+Replace:
+"KRX 004770 (Publicly Traded)"
+→
+"KOSPI Listed Company (KRX: 004770)"
+
+Keep:
+"1966 Year Established"
+
+Replace:
+"Global Supply Chain Network"
+→
+"Trusted by Tier-1 Global Manufacturers"
+
+---
+
+4) MAIN COMPANY DESCRIPTION (REWRITE COMPLETELY)
+
+Replace existing paragraphs with:
+
+"Sunny Electronics is a Korea-based fabless manufacturer specializing in frequency control solutions, publicly listed on KOSPI (KRX: 004770). With nearly six decades of continuous innovation, we have built a strong reputation for precision, reliability, and long-term supply stability.
+
+Our foundation is built on over 50 years of collaboration with leading Korean companies, including Samsung, LG, and their affiliated partners. These long-standing relationships reflect our ability to consistently meet strict quality, performance, and delivery standards in high-demand industries."
+
+---
+
+5) REMOVE WEAK COMPARISON LANGUAGE
+
+Delete ANY mention of:
+- Epson
+- Kyocera
+- NDK
+- "like industry peers such as..."
+
+Replace that entire section with:
+
+"Sunny Electronics operates on a proven fabless model, combining in-house design, strict quality control, and a fully managed global production network. Our accumulated engineering expertise and operational know-how enable us to deliver stable, high-performance components across a wide range of applications."
+
+---
+
+6) SUPPLY CHAIN / QUALITY SECTION
+
+Replace existing text with:
+
+"We maintain a fully controlled global supply chain, continuously auditing and optimizing our partner network to ensure consistent quality and reliability. Our zero-defect approach and long-term manufacturing discipline allow us to support customers with stable supply, competitive pricing, and dependable performance."
+
+---
+
+7) CTA SECTION (CUSTOMER MESSAGE)
+
+Replace:
+
+"As a publicly traded company (KRX: 004770)..."
+
+WITH:
+
+"As a KOSPI-listed company (KRX: 004770), we provide the transparency, stability, and long-term reliability our global partners expect."
+
+---
+
+8) LOWER STAT CARDS
+
+Replace:
+"KRX – Publicly Traded"
+→
+"KOSPI – Listed Company (KRX: 004770)"
+
+Keep:
+"1966 – Established"
+
+Replace:
+"Tier-1 Global Supplier"
+→
+"Trusted Tier-1 Global Supplier"
+
+---
+
+9) CONTACT SECTION EMAIL FIX
+
+Seoul Office:
+Replace email with:
+gangnam@sunnykr.com
+
+Chungju Office:
+Replace email with:
+hq@sunnykr.com
+
+Make sure NO incorrect domain like "sunny.kr.com" exists anywhere.
+
+---
+
+10) TONE & STYLE RULES (APPLY SITE-WIDE)
+
+- Remove weak words like: "emerging", "growing", "aspiring"
+- Avoid comparing to competitors
+- Use confident, established language
+- Emphasize:
+  • 50+ years history
+  • Samsung / LG relationship
+  • stability and reliability
+  • supply chain control
+  • fabless manufacturer model
+
+---
+
+11) OPTIONAL (IF DESIGN SUPPORTS IT)
+
+Add small line under hero:
+
+"Since 1966 | Korea-Based | Global Supply Network"
+
+---
+
+Make sure all changes are consistent across desktop and mobile views.
+Do not break layout, only update text and labels.

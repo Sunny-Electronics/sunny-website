@@ -19,7 +19,7 @@ export default function Home() {
             <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-10 w-auto" />
             <div className="flex flex-col leading-tight">
               <span className="font-display font-bold text-lg tracking-tight text-foreground">Sunny Electronics Corp.</span>
-              <span className="text-[11px] text-muted-foreground font-medium tracking-wide">KRX: 004770</span>
+              <span className="text-[11px] text-muted-foreground font-medium tracking-wide">KOSPI-listed (KRX: 004770)</span>
             </div>
           </div>
           <div className="hidden md:flex items-center gap-8 font-medium text-sm text-muted-foreground">
@@ -66,8 +66,11 @@ export default function Home() {
                 The Heartbeat of <br/>
                 <span className="text-primary">Global Innovation.</span>
               </h1>
-              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+              <p className="text-xl text-muted-foreground mb-4 leading-relaxed">
                 Sunny Electronics Corp. engineers world-class crystal oscillators, resonators, and filters -- powering the most demanding technologies across automotive, telecommunications, and consumer electronics for nearly six decades.
+              </p>
+              <p className="text-sm font-semibold tracking-wider text-primary uppercase mb-8">
+                Since 1966 &nbsp;|&nbsp; Korea-Based &nbsp;|&nbsp; Global Supply Network
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="h-14 px-8 text-base group" data-testid="button-explore-solutions">
@@ -144,9 +147,9 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {[
               { value: '58+', label: 'Years of Excellence', icon: <Award className="w-5 h-5 text-primary" /> },
-              { value: 'KRX', label: '004770 (Publicly Traded)', icon: <TrendingUp className="w-5 h-5 text-primary" /> },
+              { value: 'KOSPI', label: 'Listed Company (KRX: 004770)', icon: <TrendingUp className="w-5 h-5 text-primary" /> },
               { value: '1966', label: 'Year Established', icon: <Factory className="w-5 h-5 text-primary" /> },
-              { value: 'Global', label: 'Supply Chain Network', icon: <Users className="w-5 h-5 text-primary" /> }
+              { value: 'Tier-1', label: 'Trusted by Global Manufacturers', icon: <Users className="w-5 h-5 text-primary" /> }
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -181,10 +184,13 @@ export default function Home() {
               </div>
               <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Nearly Six Decades of Uncompromising Precision.</h2>
               <p className="text-lg text-muted-foreground mb-6">
-                Established in 1966 in Korea, Sunny Electronics Corp. has evolved from a pioneering domestic manufacturer to a publicly traded global fabless semiconductor leader (KRX: 004770). Our commitment to frequency control technology spans nearly six decades of continuous innovation.
+                Sunny Electronics is a Korea-based fabless manufacturer specializing in frequency control solutions, publicly listed on KOSPI (KRX: 004770). With nearly six decades of continuous innovation, we have built a strong reputation for precision, reliability, and long-term supply stability.
               </p>
               <p className="text-lg text-muted-foreground mb-8">
-                Like industry peers such as Epson Timing and NDK, we operate on a highly efficient fabless model -- investing heavily in R&D and strict quality assurance while leveraging a fully managed global supply chain to deliver scalability without sacrificing the precision our partners demand.
+                Our foundation is built on over 50 years of collaboration with leading Korean companies, including Samsung, LG, and their affiliated partners. These long-standing relationships reflect our ability to consistently meet strict quality, performance, and delivery standards in high-demand industries.
+              </p>
+              <p className="text-lg text-muted-foreground mb-8">
+                Sunny Electronics operates on a proven fabless model, combining in-house design, strict quality control, and a fully managed global production network. Our accumulated engineering expertise and operational know-how enable us to deliver stable, high-performance components across a wide range of applications.
               </p>
               <div className="grid grid-cols-3 gap-6">
                 <div className="p-4 bg-muted/50 rounded-xl text-center">
@@ -193,11 +199,11 @@ export default function Home() {
                 </div>
                 <div className="p-4 bg-muted/50 rounded-xl text-center">
                   <div className="text-2xl font-display font-bold text-primary mb-1">Tier-1</div>
-                  <div className="text-xs font-medium text-muted-foreground">Global Supplier</div>
+                  <div className="text-xs font-medium text-muted-foreground">Trusted Global Supplier</div>
                 </div>
                 <div className="p-4 bg-muted/50 rounded-xl text-center">
-                  <div className="text-2xl font-display font-bold text-primary mb-1">KRX</div>
-                  <div className="text-xs font-medium text-muted-foreground">Publicly Traded</div>
+                  <div className="text-2xl font-display font-bold text-primary mb-1">KOSPI</div>
+                  <div className="text-xs font-medium text-muted-foreground">Listed (KRX: 004770)</div>
                 </div>
               </div>
             </motion.div>
@@ -283,7 +289,7 @@ export default function Home() {
               {
                 icon: <Cpu className="w-8 h-8 text-primary" />,
                 title: "Crystal Oscillators",
-                desc: "High-precision SPXO, TCXO, VCXO, and OCXO modules providing unmatched frequency stability across extreme temperature ranges. Comparable to solutions from Epson Timing and NDK.",
+                desc: "High-precision SPXO, TCXO, VCXO, and OCXO modules providing unmatched frequency stability across extreme temperature ranges, engineered to meet the stringent requirements of Tier-1 global manufacturers.",
                 specs: "Frequency Range: 1MHz - 200MHz"
               },
               {
@@ -415,7 +421,7 @@ export default function Home() {
                 At Sunny Electronics Corp., our fabless model allows us to focus entirely on what matters most: engineering excellence and rigorous quality control. Every component undergoes comprehensive testing before shipment.
               </p>
               <p className="text-lg text-muted-foreground">
-                We manage a complex global supply chain, continuously auditing partner facilities to ensure every single component meets our strict zero-defect standards -- matching the quality benchmarks set by industry leaders like Epson and Kyocera.
+                We maintain a fully controlled global supply chain, continuously auditing and optimizing our partner network to ensure consistent quality and reliability. Our zero-defect approach and long-term manufacturing discipline allow us to support customers with stable supply, competitive pricing, and dependable performance.
               </p>
             </motion.div>
           </div>
@@ -433,7 +439,7 @@ export default function Home() {
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Ready to Power Your Next Innovation?</h2>
             <p className="text-xl text-muted-foreground mb-10">
-              Connect with our engineering team to discuss custom frequency control solutions tailored to your specific requirements. As a publicly traded company (KRX: 004770), we offer the stability and transparency our partners expect.
+              Connect with our engineering team to discuss custom frequency control solutions tailored to your specific requirements. As a KOSPI-listed company (KRX: 004770), we provide the transparency, stability, and long-term reliability our global partners expect.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button size="lg" className="h-14 px-8 text-lg" data-testid="button-contact-engineering">Contact Engineering</Button>
@@ -479,7 +485,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                  <a href="mailto:info@sunnykr.com" className="hover:text-primary transition-colors">info@sunnykr.com</a>
+                  <a href="mailto:gangnam@sunnykr.com" className="hover:text-primary transition-colors">gangnam@sunnykr.com</a>
                 </div>
                 <div className="flex items-center gap-3">
                   <ExternalLink className="w-4 h-4 text-slate-500 flex-shrink-0" />
@@ -511,7 +517,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                  <a href="mailto:info@sunnykr.com" className="hover:text-primary transition-colors">info@sunnykr.com</a>
+                  <a href="mailto:hq@sunnykr.com" className="hover:text-primary transition-colors">hq@sunnykr.com</a>
                 </div>
                 <div className="flex items-center gap-3">
                   <ExternalLink className="w-4 h-4 text-slate-500 flex-shrink-0" />
@@ -537,7 +543,7 @@ export default function Home() {
               <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-8 w-auto" />
               <div className="flex flex-col leading-tight">
                 <span className="font-display font-bold tracking-tight">Sunny Electronics Corp.</span>
-                <span className="text-[10px] text-slate-400">KRX: 004770</span>
+                <span className="text-[10px] text-slate-400">KOSPI-listed (KRX: 004770)</span>
               </div>
             </div>
             <div className="flex items-center gap-6 text-sm text-slate-400">

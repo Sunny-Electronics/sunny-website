@@ -39,7 +39,7 @@ export default function RequestAccess() {
             <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-10 w-auto" />
             <div className="flex flex-col leading-tight">
               <span className="font-display font-bold text-lg tracking-tight text-foreground">Sunny Electronics Corp.</span>
-              <span className="text-[11px] text-muted-foreground font-medium tracking-wide">KRX: 004770</span>
+              <span className="text-[11px] text-muted-foreground font-medium tracking-wide">KOSPI-listed (KRX: 004770)</span>
             </div>
           </Link>
           <Link href="/">
