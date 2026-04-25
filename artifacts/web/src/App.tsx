@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import RequestAccess from "@/pages/request-access";
+import TelegramChatButton from "@/components/TelegramChatButton";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ function App() {
           <Router />
         </WouterRouter>
         <Toaster />
+        <TelegramChatButton />
       </TooltipProvider>
     </QueryClientProvider>
   );
