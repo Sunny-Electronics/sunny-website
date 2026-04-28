@@ -1,7 +1,7 @@
 export default function TelegramChatButton() {
   return (
     <a
-      href="https://t.me/sunnykorea_bot"
+      href="https://t.me/Sunny_kr_bot"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with Sunny on Telegram"
