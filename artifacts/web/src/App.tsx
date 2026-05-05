@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
+import Products from "@/pages/products";
 import RequestAccess from "@/pages/request-access";
 import RequestQuote from "@/pages/request-quote";
 import TelegramChatButton from "@/components/TelegramChatButton";
@@ -14,6 +15,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/products" component={Products} />
       <Route path="/request-access" component={RequestAccess} />
       <Route path="/request-quote" component={RequestQuote} />
       <Route component={NotFound} />

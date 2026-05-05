@@ -48,7 +48,7 @@ export default function Home() {
           </div>
           <div className="hidden lg:flex items-center gap-6 font-medium text-sm text-muted-foreground">
             <a href="#about" className="hover:text-foreground transition-colors" data-testid="link-legacy">Legacy</a>
-            <a href="#products" className="hover:text-foreground transition-colors" data-testid="link-products">Products</a>
+            <Link href="/products" className="hover:text-foreground transition-colors" data-testid="link-products">Products</Link>
             <a href="#industries" className="hover:text-foreground transition-colors" data-testid="link-industries">Industries</a>
             <a href="#quality" className="hover:text-foreground transition-colors" data-testid="link-quality">Quality</a>
             <Link href="/request-quote" className="text-primary hover:text-primary/80 transition-colors" data-testid="link-request-quote">Request Quote</Link>
@@ -104,9 +104,9 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Button size="lg" variant="outline" className="h-14 px-8 text-base bg-background" data-testid="button-view-products" asChild>
-                  <a href="#products">
+                  <Link href="/products">
                     View Products
-                  </a>
+                  </Link>
                 </Button>
               </div>
               <div className="mt-6 grid max-w-xl gap-2 text-sm text-muted-foreground sm:grid-cols-3">
@@ -487,7 +487,9 @@ export default function Home() {
               <Link href="/request-quote">
                 <Button size="lg" className="h-14 px-8 text-lg" data-testid="button-cta-request-quote">Request Quote</Button>
               </Link>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background" data-testid="button-download-catalog">Search Products</Button>
+              <Link href="/products">
+                <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background" data-testid="button-search-products">Search Products</Button>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -593,7 +595,7 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-6 text-sm text-slate-400">
               <a href="#about" className="hover:text-white transition-colors">About</a>
-              <a href="#products" className="hover:text-white transition-colors">Products</a>
+              <Link href="/products" className="hover:text-white transition-colors">Products</Link>
               <a href="#industries" className="hover:text-white transition-colors">Industries</a>
               <a href="#quality" className="hover:text-white transition-colors">Quality</a>
               <Link href="/request-quote" className="hover:text-white transition-colors">Request Quote</Link>
