@@ -110,7 +110,7 @@ export default function RequestAccess() {
               Secure access for Sunny partners.
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mb-8">
-              Existing customers will use the portal to review RFQs, orders, quote history,
+              Approved vendors will use the portal to review RFQs, orders, quote history,
               approved stock information, and document requests. New access requests are reviewed
               by Sunny before an account is created.
             </p>
