@@ -49,8 +49,8 @@ export default function Home() {
           <div className="hidden lg:flex items-center gap-6 font-medium text-sm text-muted-foreground">
             <a href="#about" className="hover:text-foreground transition-colors" data-testid="link-legacy">Legacy</a>
             <Link href="/products" className="hover:text-foreground transition-colors" data-testid="link-products">Products</Link>
-            <a href="#industries" className="hover:text-foreground transition-colors" data-testid="link-industries">Industries</a>
-            <a href="#quality" className="hover:text-foreground transition-colors" data-testid="link-quality">Quality</a>
+            <Link href="/industries" className="hover:text-foreground transition-colors" data-testid="link-industries">Industries</Link>
+            <Link href="/quality" className="hover:text-foreground transition-colors" data-testid="link-quality">Quality</Link>
             <Link href="/request-quote" className="text-primary hover:text-primary/80 transition-colors" data-testid="link-request-quote">Request Quote</Link>
             <Link href="/request-access">
               <Button data-testid="button-partners-portal" className="gap-2">
@@ -596,8 +596,8 @@ export default function Home() {
             <div className="flex items-center gap-6 text-sm text-slate-400">
               <a href="#about" className="hover:text-white transition-colors">About</a>
               <Link href="/products" className="hover:text-white transition-colors">Products</Link>
-              <a href="#industries" className="hover:text-white transition-colors">Industries</a>
-              <a href="#quality" className="hover:text-white transition-colors">Quality</a>
+              <Link href="/industries" className="hover:text-white transition-colors">Industries</Link>
+              <Link href="/quality" className="hover:text-white transition-colors">Quality</Link>
               <Link href="/request-quote" className="hover:text-white transition-colors">Request Quote</Link>
             </div>
             <div className="text-sm text-slate-400 text-center md:text-right">
