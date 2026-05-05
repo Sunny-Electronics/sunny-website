@@ -1,11 +1,38 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
-import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn, Search, Upload, FileText, History } from "lucide-react";
+import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn, Search, Upload, FileText, History, PackageSearch, ClipboardCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SiSamsung, SiLg, SiGarmin } from "react-icons/si";
 import sunnyLogo from "@assets/image_1775118121182.png";
 import productsPhoto from "@assets/001_1775118159591.jpg";
+
+const quickActions = [
+  {
+    title: "Search Products",
+    text: "Browse product families and prepare for part/spec search.",
+    href: "/products",
+    icon: <PackageSearch className="h-5 w-5" />,
+  },
+  {
+    title: "Request Quote",
+    text: "Upload a list or create an RFQ manually.",
+    href: "/request-quote",
+    icon: <Upload className="h-5 w-5" />,
+  },
+  {
+    title: "Quality Documents",
+    text: "Prepare datasheets, RoHS, reliability, and QA requests.",
+    href: "/quality",
+    icon: <ClipboardCheck className="h-5 w-5" />,
+  },
+  {
+    title: "Partner Portal",
+    text: "Future access for RFQ, PO, stock, and quote history.",
+    href: "/request-access",
+    icon: <History className="h-5 w-5" />,
+  },
+];
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -14,8 +41,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans overflow-x-hidden">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/50">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-3 shrink-0">
             <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-10 w-auto" />
             <div className="flex flex-col leading-tight">
@@ -23,7 +50,7 @@ export default function Home() {
               <span className="text-[11px] text-muted-foreground font-medium tracking-wide">KOSPI-listed (KRX: 004770)</span>
             </div>
           </div>
-          <div className="flex min-w-0 flex-1 items-center border border-input bg-background lg:max-w-xl">
+          <div className="flex min-w-0 flex-1 items-center border border-slate-300 bg-slate-50 shadow-inner lg:max-w-xl">
             <Input
               className="h-11 border-0 bg-transparent focus-visible:ring-0"
               placeholder="Search part #, datasheet, QA document"
@@ -62,7 +89,7 @@ export default function Home() {
         </div>
       </nav>
 
-      <section className="relative min-h-[90vh] flex items-center pt-40 lg:pt-28 overflow-hidden">
+      <section className="relative min-h-[88vh] flex items-center pt-40 lg:pt-28 overflow-hidden">
         <motion.div
           className="absolute inset-0 z-0"
           style={{ y, opacity }}
@@ -86,7 +113,7 @@ export default function Home() {
                 <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 Precision Frequency Control Since 1966
               </div>
-              <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight leading-[1.1] mb-6">
+              <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight leading-[1.05] mb-6">
                 The Heartbeat of <br/>
                 <span className="text-primary">Global Innovation.</span>
               </h1>
@@ -128,7 +155,27 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-8 border-y border-border bg-muted/30">
+      <section className="-mt-12 relative z-20 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto grid gap-3 border border-slate-200 bg-white p-3 shadow-xl md:grid-cols-2 lg:grid-cols-4">
+          {quickActions.map((action) => (
+            <Link
+              key={action.title}
+              href={action.href}
+              className="group flex min-h-28 gap-4 border border-slate-100 bg-slate-50 p-5 transition-colors hover:border-primary/30 hover:bg-white"
+            >
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                {action.icon}
+              </div>
+              <div>
+                <h2 className="font-display text-lg font-bold text-slate-950">{action.title}</h2>
+                <p className="mt-1 text-sm leading-5 text-slate-600">{action.text}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="pt-20 pb-8 border-y border-border bg-muted/30">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-center gap-3 mb-8">
             <div className="h-px flex-1 bg-border" />

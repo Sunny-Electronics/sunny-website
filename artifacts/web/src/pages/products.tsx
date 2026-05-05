@@ -100,18 +100,38 @@ export default function Products() {
 
       <main>
         <section className="border-b border-slate-200 bg-slate-100">
-          <div className="mx-auto max-w-7xl px-5 py-12">
-            <p className="mb-3 text-sm font-bold uppercase tracking-wide text-primary">
-              Product Center
-            </p>
-            <h1 className="mb-4 max-w-4xl font-display text-4xl font-bold tracking-tight md:text-5xl">
-              Make SunnyKR easy to search before customers request pricing.
-            </h1>
-            <p className="max-w-3xl text-base leading-7 text-slate-600">
-              This page is the foundation for standard part search, datasheets, quality documents,
-              and customer support files. Prices, lead times, and private customer data will be
-              added later inside protected workflows.
-            </p>
+          <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-[1fr_380px] lg:items-end">
+            <div>
+              <p className="mb-3 text-sm font-bold uppercase tracking-wide text-primary">
+                Product Center
+              </p>
+              <h1 className="mb-4 max-w-4xl font-display text-4xl font-bold tracking-tight md:text-5xl">
+                Search-ready product structure for Sunny timing components.
+              </h1>
+              <p className="max-w-3xl text-base leading-7 text-slate-600">
+                This page is the foundation for standard part search, datasheets, quality documents,
+                and customer support files. Prices, lead times, and private customer data will be
+                added later inside protected workflows.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 border border-slate-200 bg-white shadow-sm">
+              <div className="border-r border-b border-slate-200 p-5">
+                <div className="text-3xl font-display font-bold text-primary">4</div>
+                <div className="text-xs font-semibold text-slate-500">Product families</div>
+              </div>
+              <div className="border-b border-slate-200 p-5">
+                <div className="text-3xl font-display font-bold text-primary">6</div>
+                <div className="text-xs font-semibold text-slate-500">Document types</div>
+              </div>
+              <div className="border-r border-slate-200 p-5">
+                <div className="text-3xl font-display font-bold text-primary">RFQ</div>
+                <div className="text-xs font-semibold text-slate-500">Quote workflow</div>
+              </div>
+              <div className="p-5">
+                <div className="text-3xl font-display font-bold text-primary">QA</div>
+                <div className="text-xs font-semibold text-slate-500">Document support</div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -187,9 +207,11 @@ export default function Products() {
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {documentTypes.map((documentType) => (
-              <div key={documentType} className="border border-slate-200 bg-white p-5">
+              <div key={documentType} className="border border-slate-200 bg-white p-5 shadow-sm">
                 <div className="mb-3 flex items-center gap-3">
-                  <FileCheck2 className="h-5 w-5 text-primary" />
+                  <div className="flex h-10 w-10 items-center justify-center bg-primary/10 text-primary">
+                    <FileCheck2 className="h-5 w-5" />
+                  </div>
                   <h3 className="font-semibold">{documentType}</h3>
                 </div>
                 <p className="mb-4 text-sm leading-6 text-slate-600">
