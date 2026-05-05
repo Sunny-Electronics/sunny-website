@@ -1,7 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
-import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn, MapPin, Phone, Mail, ExternalLink } from "lucide-react";
+import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn, Search, Upload, FileText, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { SiSamsung, SiLg, SiGarmin } from "react-icons/si";
 import sunnyLogo from "@assets/image_1775118121182.png";
 import productsPhoto from "@assets/001_1775118159591.jpg";
@@ -13,21 +14,44 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans overflow-x-hidden">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/50">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-center gap-3 shrink-0">
             <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-10 w-auto" />
             <div className="flex flex-col leading-tight">
               <span className="font-display font-bold text-lg tracking-tight text-foreground">Sunny Electronics Corp.</span>
               <span className="text-[11px] text-muted-foreground font-medium tracking-wide">KOSPI-listed (KRX: 004770)</span>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-8 font-medium text-sm text-muted-foreground">
+          <div className="flex min-w-0 flex-1 items-center border border-input bg-background lg:max-w-xl">
+            <Input
+              className="h-11 border-0 bg-transparent focus-visible:ring-0"
+              placeholder="Search part #, datasheet, QA document"
+              data-testid="input-site-search"
+            />
+            <Link
+              href="/request-quote"
+              className="hidden h-11 items-center gap-2 px-3 text-xs font-semibold text-primary md:flex"
+              data-testid="link-upload-list"
+            >
+              <Upload className="h-4 w-4" />
+              Upload List
+            </Link>
+            <Link
+              href="/request-quote"
+              className="flex h-11 w-12 items-center justify-center bg-primary text-primary-foreground"
+              aria-label="Search"
+              data-testid="link-site-search"
+            >
+              <Search className="h-5 w-5" />
+            </Link>
+          </div>
+          <div className="hidden lg:flex items-center gap-6 font-medium text-sm text-muted-foreground">
             <a href="#about" className="hover:text-foreground transition-colors" data-testid="link-legacy">Legacy</a>
-            <a href="#products" className="hover:text-foreground transition-colors" data-testid="link-solutions">Solutions</a>
+            <a href="#products" className="hover:text-foreground transition-colors" data-testid="link-products">Products</a>
             <a href="#industries" className="hover:text-foreground transition-colors" data-testid="link-industries">Industries</a>
             <a href="#quality" className="hover:text-foreground transition-colors" data-testid="link-quality">Quality</a>
-            <a href="#contact" className="hover:text-foreground transition-colors" data-testid="link-contact">Contact</a>
+            <Link href="/request-quote" className="text-primary hover:text-primary/80 transition-colors" data-testid="link-request-quote">Request Quote</Link>
             <Link href="/request-access">
               <Button data-testid="button-partners-portal" className="gap-2">
                 <LogIn className="w-4 h-4" />
@@ -38,7 +62,7 @@ export default function Home() {
         </div>
       </nav>
 
-      <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center pt-40 lg:pt-28 overflow-hidden">
         <motion.div
           className="absolute inset-0 z-0"
           style={{ y, opacity }}
@@ -73,13 +97,31 @@ export default function Home() {
                 Since 1966 &nbsp;|&nbsp; Korea-Based &nbsp;|&nbsp; Global Supply Network
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="h-14 px-8 text-base group" data-testid="button-explore-solutions">
-                  Explore Solutions
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <Link href="/request-quote">
+                  <Button size="lg" className="h-14 px-8 text-base group" data-testid="button-request-quote-hero">
+                    Request a Quote
+                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Button size="lg" variant="outline" className="h-14 px-8 text-base bg-background" data-testid="button-view-products" asChild>
+                  <a href="#products">
+                    View Products
+                  </a>
                 </Button>
-                <Button size="lg" variant="outline" className="h-14 px-8 text-base" data-testid="button-view-specs">
-                  View Specifications
-                </Button>
+              </div>
+              <div className="mt-6 grid max-w-xl gap-2 text-sm text-muted-foreground sm:grid-cols-3">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-primary" />
+                  RFQ list upload
+                </div>
+                <div className="flex items-center gap-2">
+                  <Search className="h-4 w-4 text-primary" />
+                  Spec search coming
+                </div>
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-primary" />
+                  QA document support
+                </div>
               </div>
             </motion.div>
           </div>
@@ -442,26 +484,28 @@ export default function Home() {
               Connect with our engineering team to discuss custom frequency control solutions tailored to your specific requirements. As a KOSPI-listed company (KRX: 004770), we provide the transparency, stability, and long-term reliability our global partners expect.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" className="h-14 px-8 text-lg" data-testid="button-contact-engineering">Contact Engineering</Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background" data-testid="button-download-catalog">Download Product Catalog</Button>
+              <Link href="/request-quote">
+                <Button size="lg" className="h-14 px-8 text-lg" data-testid="button-cta-request-quote">Request Quote</Button>
+              </Link>
+              <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background" data-testid="button-download-catalog">Search Products</Button>
             </div>
           </motion.div>
         </div>
       </section>
 
-      <section id="contact" className="py-24 md:py-32 bg-slate-950 text-white">
+      <section id="request-quote" className="py-24 md:py-32 bg-slate-950 text-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs font-semibold tracking-wider uppercase mb-6">
-              Get in Touch
+              RFQ Center
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Contact Us</h2>
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Products, Quotes, and Documents in One Place.</h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Reach out to our team at either of our locations in South Korea. We look forward to discussing how we can support your next project.
+              SunnyKR will become the place for customers to search standard products, request pricing, upload RFQ lists, and later find datasheets and QA documents.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -471,27 +515,16 @@ export default function Home() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-primary" />
+                  <Search className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-display font-bold">Seoul Office</h3>
-                  <span className="text-sm text-slate-400">Headquarters</span>
+                  <h3 className="text-xl font-display font-bold">Search Products</h3>
+                  <span className="text-sm text-slate-400">Part number and spec lookup</span>
                 </div>
               </div>
-              <div className="space-y-4 text-slate-300">
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-slate-500 mt-1 flex-shrink-0" />
-                  <span>GFC Building, Seoul, South Korea</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                  <a href="mailto:gangnam@sunnykr.com" className="hover:text-primary transition-colors">gangnam@sunnykr.com</a>
-                </div>
-                <div className="flex items-center gap-3">
-                  <ExternalLink className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                  <a href="https://www.sunnykr.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">www.sunnykr.com</a>
-                </div>
-              </div>
+              <p className="text-sm leading-6 text-slate-300">
+                Visitors can search by keyword, part number, frequency, package, or document type. Full search data will be added as we build the catalog.
+              </p>
             </motion.div>
 
             <motion.div
@@ -503,35 +536,47 @@ export default function Home() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
-                  <Factory className="w-6 h-6 text-primary" />
+                  <Upload className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-display font-bold">Chungju Office</h3>
-                  <span className="text-sm text-slate-400">Operations</span>
+                  <h3 className="text-xl font-display font-bold">Upload RFQ List</h3>
+                  <span className="text-sm text-slate-400">Excel, CSV, or PDF request</span>
                 </div>
               </div>
-              <div className="space-y-4 text-slate-300">
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-slate-500 mt-1 flex-shrink-0" />
-                  <span>Chungju, Chungcheongbuk-do, South Korea</span>
+              <p className="text-sm leading-6 text-slate-300">
+                New customers can upload a list and answer a few simple industry-standard questions so Sunny can prepare price, lead time, and document support.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="p-8 rounded-2xl bg-white/5 border border-white/10"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                  <History className="w-6 h-6 text-primary" />
                 </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                  <a href="mailto:hq@sunnykr.com" className="hover:text-primary transition-colors">hq@sunnykr.com</a>
-                </div>
-                <div className="flex items-center gap-3">
-                  <ExternalLink className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                  <a href="https://www.sunnykr.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">www.sunnykr.com</a>
+                <div>
+                  <h3 className="text-xl font-display font-bold">Quote History</h3>
+                  <span className="text-sm text-slate-400">Customer portal later</span>
                 </div>
               </div>
+              <p className="text-sm leading-6 text-slate-300">
+                Instead of a shopping cart, SunnyKR will focus on quote history, RFQ status, PO status, and customer-specific records.
+              </p>
             </motion.div>
           </div>
 
           <div className="text-center">
-            <Button size="lg" className="h-14 px-8 text-lg" data-testid="button-send-inquiry">
-              <Mail className="w-5 h-5 mr-2" />
-              Send an Inquiry
-            </Button>
+            <Link href="/request-quote">
+              <Button size="lg" className="h-14 px-8 text-lg" data-testid="button-bottom-request-quote">
+                Request a Quote
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -551,7 +596,7 @@ export default function Home() {
               <a href="#products" className="hover:text-white transition-colors">Products</a>
               <a href="#industries" className="hover:text-white transition-colors">Industries</a>
               <a href="#quality" className="hover:text-white transition-colors">Quality</a>
-              <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+              <Link href="/request-quote" className="hover:text-white transition-colors">Request Quote</Link>
             </div>
             <div className="text-sm text-slate-400 text-center md:text-right">
               <div>© {new Date().getFullYear()} Sunny Electronics Corp.</div>

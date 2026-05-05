@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import RequestAccess from "@/pages/request-access";
+import RequestQuote from "@/pages/request-quote";
 import TelegramChatButton from "@/components/TelegramChatButton";
 
 const queryClient = new QueryClient();
@@ -14,6 +15,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/request-access" component={RequestAccess} />
+      <Route path="/request-quote" component={RequestQuote} />
       <Route component={NotFound} />
     </Switch>
   );
