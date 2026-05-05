@@ -262,7 +262,7 @@ export default function RequestAccess() {
 
       <footer className="border-t border-border py-6 bg-background">
         <div className="max-w-7xl mx-auto px-6 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Sunny Electronics Corp. | Seoul, Korea |{" "}
+          &copy; {new Date().getFullYear()} Sunny Electronics Corp. | Seoul, Korea |{" "}
           <a href="https://www.sunnykr.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">sunnykr.com</a>
         </div>
       </footer>

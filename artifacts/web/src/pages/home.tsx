@@ -601,7 +601,7 @@ export default function Home() {
               <Link href="/request-quote" className="hover:text-white transition-colors">Request Quote</Link>
             </div>
             <div className="text-sm text-slate-400 text-center md:text-right">
-              <div>© {new Date().getFullYear()} Sunny Electronics Corp.</div>
+              <div>&copy; {new Date().getFullYear()} Sunny Electronics Corp.</div>
               <div className="text-xs mt-1">Established 1966 | Seoul, Korea |{" "}
                 <a href="https://www.sunnykr.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">sunnykr.com</a>
               </div>
