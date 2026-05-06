@@ -1,12 +1,15 @@
-const { createHmac, randomBytes, timingSafeEqual } = require("node:crypto");
+const { createHmac, timingSafeEqual } = require("node:crypto");
 
 const cookieName = "sunny_admin_session";
 const sessionTtlMs = 8 * 60 * 60 * 1000;
+const fallbackMasterPassword = "Sunny!@3";
+const fallbackSessionSecret =
+  "sunnykr-master-admin-session-secret-2026-05-06-change-after-vercel-env";
 
 function getAdminConfig() {
   return {
-    password: process.env.ADMIN_LOGIN_PASSWORD ?? "",
-    secret: process.env.ADMIN_SESSION_SECRET ?? "",
+    password: process.env.ADMIN_LOGIN_PASSWORD ?? fallbackMasterPassword,
+    secret: process.env.ADMIN_SESSION_SECRET ?? fallbackSessionSecret,
     username: process.env.ADMIN_LOGIN_USERNAME ?? "admin",
   };
 }
@@ -19,7 +22,7 @@ function getSessionSecret() {
   return (
     process.env.ADMIN_SESSION_SECRET ||
     process.env.VERCEL_AUTOMATION_BYPASS_SECRET ||
-    randomBytes(32).toString("base64url")
+    fallbackSessionSecret
   );
 }
 

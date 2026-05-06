@@ -123,10 +123,10 @@ const crystalTempOptions = [
 ];
 
 const stabilityOptions = [
-  { code: "E", label: "+/-30ppm", catalogValue: "30" },
   { code: "3", label: "+/-10ppm", catalogValue: "10" },
   { code: "4", label: "+/-15ppm", catalogValue: "15" },
   { code: "5", label: "+/-20ppm", catalogValue: "20" },
+  { code: "6", label: "+/-30ppm", catalogValue: "30" },
   { code: "7", label: "+/-50ppm", catalogValue: "50" },
   { code: "8", label: "+/-100ppm", catalogValue: "100" },
 ];
@@ -139,7 +139,7 @@ const quickPresets = [
     capacitance: "12",
     tolerance: "30",
     tempCode: "J",
-    stabilityCode: "E",
+    stabilityCode: "6",
   },
   {
     label: "4.9152 MHz SX-1",
@@ -148,7 +148,7 @@ const quickPresets = [
     capacitance: "18",
     tolerance: "20",
     tempCode: "E",
-    stabilityCode: "E",
+    stabilityCode: "6",
   },
   {
     label: "25 MHz SX-32",
@@ -157,7 +157,7 @@ const quickPresets = [
     capacitance: "20",
     tolerance: "30",
     tempCode: "J",
-    stabilityCode: "E",
+    stabilityCode: "6",
   },
 ];
 
@@ -207,7 +207,7 @@ export default function RequestQuote() {
   const [capacitance, setCapacitance] = useState("12");
   const [tolerance, setTolerance] = useState("30");
   const [temperature, setTemperature] = useState("J");
-  const [stability, setStability] = useState("E");
+  const [stability, setStability] = useState("6");
   const [mode, setMode] = useState("1");
   const [quantity, setQuantity] = useState("10000");
   const [targetDate, setTargetDate] = useState("");
@@ -989,7 +989,7 @@ export default function RequestQuote() {
                   {
                     id: 1,
                     family: "Crystal Resonator",
-                    partNumber: "SR12130JE-32.0000",
+                    partNumber: "SR12130J6-32.0000",
                     packageType: "SX-21",
                     frequency: "32.0000 MHz",
                     spec: "30/30 -40~85C/12pF",

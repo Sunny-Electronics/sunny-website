@@ -162,8 +162,7 @@ const buildCatalogPartNumber = (state: GeneratorState, option: TypeOption) => {
 
   const cl = normalizeElectricalCode(state.electrical, state.group);
   const tolerance = state.toleranceCode.replace(/[^\d]/g, "").padStart(2, "0").slice(0, 2);
-  const customerStabilityCode = crystalCustomerStabilityCodes[state.stabilityCode] ?? state.stabilityCode;
-  const tempStability = `${state.tempCode}${customerStabilityCode}`;
+  const tempStability = `${state.tempCode}${state.stabilityCode}`;
   const frequency = formatFrequencyForOrder(state.frequency);
 
   return `S${option.catalogCode}${cl}${state.modeCode}${tolerance}${tempStability}-${frequency}`;
@@ -193,10 +192,6 @@ const stabilityOptions = [
   { value: "9", label: "9: +/-150ppm" },
   { value: "10", label: "10: +/-200ppm" },
 ];
-
-const crystalCustomerStabilityCodes: Record<string, string> = {
-  "6": "E",
-};
 
 const examples = [
   { type: "SX-32", sunnyMpn: "AR16011208", meaning: "AR = SX-32, 160 = 16 MHz start, 12 = 12 pF, 08 = serial" },
@@ -509,7 +504,7 @@ export default function PartNumberGenerator() {
                 >
                   {stabilityOptions.map((option) => (
                     <option key={option.value} value={option.value}>
-                      {crystalCustomerStabilityCodes[option.value] ?? option.value}: {option.label.replace(`${option.value}: `, "")}
+                      {option.label}
                     </option>
                   ))}
                 </select>
@@ -611,7 +606,7 @@ export default function PartNumberGenerator() {
                     ["Option class", "Observed class/series digit in many crystal MPNs", "1"],
                     ["CL / voltage", "Load capacitance for crystals or voltage code for oscillators", "20 pF -> 20"],
                     ["Serial", "Two-character variant or project suffix", "07"],
-                    ["Customer order code", "S + package + CL + mode + tolerance + temp/stability + frequency", "SR12130JE-32.0000"],
+                    ["Customer order code", "S + package + CL + mode + tolerance + temp/stability + frequency", "SR12130J6-32.0000"],
                   ].map(([segment, meaning, example]) => (
                     <tr key={segment} className="border-t border-slate-200">
                       <td className="border-r border-slate-200 px-4 py-3 font-mono font-semibold">{segment}</td>
