@@ -18,7 +18,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
-const portalFeatures = [
+type PortalFeature = {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+  href?: string;
+};
+
+const portalFeatures: PortalFeature[] = [
   {
     icon: <FileText className="w-5 h-5" />,
     title: "RFQ Status",
@@ -43,6 +50,7 @@ const portalFeatures = [
     icon: <PackageSearch className="w-5 h-5" />,
     title: "Documents",
     text: "Find standard datasheets and request QA document packages.",
+    href: "/documents",
   },
   {
     icon: <ShieldCheck className="w-5 h-5" />,
@@ -116,8 +124,9 @@ export default function RequestAccess() {
             </p>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              {portalFeatures.map((feature) => (
-                <div key={feature.title} className="border border-border bg-card p-5 shadow-sm">
+              {portalFeatures.map((feature) => {
+                const content = (
+                  <>
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-primary/10 text-primary flex items-center justify-center">
                       {feature.icon}
@@ -125,8 +134,27 @@ export default function RequestAccess() {
                     <h2 className="font-display font-bold text-lg">{feature.title}</h2>
                   </div>
                   <p className="text-sm text-muted-foreground leading-6">{feature.text}</p>
-                </div>
-              ))}
+                  </>
+                );
+
+                if (feature.href) {
+                  return (
+                    <Link
+                      key={feature.title}
+                      href={feature.href}
+                      className="border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-primary/5"
+                    >
+                      {content}
+                    </Link>
+                  );
+                }
+
+                return (
+                  <div key={feature.title} className="border border-border bg-card p-5 shadow-sm">
+                    {content}
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
 
