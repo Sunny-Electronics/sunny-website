@@ -32,7 +32,7 @@ const portalFeatures = [
   {
     icon: <Warehouse className="w-5 h-5" />,
     title: "Sunny Stock",
-    text: "View approved stock information for your own customer account.",
+    text: "View current Sunny stock and check for immediate delivery requirements.",
   },
   {
     icon: <History className="w-5 h-5" />,
