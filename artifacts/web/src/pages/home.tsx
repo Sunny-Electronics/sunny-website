@@ -94,11 +94,11 @@ export default function Home() {
           className="absolute inset-0 z-0"
           style={{ y, opacity }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/20 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/35 z-10" />
           <img
-            src="/hero-bg.png"
-            alt="Precision Crystal Oscillator"
-            className="w-full h-full object-cover object-right"
+            src="/products-photo.jpg"
+            alt="Sunny Electronics Corp. crystal units and oscillators"
+            className="w-full h-full object-contain object-right opacity-80"
           />
         </motion.div>
 
