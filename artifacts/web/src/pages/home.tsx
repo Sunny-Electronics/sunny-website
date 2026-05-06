@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
-import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn, Search, Upload, FileText, History, PackageSearch, ClipboardCheck } from "lucide-react";
+import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn, Search, Upload, FileText, History, ClipboardCheck, Hash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SiSamsung, SiLg, SiGarmin } from "react-icons/si";
@@ -9,10 +9,10 @@ import productsPhoto from "@assets/001_1775118159591.jpg";
 
 const quickActions = [
   {
-    title: "Search Products",
-    text: "Browse product families and prepare for part/spec search.",
-    href: "/products",
-    icon: <PackageSearch className="h-5 w-5" />,
+    title: "Part Number Generator",
+    text: "Build Sunny-style part numbers for RFQ references.",
+    href: "/part-number-generator",
+    icon: <Hash className="h-5 w-5" />,
   },
   {
     title: "Request Quote",
@@ -76,6 +76,7 @@ export default function Home() {
           <div className="hidden lg:flex items-center gap-6 font-medium text-sm text-muted-foreground">
             <a href="#about" className="hover:text-foreground transition-colors" data-testid="link-legacy">Legacy</a>
             <Link href="/products" className="hover:text-foreground transition-colors" data-testid="link-products">Products</Link>
+            <Link href="/part-number-generator" className="hover:text-foreground transition-colors" data-testid="link-part-number-generator">Part Number Generator</Link>
             <Link href="/industries" className="hover:text-foreground transition-colors" data-testid="link-industries">Industries</Link>
             <Link href="/quality" className="hover:text-foreground transition-colors" data-testid="link-quality">Quality</Link>
             <Link href="/request-quote" className="text-primary hover:text-primary/80 transition-colors" data-testid="link-request-quote">Request Quote</Link>
@@ -142,8 +143,8 @@ export default function Home() {
                   RFQ list upload
                 </div>
                 <div className="flex items-center gap-2">
-                  <Search className="h-4 w-4 text-primary" />
-                  Spec search coming
+                  <Hash className="h-4 w-4 text-primary" />
+                  Part number builder
                 </div>
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="h-4 w-4 text-primary" />
@@ -537,6 +538,9 @@ export default function Home() {
               <Link href="/products">
                 <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background" data-testid="button-search-products">Search Products</Button>
               </Link>
+              <Link href="/part-number-generator">
+                <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background" data-testid="button-generate-part-number">Generate Part Number</Button>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -643,9 +647,11 @@ export default function Home() {
             <div className="flex items-center gap-6 text-sm text-slate-400">
               <a href="#about" className="hover:text-white transition-colors">About</a>
               <Link href="/products" className="hover:text-white transition-colors">Products</Link>
+              <Link href="/part-number-generator" className="hover:text-white transition-colors">Part Number Generator</Link>
               <Link href="/industries" className="hover:text-white transition-colors">Industries</Link>
               <Link href="/quality" className="hover:text-white transition-colors">Quality</Link>
               <Link href="/request-quote" className="hover:text-white transition-colors">Request Quote</Link>
+              <Link href="/legal" className="hover:text-white transition-colors">Legal</Link>
             </div>
             <div className="text-sm text-slate-400 text-center md:text-right">
               <div>&copy; {new Date().getFullYear()} Sunny Electronics Corp.</div>

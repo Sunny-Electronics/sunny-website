@@ -35,11 +35,13 @@ const portalFeatures: PortalFeature[] = [
     icon: <ClipboardList className="w-5 h-5" />,
     title: "PO / Order Status",
     text: "See confirmed ETD, order stage, and shipment progress later.",
+    href: "/order-list",
   },
   {
     icon: <Warehouse className="w-5 h-5" />,
     title: "Sunny Stock",
     text: "View current Sunny stock and check for immediate delivery requirements.",
+    href: "/stock",
   },
   {
     icon: <History className="w-5 h-5" />,

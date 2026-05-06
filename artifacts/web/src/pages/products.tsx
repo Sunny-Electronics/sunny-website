@@ -6,6 +6,7 @@ import {
   Download,
   FileCheck2,
   Filter,
+  Hash,
   RadioReceiver,
   Search,
   ShieldCheck,
@@ -93,6 +94,7 @@ export default function Products() {
             Home
           </Link>
           <a href="#families" className="text-slate-600 hover:text-primary">Product Families</a>
+          <Link href="/part-number-generator" className="text-slate-600 hover:text-primary">Part Number Generator</Link>
           <a href="#documents" className="text-slate-600 hover:text-primary">Documents</a>
           <a href="#filters" className="text-slate-600 hover:text-primary">Search Filters</a>
         </nav>
@@ -223,6 +225,28 @@ export default function Products() {
                 </Button>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="border-y border-slate-200 bg-white">
+          <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div className="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-primary">
+                <Hash className="h-4 w-4" />
+                Part Number Generator
+              </div>
+              <h2 className="font-display text-3xl font-bold">Create an RFQ-ready Sunny-style part number.</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                Configure family, package, frequency, tolerance, voltage, output, and temperature
+                before sending the part to the RFQ workflow.
+              </p>
+            </div>
+            <Link href="/part-number-generator">
+              <Button className="h-12 gap-2">
+                <Hash className="h-4 w-4" />
+                Generate Part Number
+              </Button>
+            </Link>
           </div>
         </section>
 
