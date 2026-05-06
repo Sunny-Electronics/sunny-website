@@ -258,6 +258,26 @@ export default function RequestAccess() {
           )}
         </motion.div>
         </div>
+
+        <div className="max-w-7xl mx-auto mt-10 border border-border bg-card p-6 shadow-sm">
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary mb-2">
+                <ShieldCheck className="w-4 h-4" />
+                SPA Security & Access
+              </div>
+              <p className="text-sm leading-6 text-muted-foreground">
+                Sunny Portal Access (SPA) is designed for approved vendor access with layered security,
+                company-specific permissions, secure document handling, and activity logging. SPA users
+                can only access records connected to their approved company account.
+              </p>
+            </div>
+            <div className="text-xs leading-5 text-muted-foreground md:max-w-sm">
+              Sunny admin records, master pricing, internal notes, and other vendor records are kept separate
+              from SPA-facing views.
+            </div>
+          </div>
+        </div>
       </div>
 
       <footer className="border-t border-border py-6 bg-background">
