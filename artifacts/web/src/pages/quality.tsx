@@ -18,22 +18,22 @@ const qualityBlocks = [
   {
     icon: <ShieldCheck className="h-6 w-6" />,
     title: "Quality System",
-    text: "SunnyKR will present quality controls, certifications, and customer document support in one clear place.",
+    text: "SunnyKR will present quality controls, certifications, and SPA document support in one clear place.",
   },
   {
     icon: <FileCheck2 className="h-6 w-6" />,
     title: "Document Requests",
-    text: "Customers will later request datasheets, RoHS/REACH, reliability, and project-specific QA files.",
+    text: "SPA vendors will later request datasheets, RoHS/REACH, reliability, and project-specific QA files.",
   },
   {
     icon: <ClipboardCheck className="h-6 w-6" />,
     title: "Review Workflow",
-    text: "Document release can be controlled by Sunny admin so confidential customer files stay protected.",
+    text: "Document release can be controlled by Sunny admin so confidential SPA files stay protected.",
   },
   {
     icon: <Truck className="h-6 w-6" />,
     title: "Supply Reliability",
-    text: "Long-term supply, order status, and ETD communication will connect into the customer portal later.",
+    text: "Long-term supply, order status, and ETD communication will connect into Sunny Portal Access (SPA) later.",
   },
 ];
 
@@ -43,7 +43,7 @@ const documentRoadmap = [
   "IATF / ISO quality documents",
   "Reliability reports",
   "Material declarations",
-  "Customer-specific QA packages",
+  "SPA-specific QA packages",
 ];
 
 export default function Quality() {
@@ -101,7 +101,7 @@ export default function Quality() {
               Make quality documents easy to find, request, and protect.
             </h1>
             <p className="max-w-3xl text-base leading-7 text-slate-600">
-              This page prepares SunnyKR for standard documents and customer-only QA packages.
+              This page prepares SunnyKR for standard documents and SPA-only QA packages.
               Public information can help marketing, while private documents stay inside secure access rules.
             </p>
           </div>
@@ -128,9 +128,9 @@ export default function Quality() {
                 <Award className="h-4 w-4" />
                 Document Roadmap
               </div>
-              <h2 className="font-display text-3xl font-bold">Documents customers expect.</h2>
+              <h2 className="font-display text-3xl font-bold">Documents SPA vendors expect.</h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                We can attach real files later. For now this creates the right structure and customer expectation.
+                We can attach real files later. For now this creates the right structure and SPA vendor expectation.
               </p>
             </div>
 
@@ -151,7 +151,7 @@ export default function Quality() {
               <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-white/60">
                 Security Rule
               </p>
-              <h2 className="font-display text-3xl font-bold">Public documents public. Customer files private.</h2>
+              <h2 className="font-display text-3xl font-bold">Public documents public. SPA files private.</h2>
             </div>
             <Link href="/request-access">
               <Button variant="outline" className="h-12 bg-white text-slate-950 hover:bg-slate-100">

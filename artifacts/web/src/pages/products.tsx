@@ -50,7 +50,7 @@ const documentTypes = [
   "Material declaration",
   "Reliability report",
   "IATF / ISO quality document",
-  "Customer-specific QA package",
+  "SPA-specific QA package",
 ];
 
 export default function Products() {
@@ -110,7 +110,7 @@ export default function Products() {
               </h1>
               <p className="max-w-3xl text-base leading-7 text-slate-600">
                 This page is the foundation for standard part search, datasheets, quality documents,
-                and customer support files. Prices, lead times, and private customer data will be
+                and SPA support files. Prices, lead times, and private SPA data will be
                 added later inside protected workflows.
               </p>
             </div>
@@ -178,7 +178,7 @@ export default function Products() {
               <h2 className="font-display text-3xl font-bold">Search like a real component site.</h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 These filters are placeholders now. Later we will connect them to Sunny's product guide,
-                stock file, standard documents, and customer-specific portal rules.
+                stock file, standard documents, and SPA-specific portal rules.
               </p>
             </div>
 
@@ -198,9 +198,9 @@ export default function Products() {
 
         <section id="documents" className="mx-auto max-w-7xl px-5 py-12">
           <div className="mb-6">
-            <h2 className="font-display text-3xl font-bold">Documents Customers Will Search</h2>
+            <h2 className="font-display text-3xl font-bold">Documents SPA Vendors Will Search</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-              This prepares SunnyKR for datasheets, QA documents, compliance files, and customer-specific
+              This prepares SunnyKR for datasheets, QA documents, compliance files, and SPA-specific
               document packages without exposing private files publicly.
             </p>
           </div>
@@ -215,7 +215,7 @@ export default function Products() {
                   <h3 className="font-semibold">{documentType}</h3>
                 </div>
                 <p className="mb-4 text-sm leading-6 text-slate-600">
-                  Public availability and customer-only access rules will be configured later.
+                  Public availability and SPA-only access rules will be configured later.
                 </p>
                 <Button variant="outline" className="h-10 gap-2 bg-white" disabled>
                   <Download className="h-4 w-4" />
@@ -231,13 +231,13 @@ export default function Products() {
             <div>
               <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-white/70">
                 <ShieldCheck className="h-4 w-4" />
-                Customer data stays protected
+                SPA data stays protected
               </div>
               <h2 className="font-display text-3xl font-bold">Public product search first. Private pricing later.</h2>
             </div>
             <Link href="/request-access">
               <Button variant="outline" className="h-12 bg-white text-slate-950 hover:bg-slate-100">
-                Partners Portal Log In
+                Sunny Portal Access (SPA) Log In
               </Button>
             </Link>
           </div>

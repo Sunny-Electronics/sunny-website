@@ -20,7 +20,7 @@ const quoteColumns = [
   "Product",
   "Quantity",
   "Target Date",
-  "Customer Ref.",
+  "SPA Ref.",
   "Package",
   "Frequency",
   "Voltage",
@@ -169,7 +169,7 @@ export default function RequestQuote() {
                 </div>
                 <div className="flex items-center gap-3">
                   <History className="h-4 w-4 text-slate-400" />
-                  Quote history later through the customer portal
+                  Quote history later through Sunny Portal Access (SPA)
                 </div>
               </div>
             </div>
@@ -191,7 +191,7 @@ export default function RequestQuote() {
                 <div>
                   <h2 className="font-display text-2xl font-bold">Upload or create your RFQ list</h2>
                   <p className="mt-2 text-sm text-slate-600">
-                    Upload Excel, CSV, or PDF. We will support Sunny part guides and customer templates later.
+                    Upload Excel, CSV, or PDF. We will support Sunny part guides and SPA templates later.
                   </p>
                   {fileName && (
                     <p className="mt-3 text-sm font-semibold text-primary">Selected file: {fileName}</p>

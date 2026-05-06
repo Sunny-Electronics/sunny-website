@@ -94,7 +94,7 @@ export default function Industries() {
           </Link>
           <Link href="/products" className="text-slate-600 hover:text-primary">Products</Link>
           <Link href="/quality" className="text-slate-600 hover:text-primary">Quality</Link>
-          <Link href="/request-access" className="text-slate-600 hover:text-primary">Partner Portal</Link>
+          <Link href="/request-access" className="text-slate-600 hover:text-primary">Sunny Portal Access (SPA)</Link>
         </nav>
       </header>
 
@@ -103,7 +103,7 @@ export default function Industries() {
           <div className="mx-auto max-w-7xl px-5 py-12">
             <p className="mb-3 text-sm font-bold uppercase tracking-wide text-primary">Industry Support</p>
             <h1 className="mb-4 max-w-4xl font-display text-4xl font-bold tracking-tight md:text-5xl">
-              Frequency control support for customers who need reliability, documents, and long-term supply.
+              Frequency control support for SPA vendors who need reliability, documents, and long-term supply.
             </h1>
             <p className="max-w-3xl text-base leading-7 text-slate-600">
               SunnyKR should speak clearly to buyers, engineers, QA teams, and supply-chain teams.

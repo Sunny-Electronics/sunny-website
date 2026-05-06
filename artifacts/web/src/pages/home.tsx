@@ -27,8 +27,8 @@ const quickActions = [
     icon: <ClipboardCheck className="h-5 w-5" />,
   },
   {
-    title: "Partner Portal",
-    text: "Future access for RFQ, PO, stock, and quote history.",
+    title: "Sunny Portal Access (SPA)",
+    text: "Approved vendor access for RFQ, PO, stock, and quote history.",
     href: "/request-access",
     icon: <History className="h-5 w-5" />,
   },
@@ -82,7 +82,7 @@ export default function Home() {
             <Link href="/request-access">
               <Button data-testid="button-partners-portal" className="gap-2">
                 <LogIn className="w-4 h-4" />
-                Partners Portal Log In
+                Sunny Portal Access (SPA) Log In
               </Button>
             </Link>
           </div>
@@ -510,7 +510,7 @@ export default function Home() {
                 At Sunny Electronics Corp., our fabless model allows us to focus entirely on what matters most: engineering excellence and rigorous quality control. Every component undergoes comprehensive testing before shipment.
               </p>
               <p className="text-lg text-muted-foreground">
-                We maintain a fully controlled global supply chain, continuously auditing and optimizing our partner network to ensure consistent quality and reliability. Our zero-defect approach and long-term manufacturing discipline allow us to support customers with stable supply, competitive pricing, and dependable performance.
+                We maintain a fully controlled global supply chain, continuously auditing and optimizing our partner network to ensure consistent quality and reliability. Our zero-defect approach and long-term manufacturing discipline allow us to support approved vendors with stable supply, competitive pricing, and dependable performance.
               </p>
             </motion.div>
           </div>
@@ -550,7 +550,7 @@ export default function Home() {
             </div>
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Products, Quotes, and Documents in One Place.</h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              SunnyKR will become the place for customers to search standard products, request pricing, upload RFQ lists, and later find datasheets and QA documents.
+              SunnyKR will become the place for approved vendors to search standard products, request pricing, upload RFQ lists, and later find datasheets and QA documents.
             </p>
           </div>
 
@@ -593,7 +593,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-sm leading-6 text-slate-300">
-                New customers can upload a list and answer a few simple industry-standard questions so Sunny can prepare price, lead time, and document support.
+                New vendors can upload a list and answer a few simple industry-standard questions so Sunny can prepare price, lead time, and document support.
               </p>
             </motion.div>
 
@@ -610,11 +610,11 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-display font-bold">Quote History</h3>
-                  <span className="text-sm text-slate-400">Customer portal later</span>
+                  <span className="text-sm text-slate-400">SPA access later</span>
                 </div>
               </div>
               <p className="text-sm leading-6 text-slate-300">
-                Instead of a shopping cart, SunnyKR will focus on quote history, RFQ status, PO status, and customer-specific records.
+                Instead of a shopping cart, SunnyKR will focus on quote history, RFQ status, PO status, and SPA-specific records.
               </p>
             </motion.div>
           </div>

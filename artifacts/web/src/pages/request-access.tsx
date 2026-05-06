@@ -37,7 +37,7 @@ const portalFeatures = [
   {
     icon: <History className="w-5 h-5" />,
     title: "Quote History",
-    text: "Refer back to previous quotes and customer-specific records.",
+    text: "Refer back to previous quotes and SPA-specific records.",
   },
   {
     icon: <PackageSearch className="w-5 h-5" />,
@@ -47,7 +47,7 @@ const portalFeatures = [
   {
     icon: <ShieldCheck className="w-5 h-5" />,
     title: "Secure Access",
-    text: "Customers only see their own company data. Admin data stays private.",
+    text: "SPA users only see their own company data. Admin data stays private.",
   },
 ];
 
@@ -58,7 +58,7 @@ export default function RequestAccess() {
     contactHandler: "",
     phoneNumber: "",
     email: "",
-    customerCode: "",
+    spaCode: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,14 +104,14 @@ export default function RequestAccess() {
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-6">
-              Customer Portal
+              Sunny Portal Access (SPA)
             </div>
             <h1 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-5">
-              Secure access for Sunny partners.
+              Sunny Portal Access (SPA) for approved vendors.
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mb-8">
-              Approved vendors will use the portal to review RFQs, orders, quote history,
-              approved stock information, and document requests. New access requests are reviewed
+              Approved vendors will use Sunny Portal Access (SPA) to review RFQs, orders,
+              quote history, approved stock information, and document requests. New SPA access requests are reviewed
               by Sunny before an account is created.
             </p>
 
@@ -142,7 +142,7 @@ export default function RequestAccess() {
                 <div className="w-16 h-16 bg-primary/10 flex items-center justify-center mx-auto mb-6">
                   <LogIn className="w-8 h-8 text-primary" />
                 </div>
-                <h2 className="text-3xl font-display font-bold mb-3">Request Portal Access</h2>
+                <h2 className="text-3xl font-display font-bold mb-3">Request SPA Access</h2>
                 <p className="text-muted-foreground">
                   Fill in your details and Sunny will review your company before access is approved.
                 </p>
@@ -164,15 +164,15 @@ export default function RequestAccess() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="customerCode">Sunny Customer Code</Label>
+                  <Label htmlFor="spaCode">Sunny SPA Code</Label>
                   <Input
-                    id="customerCode"
-                    name="customerCode"
+                    id="spaCode"
+                    name="spaCode"
                     type="text"
                     placeholder="Optional if you already know it"
-                    value={formData.customerCode}
+                    value={formData.spaCode}
                     onChange={handleChange}
-                    data-testid="input-customer-code"
+                    data-testid="input-spa-code"
                   />
                 </div>
 
@@ -231,7 +231,7 @@ export default function RequestAccess() {
 
               <p className="text-center text-xs text-muted-foreground mt-6">
                 Already have access?{" "}
-                <span className="text-primary font-medium">Portal login coming soon.</span>
+                <span className="text-primary font-medium">SPA login coming soon.</span>
               </p>
             </div>
           ) : (
