@@ -1012,6 +1012,21 @@ export default function RequestQuote() {
               </tbody>
             </table>
           </div>
+
+          <div className="mt-5 flex flex-col gap-3 border border-slate-200 bg-white p-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h3 className="font-display text-lg font-bold">Check stock availability next</h3>
+              <p className="mt-1 text-sm text-slate-600">
+                Use Sunny Stock Check to compare available inventory before final Sunny review.
+              </p>
+            </div>
+            <Link href="/stock">
+              <Button variant="outline" className="h-11 gap-2 bg-white" data-testid="button-quote-to-stock">
+                <Search className="h-4 w-4" />
+                Sunny Stock Check
+              </Button>
+            </Link>
+          </div>
         </section>
       </main>
     </div>

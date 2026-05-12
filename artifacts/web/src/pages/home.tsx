@@ -79,7 +79,7 @@ export default function Home() {
             <Link href="/part-number-generator" className="hover:text-foreground transition-colors" data-testid="link-part-number-generator">Part Number Generator</Link>
             <Link href="/industries" className="hover:text-foreground transition-colors" data-testid="link-industries">Industries</Link>
             <Link href="/quality" className="hover:text-foreground transition-colors" data-testid="link-quality">Quality</Link>
-            <Link href="/request-quote" className="text-primary hover:text-primary/80 transition-colors" data-testid="link-request-quote">Request Quote</Link>
+            <QuoteOptionsMenu compact />
             <Link href="/request-access">
               <Button data-testid="button-partners-portal" className="gap-2">
                 <LogIn className="w-4 h-4" />
@@ -125,15 +125,10 @@ export default function Home() {
                 Since 1966 &nbsp;|&nbsp; Korea-Based &nbsp;|&nbsp; Global Supply Network
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link href="/request-quote">
-                  <Button size="lg" className="h-14 px-8 text-base group" data-testid="button-request-quote-hero">
-                    Request a Quote
-                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
+                <QuoteOptionsMenu size="lg" />
                 <Button size="lg" variant="outline" className="h-14 px-8 text-base bg-background" data-testid="button-view-products" asChild>
-                  <Link href="/products">
-                    View Products
+                  <Link href="/stock">
+                    Sunny Stock Check
                   </Link>
                 </Button>
               </div>
@@ -532,11 +527,9 @@ export default function Home() {
               Connect with our engineering team to discuss custom frequency control solutions tailored to your specific requirements. As a KOSPI-listed company (KRX: 004770), we provide the transparency, stability, and long-term reliability our global partners expect.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/request-quote">
-                <Button size="lg" className="h-14 px-8 text-lg" data-testid="button-cta-request-quote">Request Quote</Button>
-              </Link>
-              <Link href="/products">
-                <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background" data-testid="button-search-products">Search Products</Button>
+              <QuoteOptionsMenu size="lg" label="Request Quote" />
+              <Link href="/stock">
+                <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background" data-testid="button-search-products">Sunny Stock Check</Button>
               </Link>
               <Link href="/part-number-generator">
                 <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background" data-testid="button-generate-part-number">Generate Part Number</Button>
@@ -662,6 +655,83 @@ export default function Home() {
           </div>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function QuoteOptionsMenu({
+  compact = false,
+  label = "Request a Quote",
+  size,
+}: {
+  compact?: boolean;
+  label?: string;
+  size?: "lg";
+}) {
+  if (compact) {
+    return (
+      <div className="group relative" data-testid="menu-request-quote">
+        <button
+          type="button"
+          className="text-primary transition-colors hover:text-primary/80"
+          data-testid="button-request-quote-menu"
+        >
+          Request Quote
+        </button>
+        <div className="pointer-events-none absolute right-0 top-full z-50 w-64 origin-top scale-95 pt-3 opacity-0 transition-all duration-150 group-focus-within:pointer-events-auto group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100">
+          <QuoteOptionsPanel />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="group relative inline-flex" data-testid="menu-request-quote">
+      <Button
+        type="button"
+        size={size}
+        className={`${size === "lg" ? "h-14 px-8 text-base" : ""} group/button`}
+        data-testid="button-request-quote-menu"
+      >
+        {label}
+        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
+      </Button>
+      <div className="pointer-events-none absolute left-0 top-full z-50 w-72 origin-top-left scale-95 pt-3 opacity-0 transition-all duration-150 group-focus-within:pointer-events-auto group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100">
+        <QuoteOptionsPanel />
+      </div>
+    </div>
+  );
+}
+
+function QuoteOptionsPanel() {
+  return (
+    <div className="border border-slate-200 bg-white p-2 text-slate-950 shadow-xl">
+      <Link
+        href="/request-quote"
+        className="group/item flex gap-3 border border-transparent p-3 transition-colors hover:border-primary/20 hover:bg-slate-50"
+        data-testid="link-quote-now"
+      >
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-primary/10 text-primary group-hover/item:bg-primary group-hover/item:text-white">
+          <Upload className="h-4 w-4" />
+        </div>
+        <div>
+          <div className="font-display text-base font-bold">Quote Now</div>
+          <div className="mt-1 text-xs leading-5 text-slate-600">Create an RFQ or upload a quote list.</div>
+        </div>
+      </Link>
+      <Link
+        href="/stock"
+        className="group/item mt-2 flex gap-3 border border-transparent p-3 transition-colors hover:border-primary/20 hover:bg-slate-50"
+        data-testid="link-sunny-stock-check"
+      >
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-primary/10 text-primary group-hover/item:bg-primary group-hover/item:text-white">
+          <Search className="h-4 w-4" />
+        </div>
+        <div>
+          <div className="font-display text-base font-bold">Sunny Stock Check</div>
+          <div className="mt-1 text-xs leading-5 text-slate-600">Check Sunny availability before or after quoting.</div>
+        </div>
+      </Link>
     </div>
   );
 }
