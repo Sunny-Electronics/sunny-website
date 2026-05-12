@@ -982,7 +982,7 @@ export default function RequestQuote() {
                 <div className="flex flex-wrap gap-2">
                   <Button type="button" variant="outline" className="h-11 gap-2 bg-white" onClick={parseVendorEmail}>
                     <Plus className="h-4 w-4" />
-                    Parse and Add
+                    Read Email and Add
                   </Button>
                   <Button type="button" className="h-11 gap-2" onClick={sendSpaRfqEmail} data-testid="button-send-spa-rfq">
                     <Check className="h-4 w-4" />
