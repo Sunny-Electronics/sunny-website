@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowLeft,
@@ -8,7 +8,6 @@ import {
   Cpu,
   Download,
   FileText,
-  FileUp,
   Gauge,
   HelpCircle,
   History,
@@ -19,7 +18,6 @@ import {
   ShieldCheck,
   Sparkles,
   Timer,
-  Upload,
   Waves,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -199,8 +197,7 @@ Proj = H8 Controller
 Pls also advice SPQ & LT as well.`;
 
 export default function RequestQuote() {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [family, setFamily] = useState<QuoteFamily>("crystal");
   const [crystalPackage, setCrystalPackage] = useState("R");
   const [frequency, setFrequency] = useState("32");
@@ -414,6 +411,14 @@ export default function RequestQuote() {
     setStability(preset.stabilityCode);
   };
 
+  const submitSearch = (event: React.FormEvent) => {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    window.location.href = query
+      ? `/documents?search=${encodeURIComponent(query)}`
+      : "/documents";
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950 font-sans">
       <header className="border-b border-slate-200 bg-white">
@@ -426,30 +431,27 @@ export default function RequestQuote() {
             </div>
           </Link>
 
-          <div className="flex min-w-0 flex-1 items-center border border-slate-300 bg-slate-50">
+          <form
+            onSubmit={submitSearch}
+            className="flex min-w-0 flex-1 items-center border border-slate-300 bg-slate-50"
+            role="search"
+          >
             <Input
               className="h-12 flex-1 border-0 bg-transparent focus-visible:ring-0"
-              placeholder="Paste part number, Sunny MPN, frequency, or customer reference"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search part number, spec sheet, datasheet, RoHS, or QA document"
               data-testid="input-rfq-search"
             />
             <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="hidden h-12 items-center gap-2 px-4 text-sm font-semibold text-primary md:flex"
-              data-testid="button-upload-list-header"
-            >
-              <Upload className="h-4 w-4" />
-              Upload List
-            </button>
-            <button
-              type="button"
+              type="submit"
               className="flex h-12 w-14 items-center justify-center bg-primary text-white"
               aria-label="Search"
               data-testid="button-rfq-search"
             >
               <Search className="h-5 w-5" />
             </button>
-          </div>
+          </form>
 
           <Link href="/request-access">
             <Button variant="outline" className="h-12 gap-2">
@@ -466,7 +468,7 @@ export default function RequestQuote() {
           </Link>
           <a href="#instant" className="text-slate-600 hover:text-primary">Instant Builder</a>
           <a href="#quote-list" className="text-slate-600 hover:text-primary">Quote List</a>
-          <a href="#upload" className="text-slate-600 hover:text-primary">Upload RFQ</a>
+          <Link href="/documents" className="text-slate-600 hover:text-primary">Search Documents</Link>
           <a href="#details" className="text-slate-600 hover:text-primary">Contact Details</a>
         </nav>
       </header>
@@ -493,15 +495,16 @@ export default function RequestQuote() {
                     Build a Part
                   </Button>
                 </a>
-                <Button
-                  variant="outline"
-                  className="h-11 gap-2 bg-white"
-                  onClick={() => fileInputRef.current?.click()}
-                  data-testid="button-upload-list"
-                >
-                  <FileUp className="h-4 w-4" />
-                  Upload a List
-                </Button>
+                <Link href="/documents">
+                  <Button
+                    variant="outline"
+                    className="h-11 gap-2 bg-white"
+                    data-testid="button-search-documents"
+                  >
+                    <Search className="h-4 w-4" />
+                    Search Documents
+                  </Button>
+                </Link>
               </div>
             </div>
 
@@ -918,35 +921,23 @@ export default function RequestQuote() {
           </div>
         </section>
 
-        <section id="upload" className="mx-auto max-w-7xl px-5 pb-8">
-          <input
-            ref={fileInputRef}
-            type="file"
-            className="hidden"
-            accept=".xls,.xlsx,.csv,.pdf"
-            onChange={(event) => setFileName(event.target.files?.[0]?.name ?? "")}
-          />
-
+        <section id="details" className="mx-auto max-w-7xl px-5 pb-8">
           <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-            <div className="border border-dashed border-slate-300 bg-white p-6">
-              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <h2 className="font-display text-2xl font-bold">Upload an RFQ list instead</h2>
-                  <p className="mt-2 text-sm text-slate-600">
-                    Upload Excel, CSV, or PDF if you already have a BOM, PO reference, or customer list.
-                  </p>
-                  {fileName && (
-                    <p className="mt-3 text-sm font-semibold text-primary">Selected file: {fileName}</p>
-                  )}
-                </div>
-                <Button variant="outline" className="h-11 gap-2 bg-white" onClick={() => fileInputRef.current?.click()}>
-                  <Upload className="h-4 w-4" />
-                  Choose File
+            <div className="border border-slate-200 bg-white p-6">
+              <h2 className="font-display text-2xl font-bold">Search before quoting</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Use the search bar above to find Sunny part numbers, spec sheets, datasheets,
+                RoHS documents, reliability files, and QA documents that visitors can view as PDFs.
+              </p>
+              <Link href="/documents">
+                <Button variant="outline" className="mt-4 h-11 gap-2 bg-white">
+                  <Search className="h-4 w-4" />
+                  Open Document Search
                 </Button>
-              </div>
+              </Link>
             </div>
 
-            <div id="details" className="border border-slate-200 bg-white p-6">
+            <div className="border border-slate-200 bg-white p-6">
               <h2 className="mb-4 font-display text-xl font-bold">Contact details</h2>
               <div className="grid gap-3">
                 <Input placeholder="Company name" data-testid="input-company" />
