@@ -2,7 +2,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
 import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn, Search, Upload, FileText, History, ClipboardCheck, Hash } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { SiSamsung, SiLg, SiGarmin } from "react-icons/si";
 import sunnyLogo from "@assets/image_1775118121182.png";
 import productsPhoto from "@assets/001_1775118159591.jpg";
@@ -50,29 +49,7 @@ export default function Home() {
               <span className="text-[11px] text-muted-foreground font-medium tracking-wide">KOSPI-listed (KRX: 004770)</span>
             </div>
           </div>
-          <div className="flex min-w-0 flex-1 items-center border border-slate-300 bg-slate-50 shadow-inner lg:max-w-xl">
-            <Input
-              className="h-11 border-0 bg-transparent focus-visible:ring-0"
-              placeholder="Search part #, datasheet, QA document"
-              data-testid="input-site-search"
-            />
-            <Link
-              href="/request-quote"
-              className="hidden h-11 items-center gap-2 px-3 text-xs font-semibold text-primary md:flex"
-              data-testid="link-upload-list"
-            >
-              <Upload className="h-4 w-4" />
-              Upload List
-            </Link>
-            <Link
-              href="/request-quote"
-              className="flex h-11 w-12 items-center justify-center bg-primary text-primary-foreground"
-              aria-label="Search"
-              data-testid="link-site-search"
-            >
-              <Search className="h-5 w-5" />
-            </Link>
-          </div>
+          <div className="hidden flex-1 lg:block" />
           <div className="hidden lg:flex items-center gap-6 font-medium text-sm text-muted-foreground">
             <a href="#about" className="hover:text-foreground transition-colors" data-testid="link-legacy">Legacy</a>
             <Link href="/products" className="hover:text-foreground transition-colors" data-testid="link-products">Products</Link>
