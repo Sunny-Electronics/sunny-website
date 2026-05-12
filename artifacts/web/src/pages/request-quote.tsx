@@ -475,6 +475,49 @@ export default function RequestQuote() {
     setQuoteSubmitMessage("Opening email with the quote request filled in.");
   };
 
+  const sendSpaRfqEmail = () => {
+    const pastedRfq = emailText.trim();
+    if (!pastedRfq) {
+      setQuoteSubmitMessage("Please paste the SPA RFQ email before sending.");
+      return;
+    }
+
+    const body = [
+      "SPA -RFQ",
+      "",
+      "Please review the following SPA value-added RFQ.",
+      "",
+      "Contact Details",
+      `Company / Name: ${contactCompany || "-"}`,
+      `Email: ${contactEmail || "-"}`,
+      `Industry / Application: ${contactIndustry || "-"}`,
+      `Target Annual Quantity: ${contactAnnualQuantity || "-"}`,
+      `Contact Notes: ${contactNotes || "-"}`,
+      "",
+      "Pasted RFQ Email",
+      pastedRfq,
+      "",
+      "Parsed Quote Lines",
+      ...(quoteLines.length
+        ? quoteLines.flatMap((line, index) => [
+            "",
+            `${index + 1}. ${line.partNumber}`,
+            `Family: ${line.family}`,
+            `Package: ${line.packageType}`,
+            `Frequency: ${line.frequency}`,
+            `Spec: ${line.spec}`,
+            `Quantity: ${line.quantity}`,
+            `Notes: ${line.note || "-"}`,
+          ])
+        : ["No parsed quote lines yet. Please review the pasted RFQ email."]),
+    ].join("\n");
+
+    const mailto = `mailto:web@sunnykr.com?cc=${encodeURIComponent("sunnykoreax@gmail.com")}&subject=${encodeURIComponent("SPA -RFQ")}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailto;
+    setQuoteSubmitMessage("Opening SPA -RFQ email addressed to Sunny.");
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950 font-sans">
       <header className="border-b border-slate-200 bg-white">
@@ -930,15 +973,22 @@ export default function RequestQuote() {
             <div className="border border-slate-200 bg-white p-6 shadow-sm">
               <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="font-display text-2xl font-bold">Paste RFQ Email</h2>
+                  <h2 className="font-display text-2xl font-bold">SPA Value Added RFQ Email</h2>
                   <p className="mt-1 text-sm text-slate-600">
-                    For current vendors, paste the email text and SunnyKR will pull the part, quantity, project, SPQ, and lead-time request into the quote list.
+                    SPA value added: please paste the RFQ email text. SunnyKR can pull the part, quantity,
+                    project, SPQ, and lead-time request into the quote list or send it to Sunny for review.
                   </p>
                 </div>
-                <Button type="button" className="h-11 gap-2" onClick={parseVendorEmail}>
-                  <Plus className="h-4 w-4" />
-                  Parse and Add
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                  <Button type="button" variant="outline" className="h-11 gap-2 bg-white" onClick={parseVendorEmail}>
+                    <Plus className="h-4 w-4" />
+                    Parse and Add
+                  </Button>
+                  <Button type="button" className="h-11 gap-2" onClick={sendSpaRfqEmail} data-testid="button-send-spa-rfq">
+                    <Check className="h-4 w-4" />
+                    Send SPA -RFQ
+                  </Button>
+                </div>
               </div>
               <Textarea
                 value={emailText}
