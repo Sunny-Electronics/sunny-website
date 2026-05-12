@@ -16,7 +16,7 @@ import RequestQuote from "@/pages/request-quote";
 import Stock from "@/pages/stock";
 import OrderList from "@/pages/order-list";
 import SpaAdmin from "@/pages/spa-admin";
-import TelegramChatButton from "@/components/TelegramChatButton";
+import SunnyChatButton from "@/components/SunnyChatButton";
 
 const queryClient = new QueryClient();
 
@@ -50,7 +50,7 @@ function App() {
           <Router />
         </WouterRouter>
         <Toaster />
-        <TelegramChatButton />
+        <SunnyChatButton />
       </TooltipProvider>
     </QueryClientProvider>
   );
