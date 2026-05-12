@@ -96,7 +96,7 @@ export default function Home() {
                 <span className="text-primary">Global Innovation.</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-4 leading-relaxed">
-                Sunny Electronics Corp. engineers world-class crystal oscillators, resonators, and filters -- powering the most demanding technologies across automotive, telecommunications, and consumer electronics for nearly six decades.
+                Sunny Electronics Corp. engineers world-class crystal oscillators, resonators, and filters -- powering the most demanding technologies across automotive, telecommunications, and consumer electronics for 60 years.
               </p>
               <p className="text-sm font-semibold tracking-wider text-primary uppercase mb-8">
                 Since 1966 &nbsp;|&nbsp; Korea-Based &nbsp;|&nbsp; Global Supply Network
@@ -208,7 +208,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {[
-              { value: '58+', label: 'Years of Excellence', icon: <Award className="w-5 h-5 text-primary" /> },
+              { value: '60', label: 'Years of Excellence', icon: <Award className="w-5 h-5 text-primary" /> },
               { value: 'KOSPI', label: 'Listed Company (KRX: 004770)', icon: <TrendingUp className="w-5 h-5 text-primary" /> },
               { value: '1966', label: 'Year Established', icon: <Factory className="w-5 h-5 text-primary" /> },
               { value: 'Tier-1', label: 'Trusted by Global Manufacturers', icon: <Users className="w-5 h-5 text-primary" /> }
@@ -244,9 +244,9 @@ export default function Home() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-6">
                 Our Heritage
               </div>
-              <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Nearly Six Decades of Uncompromising Precision.</h2>
+              <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">60 Years of Uncompromising Precision.</h2>
               <p className="text-lg text-muted-foreground mb-6">
-                Sunny Electronics is a Korea-based fabless manufacturer specializing in frequency control solutions, publicly listed on KOSPI (KRX: 004770). With nearly six decades of continuous innovation, we have built a strong reputation for precision, reliability, and long-term supply stability.
+                Sunny Electronics is a Korea-based fabless manufacturer specializing in frequency control solutions, publicly listed on KOSPI (KRX: 004770). With 60 years of continuous innovation, we have built a strong reputation for precision, reliability, and long-term supply stability.
               </p>
               <p className="text-lg text-muted-foreground mb-8">
                 Our foundation is built on over 50 years of collaboration with leading Korean companies, including Samsung, LG, and their affiliated partners. These long-standing relationships reflect our ability to consistently meet strict quality, performance, and delivery standards in high-demand industries.
