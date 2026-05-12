@@ -133,7 +133,9 @@ export default function RequestAccess() {
                     <div className="w-10 h-10 bg-primary/10 text-primary flex items-center justify-center">
                       {feature.icon}
                     </div>
-                    <h2 className="font-display font-bold text-lg">{feature.title}</h2>
+                    <h2 className="font-display font-bold text-lg">
+                      {feature.title} <span className="text-sm font-semibold text-primary">(SPA only)</span>
+                    </h2>
                   </div>
                   <p className="text-sm text-muted-foreground leading-6">{feature.text}</p>
                   </>
