@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   Sparkles,
   Timer,
+  Trash2,
   Waves,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -224,6 +225,12 @@ export default function RequestQuote() {
   const [pulling, setPulling] = useState("5");
   const [emailText, setEmailText] = useState(exampleVendorEmail);
   const [quoteLines, setQuoteLines] = useState<QuoteLine[]>([]);
+  const [contactCompany, setContactCompany] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactIndustry, setContactIndustry] = useState("");
+  const [contactAnnualQuantity, setContactAnnualQuantity] = useState("");
+  const [contactNotes, setContactNotes] = useState("");
+  const [quoteSubmitMessage, setQuoteSubmitMessage] = useState("");
 
   const selectedCrystalPackage = crystalPackages.find((item) => item.code === crystalPackage) ?? crystalPackages[0];
   const selectedStability = stabilityOptions.find((item) => item.code === stability) ?? stabilityOptions[0];
@@ -326,6 +333,7 @@ export default function RequestQuote() {
               : "Review";
 
   const addGeneratedPart = () => {
+    setQuoteSubmitMessage("");
     setQuoteLines((current) => [
       ...current,
       {
@@ -342,6 +350,7 @@ export default function RequestQuote() {
   };
 
   const parseVendorEmail = () => {
+    setQuoteSubmitMessage("");
     const normalized = emailText.replace(/\r/g, "");
     const partMatch = normalized.match(/\b(?:SCO|SVH|STA|STJ|STI|STH|STG|STF|STE|STB|SX|CS|CR|S[A-Z]{1,2})[-A-Z0-9.]+M?\b/i);
     const qtyMatch = normalized.match(/\bQty\s*=\s*([^\n\r]+)/i) ?? normalized.match(/\bQTY\s*[:\-]?\s*([^\n\r]+)/i);
@@ -401,6 +410,11 @@ export default function RequestQuote() {
     ]);
   };
 
+  const deleteQuoteLine = (id: number) => {
+    setQuoteSubmitMessage("");
+    setQuoteLines((current) => current.filter((line) => line.id !== id));
+  };
+
   const applyPreset = (preset: (typeof quickPresets)[number]) => {
     setFamily("crystal");
     setCrystalPackage(preset.packageCode);
@@ -417,6 +431,48 @@ export default function RequestQuote() {
     window.location.href = query
       ? `/documents?search=${encodeURIComponent(query)}`
       : "/documents";
+  };
+
+  const createQuoteRequest = () => {
+    if (!quoteLines.length) {
+      setQuoteSubmitMessage("Please add at least one quote line before creating the request.");
+      return;
+    }
+
+    const today = new Date().toISOString().slice(0, 10);
+    const subject = `SunnyKR RFQ Request - ${contactCompany || "Website visitor"} - ${today}`;
+    const body = [
+      "SunnyKR RFQ Request",
+      "",
+      "Please review the following quote request.",
+      "",
+      "Contact Details",
+      `Company / Name: ${contactCompany || "-"}`,
+      `Email: ${contactEmail || "-"}`,
+      `Industry / Application: ${contactIndustry || "-"}`,
+      `Target Annual Quantity: ${contactAnnualQuantity || "-"}`,
+      `Contact Notes: ${contactNotes || "-"}`,
+      "",
+      "Quote Lines",
+      ...quoteLines.flatMap((line, index) => [
+        "",
+        `${index + 1}. ${line.partNumber}`,
+        `Family: ${line.family}`,
+        `Package: ${line.packageType}`,
+        `Frequency: ${line.frequency}`,
+        `Spec: ${line.spec}`,
+        `Quantity: ${line.quantity}`,
+        `Notes: ${line.note || "-"}`,
+      ]),
+      "",
+      "Requested Sunny review",
+      "Price, lead time, SPQ/MOQ, stock availability, datasheet, and QA document availability.",
+    ].join("\n");
+
+    const mailto = `mailto:web@sunnykr.com?cc=${encodeURIComponent("sunnykoreax@gmail.com")}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailto;
+    setQuoteSubmitMessage("Opening email with the quote request filled in.");
   };
 
   return (
@@ -940,11 +996,36 @@ export default function RequestQuote() {
             <div className="border border-slate-200 bg-white p-6">
               <h2 className="mb-4 font-display text-xl font-bold">Contact details</h2>
               <div className="grid gap-3">
-                <Input placeholder="Company name" data-testid="input-company" />
-                <Input placeholder="Your email" data-testid="input-email" />
-                <Input placeholder="Industry / application" data-testid="input-industry" />
-                <Input placeholder="Target annual quantity" data-testid="input-annual-quantity" />
-                <Textarea placeholder="Special requirements, QA documents, or notes" rows={4} />
+                <Input
+                  value={contactCompany}
+                  onChange={(event) => setContactCompany(event.target.value)}
+                  placeholder="Company name"
+                  data-testid="input-company"
+                />
+                <Input
+                  value={contactEmail}
+                  onChange={(event) => setContactEmail(event.target.value)}
+                  placeholder="Your email"
+                  data-testid="input-email"
+                />
+                <Input
+                  value={contactIndustry}
+                  onChange={(event) => setContactIndustry(event.target.value)}
+                  placeholder="Industry / application"
+                  data-testid="input-industry"
+                />
+                <Input
+                  value={contactAnnualQuantity}
+                  onChange={(event) => setContactAnnualQuantity(event.target.value)}
+                  placeholder="Target annual quantity"
+                  data-testid="input-annual-quantity"
+                />
+                <Textarea
+                  value={contactNotes}
+                  onChange={(event) => setContactNotes(event.target.value)}
+                  placeholder="Special requirements, QA documents, or notes"
+                  rows={4}
+                />
               </div>
             </div>
           </div>
@@ -958,17 +1039,22 @@ export default function RequestQuote() {
                 Add one or many parts. Sunny will review pricing, lead time, stock, datasheets, and QA documents.
               </p>
             </div>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={createQuoteRequest} data-testid="button-create-quote-request">
               <Check className="h-4 w-4" />
               Create Quote Request
             </Button>
           </div>
+          {quoteSubmitMessage && (
+            <div className="mb-4 border border-primary/20 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary">
+              {quoteSubmitMessage}
+            </div>
+          )}
 
           <div className="overflow-x-auto border border-slate-300 bg-white">
             <table className="min-w-[1120px] w-full border-collapse text-left text-sm">
               <thead className="bg-slate-300 text-xs uppercase text-slate-800">
                 <tr>
-                  {["#", "Family", "Customer Part Number", "Package", "Frequency", "Spec", "Qty", "Notes", "Status"].map((column) => (
+                  {["#", "Family", "Customer Part Number", "Package", "Frequency", "Spec", "Qty", "Notes", "Status", "Action"].map((column) => (
                     <th key={column} className="border-r border-slate-400 px-3 py-3">
                       {column}
                     </th>
@@ -987,7 +1073,9 @@ export default function RequestQuote() {
                     quantity: "10000",
                     note: "Example line",
                   },
-                ]).map((row, index) => (
+                ]).map((row, index) => {
+                  const isExampleLine = quoteLines.length === 0;
+                  return (
                   <tr key={row.id} className="border-t border-slate-200">
                     <td className="border-r border-slate-200 px-3 py-4 font-semibold">{index + 1}</td>
                     <td className="border-r border-slate-200 px-3 py-4">{row.family}</td>
@@ -997,9 +1085,29 @@ export default function RequestQuote() {
                     <td className="border-r border-slate-200 px-3 py-4">{row.spec}</td>
                     <td className="border-r border-slate-200 px-3 py-4">{row.quantity}</td>
                     <td className="border-r border-slate-200 px-3 py-4">{row.note || "-"}</td>
-                    <td className="px-3 py-4 font-semibold text-amber-700">Ready for Sunny review</td>
+                    <td className="border-r border-slate-200 px-3 py-4 font-semibold text-amber-700">
+                      {isExampleLine ? "Example only" : "Ready for Sunny review"}
+                    </td>
+                    <td className="px-3 py-4">
+                      {isExampleLine ? (
+                        <span className="text-xs font-semibold text-slate-400">Add a real line</span>
+                      ) : (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="h-9 gap-2 border-red-200 bg-white text-red-700 hover:bg-red-50"
+                          onClick={() => deleteQuoteLine(row.id)}
+                          data-testid={`button-delete-quote-line-${row.id}`}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          Delete line
+                        </Button>
+                      )}
+                    </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>
