@@ -203,13 +203,15 @@ function linksForAnswer(answer, fallbackLinks) {
 
 async function callBridge(payload) {
   const bridgeUrl = getBridgeUrl();
-  if (!bridgeUrl) return "";
+  if (!bridgeUrl) return { reply: "", debug: { reason: "missing_bridge_url" } };
 
   const controller = new AbortController();
+  const startedAt = Date.now();
   const timeout = setTimeout(() => controller.abort(), getTimeoutMs());
 
   try {
     const token = getBridgeToken();
+    const url = new URL(bridgeUrl);
     const response = await fetch(bridgeUrl, {
       method: "POST",
       headers: {
@@ -220,11 +222,44 @@ async function callBridge(payload) {
       signal: controller.signal,
     });
 
-    if (!response.ok) return "";
+    if (!response.ok) {
+      return {
+        reply: "",
+        debug: {
+          reason: "bridge_http_error",
+          status: response.status,
+          host: url.host,
+          durationMs: Date.now() - startedAt,
+        },
+      };
+    }
     const data = await response.json().catch(() => null);
-    return readAssistantText(data);
-  } catch {
-    return "";
+    const reply = readAssistantText(data);
+    return {
+      reply,
+      debug: {
+        reason: reply ? "bridge_ok" : "empty_bridge_reply",
+        status: response.status,
+        host: url.host,
+        durationMs: Date.now() - startedAt,
+      },
+    };
+  } catch (error) {
+    let host = "";
+    try {
+      host = new URL(bridgeUrl).host;
+    } catch {
+      host = "invalid_url";
+    }
+    return {
+      reply: "",
+      debug: {
+        reason: error?.name === "AbortError" ? "bridge_timeout" : "bridge_fetch_error",
+        errorName: error?.name || "Error",
+        host,
+        durationMs: Date.now() - startedAt,
+      },
+    };
   } finally {
     clearTimeout(timeout);
   }
@@ -250,7 +285,7 @@ export default async function handler(req, res) {
 
   const fallback = keywordFallback(message, pagePath);
   const prompt = buildPrompt({ message, pagePath, history });
-  const bridgeReply = await callBridge({
+  const bridgeResult = await callBridge({
     project: "sunnykr",
     assistant: "Sunny",
     message,
@@ -259,12 +294,24 @@ export default async function handler(req, res) {
     pagePath,
     history: history.slice(-MAX_HISTORY_ITEMS),
   });
+  const bridgeReply = bridgeResult.reply;
 
   const reply = bridgeReply || fallback.reply;
 
-  return res.status(200).json({
+  const payload = {
     reply,
     links: linksForAnswer(reply, fallback.links),
     source: bridgeReply ? "bridge" : "fallback",
-  });
+  };
+
+  if (req.headers["x-sunny-debug"] === "1") {
+    payload.debug = {
+      bridgeConfigured: Boolean(getBridgeUrl()),
+      tokenConfigured: Boolean(getBridgeToken()),
+      timeoutMs: getTimeoutMs(),
+      bridge: bridgeResult.debug,
+    };
+  }
+
+  return res.status(200).json(payload);
 }
