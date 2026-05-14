@@ -1,9 +1,15 @@
+import fs from "node:fs";
+
 const MAX_MESSAGE_LENGTH = 700;
 const MAX_HISTORY_ITEMS = 6;
 const DEFAULT_TIMEOUT_MS = 18000;
 const MAX_TIMEOUT_MS = 22000;
 const DEFAULT_BRIDGE_PATH = "/sunny/chat";
 const TELEGRAM_URL = "https://t.me/sunny_kr_bot";
+const MAX_CATALOG_MATCHES = 3;
+const MAX_CATALOG_CONTEXT_CHARS = 1100;
+
+let sunnyCatalogCache;
 
 export const config = {
   maxDuration: 30,
@@ -29,6 +35,104 @@ const siteMap = [
   "Industries /industries: application and market fit for Sunny products.",
   "SPA Access /request-access: buyer, distributor, and customer access request.",
 ];
+
+function loadSunnyCatalog() {
+  if (sunnyCatalogCache) return sunnyCatalogCache;
+
+  try {
+    const catalogUrl = new URL("./sunny-catalog.json", import.meta.url);
+    sunnyCatalogCache = JSON.parse(fs.readFileSync(catalogUrl, "utf8"));
+  } catch {
+    sunnyCatalogCache = { rules: [], defaultRfqFields: [], entries: [] };
+  }
+
+  return sunnyCatalogCache;
+}
+
+function normalizeForSearch(value) {
+  return sanitize(value).toLowerCase();
+}
+
+function scoreCatalogEntry(entry, query) {
+  const normalizedQuery = normalizeForSearch(query);
+  if (!normalizedQuery) return 0;
+
+  const searchable = normalizeForSearch(
+    [
+      entry.id,
+      entry.title,
+      entry.type,
+      entry.summary,
+      ...(entry.keywords || []),
+      ...(entry.knownSeries || []),
+      ...(entry.knownDocuments || []),
+      ...(entry.specGuidance || []),
+      ...(entry.rfqFields || []),
+    ].join(" "),
+  );
+
+  let score = 0;
+  const terms = normalizedQuery.match(/[a-z0-9.\/+-]+|[\u3131-\ud79d]+/g) || [];
+
+  for (const keyword of entry.keywords || []) {
+    const normalizedKeyword = normalizeForSearch(keyword);
+    if (normalizedKeyword && normalizedQuery.includes(normalizedKeyword)) score += 6;
+  }
+
+  for (const series of entry.knownSeries || []) {
+    const normalizedSeries = normalizeForSearch(series);
+    if (normalizedSeries && normalizedQuery.includes(normalizedSeries)) score += 8;
+  }
+
+  for (const term of terms) {
+    if (term.length > 1 && searchable.includes(term)) score += 1;
+  }
+
+  return score;
+}
+
+function findCatalogMatches(message, pagePath) {
+  const catalog = loadSunnyCatalog();
+  const query = `${message} ${pagePath}`;
+
+  return (catalog.entries || [])
+    .map((entry) => ({ ...entry, score: scoreCatalogEntry(entry, query) }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, MAX_CATALOG_MATCHES);
+}
+
+function catalogLinks(matches) {
+  return matches
+    .flatMap((entry) => entry.routes || [])
+    .filter((link, index, all) => all.findIndex((item) => item.href === link.href) === index)
+    .slice(0, 4);
+}
+
+function buildCatalogGuide(matches) {
+  if (!matches.length) return "";
+
+  const catalog = loadSunnyCatalog();
+  const guide = [
+    "Catalog context for this visitor question:",
+    ...matches.map((entry) => {
+      const knownSeries = (entry.knownSeries || []).slice(0, 8).join(", ");
+      const fields = (entry.rfqFields || catalog.defaultRfqFields || []).slice(0, 8).join(", ");
+      const routes = (entry.routes || []).map((route) => `${route.label} ${route.href}`).join("; ");
+      return [
+        `- ${entry.title}: ${entry.summary}`,
+        knownSeries ? `Known series: ${knownSeries}.` : "",
+        fields ? `Useful RFQ fields: ${fields}.` : "",
+        routes ? `Route to: ${routes}.` : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+    }),
+    "Answer using only this catalog if it is relevant. If specs are missing, ask for the missing RFQ fields. Do not invent specs, price, stock, or final lead time.",
+  ].join("\n");
+
+  return guide.slice(0, MAX_CATALOG_CONTEXT_CHARS);
+}
 
 function sanitize(value) {
   return String(value || "")
@@ -288,10 +392,14 @@ export default async function handler(req, res) {
   }
 
   const fallback = keywordFallback(message, pagePath);
+  const catalogMatches = findCatalogMatches(message, pagePath);
+  const catalogGuide = buildCatalogGuide(catalogMatches);
+  const matchedLinks = catalogLinks(catalogMatches);
   const bridgeResult = await callBridge({
     project: "sunnykr",
     assistant: "Sunny",
     message,
+    systemGuide: catalogGuide,
     pagePath,
   });
   const bridgeReply = bridgeResult.reply;
@@ -300,7 +408,7 @@ export default async function handler(req, res) {
 
   const payload = {
     reply,
-    links: linksForAnswer(reply, fallback.links),
+    links: linksForAnswer(reply, [...matchedLinks, ...fallback.links]),
     source: bridgeReply ? "bridge" : "fallback",
   };
 
@@ -309,6 +417,7 @@ export default async function handler(req, res) {
       bridgeConfigured: Boolean(getBridgeUrl()),
       tokenConfigured: Boolean(getBridgeToken()),
       timeoutMs: getTimeoutMs(),
+      catalogMatches: catalogMatches.map((entry) => entry.id),
       bridge: bridgeResult.debug,
     };
   }

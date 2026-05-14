@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "updated": "2026-05-15",
+  "rules": [
+    "Use this catalog as guidance, not as final commercial confirmation.",
+    "Never promise final price, stock, lead time, delivery, qualification, or certification status.",
+    "For quote, stock, lead time, or customer-specific document requests, route visitors to the matching SunnyKR section.",
+    "Ask for missing RFQ fields instead of guessing."
+  ],
+  "defaultRfqFields": [
+    "part number if known",
+    "frequency",
+    "package or size",
+    "tolerance or stability",
+    "load capacitance for crystal units",
+    "voltage/output for oscillators",
+    "operating temperature",
+    "quantity",
+    "target date",
+    "drawing, BOM, or customer specification if available"
+  ],
+  "entries": [
+    {
+      "id": "crystal-units",
+      "title": "Crystal Units",
+      "type": "product-family",
+      "keywords": ["crystal", "quartz", "mhz", "sx", "ats", "resonator", "load capacitance", "tolerance", "cl"],
+      "summary": "MHz and kHz quartz crystal units for compact electronic designs. Sunny supports SMD and through-hole crystal RFQ review.",
+      "knownSeries": ["ATS-25/U", "ATS-49/U", "SX-1", "SX-3", "SX-7", "SX-8", "SX-32", "SX-22", "SX-21", "SX-16", "SX-A21", "SX-A22", "SX-A32", "SX-A8"],
+      "specGuidance": ["confirm frequency", "package type or size", "load capacitance", "frequency tolerance", "frequency stability", "operating temperature"],
+      "rfqFields": ["frequency", "package", "load capacitance", "tolerance", "stability", "temperature range", "quantity", "target date"],
+      "routes": [
+        { "label": "Products", "href": "/products" },
+        { "label": "Request Quote", "href": "/request-quote" },
+        { "label": "Part Number Generator", "href": "/part-number-generator" }
+      ]
+    },
+    {
+      "id": "tuning-fork-crystals",
+      "title": "Tuning Fork Crystals",
+      "type": "product-family",
+      "keywords": ["tuning fork", "32.768", "khz", "clock crystal", "cs-306", "cs-519", "cs-146", "cs-3215", "cs-2012", "cs-1610", "cs-406", "cs-405"],
+      "summary": "32.768 kHz clock crystal families for timing and low-power applications.",
+      "knownSeries": ["CS-306", "CS-519", "CS-146", "CS-3215", "CS-2012", "CS-1610", "CS-406", "CS-405"],
+      "specGuidance": ["confirm package", "load capacitance", "temperature range", "quantity", "tape and reel requirement"],
+      "rfqFields": ["package", "load capacitance", "temperature range", "quantity", "target date"],
+      "routes": [
+        { "label": "Products", "href": "/products" },
+        { "label": "Request Quote", "href": "/request-quote" }
+      ]
+    },
+    {
+      "id": "oscillators",
+      "title": "Oscillators",
+      "type": "product-family",
+      "keywords": ["oscillator", "xo", "spxo", "sco", "tcxo", "vcxo", "ocxo", "output", "voltage", "jitter", "stability"],
+      "summary": "Oscillator timing modules including SPXO/XO, TCXO, VCXO, and OCXO style inquiries. RFQs usually need electrical and output details.",
+      "knownSeries": ["SCO", "SCO-10", "SCO-53"],
+      "specGuidance": ["confirm frequency", "supply voltage", "output type", "stability", "operating temperature", "enable/disable option"],
+      "rfqFields": ["frequency", "package", "supply voltage", "output type", "stability", "temperature range", "quantity", "target date"],
+      "routes": [
+        { "label": "Products", "href": "/products" },
+        { "label": "Request Quote", "href": "/request-quote" },
+        { "label": "Part Number Generator", "href": "/part-number-generator" }
+      ]
+    },
+    {
+      "id": "standard-lead-time",
+      "title": "General Lead-Time Guidance",
+      "type": "operations",
+      "keywords": ["lead time", "lt", "etd", "delivery", "ship date", "납기", "delivery date"],
+      "summary": "General internal guidance says standard parts are often around 8 weeks, while SCO-10 and SCO-53 are often around 9 weeks. Treat this only as preliminary guidance and require official Sunny confirmation.",
+      "rfqFields": ["part number", "quantity", "target date", "customer required date"],
+      "routes": [
+        { "label": "Request Quote", "href": "/request-quote" },
+        { "label": "Telegram", "href": "https://t.me/sunny_kr_bot" }
+      ]
+    },
+    {
+      "id": "documents-certificates",
+      "title": "Documents and Certificates",
+      "type": "document-support",
+      "keywords": ["document", "datasheet", "spec sheet", "certificate", "iso", "iatf", "rohs", "reach", "reliability", "material declaration", "qa", "quality"],
+      "summary": "SunnyKR has a document library for certificates and spec sheets. Public documents can be opened from Documents; SPA-only project files require approved access.",
+      "knownDocuments": ["ISO 14001 Certificate", "IATF 16949 Certificate", "SX-1 Spec Sheet", "SX-32 Spec Sheet", "ATS Series Spec Sheet"],
+      "rfqFields": ["requested document type", "part number or series", "company", "customer purpose"],
+      "routes": [
+        { "label": "Documents", "href": "/documents" },
+        { "label": "Quality", "href": "/quality" },
+        { "label": "SPA Access", "href": "/request-access" }
+      ]
+    },
+    {
+      "id": "rfq-intake",
+      "title": "RFQ Intake",
+      "type": "workflow",
+      "keywords": ["rfq", "quote", "quotation", "price", "pricing", "cost", "stock", "qty", "quantity", "bom", "target date", "견적", "가격"],
+      "summary": "Sunny can help organize RFQ details, but official price, stock, and delivery must be confirmed by Sunny. Route quote requests to Request Quote.",
+      "rfqFields": ["part number", "frequency", "package", "specification", "quantity", "target date", "company", "email", "BOM or drawing"],
+      "routes": [
+        { "label": "Request Quote", "href": "/request-quote" },
+        { "label": "Telegram", "href": "https://t.me/sunny_kr_bot" }
+      ]
+    },
+    {
+      "id": "spa-access",
+      "title": "Sunny Portal Access",
+      "type": "customer-access",
+      "keywords": ["spa", "portal", "login", "access", "account", "private document", "customer price", "order status", "계정", "접속"],
+      "summary": "Private customer-specific information, SPA files, pricing, stock, order status, and protected documents should stay behind approved Sunny Portal Access.",
+      "rfqFields": ["company", "business email", "role", "access purpose"],
+      "routes": [
+        { "label": "SPA Access", "href": "/request-access" }
+      ]
+    }
+  ]
+}
