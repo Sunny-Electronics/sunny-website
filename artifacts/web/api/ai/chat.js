@@ -1,9 +1,13 @@
 const MAX_MESSAGE_LENGTH = 700;
 const MAX_HISTORY_ITEMS = 6;
-const DEFAULT_TIMEOUT_MS = 5500;
-const MAX_TIMEOUT_MS = 10000;
+const DEFAULT_TIMEOUT_MS = 18000;
+const MAX_TIMEOUT_MS = 22000;
 const DEFAULT_BRIDGE_PATH = "/sunny/chat";
 const TELEGRAM_URL = "https://t.me/sunny_kr_bot";
+
+export const config = {
+  maxDuration: 30,
+};
 
 const siteLinks = {
   home: { label: "Home", href: "/" },
