@@ -59,13 +59,13 @@ export default function SunnyChatButton() {
 
       setMessages((current) => [...current, { role: "assistant", text: data.reply }]);
     } catch {
-      setError("Sunny chat is having trouble right now. Telegram is still available.");
+      setError("Sunny chat API is not reachable yet. Telegram is still available.");
       setMessages((current) => [
         ...current,
         {
           role: "assistant",
           text:
-            "I could not connect to the Sunny AI bridge right now. For urgent RFQ or order support, please use Telegram or the RFQ page.",
+            "I could not reach the Sunny website chat API right now. For urgent RFQ or order support, please use Telegram or the RFQ page.",
         },
       ]);
     } finally {
