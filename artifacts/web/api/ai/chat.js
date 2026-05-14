@@ -288,15 +288,11 @@ export default async function handler(req, res) {
   }
 
   const fallback = keywordFallback(message, pagePath);
-  const prompt = buildPrompt({ message, pagePath, history });
   const bridgeResult = await callBridge({
     project: "sunnykr",
     assistant: "Sunny",
     message,
-    prompt,
-    systemGuide: buildSystemGuide(pagePath),
     pagePath,
-    history: history.slice(-MAX_HISTORY_ITEMS),
   });
   const bridgeReply = bridgeResult.reply;
 
