@@ -50,6 +50,30 @@ const adminTools = [
   { id: "history", label: "History", delta: "Recent work and audit trail", tone: "text-violet-700 bg-violet-50 border-violet-200", icon: <History className="h-5 w-5" />, navIcon: <History className="h-4 w-4" /> },
 ];
 
+type ArCustomer = {
+  id: string;
+  company: string;
+  amountDue: number;
+  dueDate: string;
+  receivedDate: string;
+  memo: string;
+  focus: boolean;
+  contactEmail: string;
+};
+
+const defaultArCustomers: ArCustomer[] = [
+  { id: "ar-001", company: "Approved Customer A", amountDue: 12850, dueDate: "2026-05-05", receivedDate: "", memo: "", focus: true, contactEmail: "accounting-a@example.com" },
+  { id: "ar-002", company: "Approved Customer B", amountDue: 7600, dueDate: "2026-05-07", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-b@example.com" },
+  { id: "ar-003", company: "Approved Customer C", amountDue: 21340, dueDate: "2026-05-10", receivedDate: "", memo: "", focus: true, contactEmail: "accounting-c@example.com" },
+  { id: "ar-004", company: "Approved Customer D", amountDue: 4950, dueDate: "2026-05-12", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-d@example.com" },
+  { id: "ar-005", company: "Approved Customer E", amountDue: 16800, dueDate: "2026-05-15", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-e@example.com" },
+  { id: "ar-006", company: "Approved Customer F", amountDue: 9200, dueDate: "2026-05-18", receivedDate: "", memo: "", focus: true, contactEmail: "accounting-f@example.com" },
+  { id: "ar-007", company: "Approved Customer G", amountDue: 3050, dueDate: "2026-05-20", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-g@example.com" },
+  { id: "ar-008", company: "Approved Customer H", amountDue: 11400, dueDate: "2026-05-22", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-h@example.com" },
+  { id: "ar-009", company: "Approved Customer I", amountDue: 6700, dueDate: "2026-05-25", receivedDate: "", memo: "", focus: true, contactEmail: "accounting-i@example.com" },
+  { id: "ar-010", company: "Approved Customer J", amountDue: 18650, dueDate: "2026-05-30", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-j@example.com" },
+];
+
 const rfqs = [
   { id: "RFQ-260506-014", company: "Approved Vendor A", handler: "Verified contact", item: "SX-32 32.768 kHz", qty: "Private", status: "Engineering review", priority: "High", age: "2h" },
   { id: "RFQ-260506-013", company: "Approved Vendor B", handler: "Verified contact", item: "ATS Series 26 MHz", qty: "Private", status: "Pricing", priority: "Normal", age: "4h" },
@@ -105,11 +129,24 @@ function statusClass(status: string) {
   return "border-slate-200 bg-slate-50 text-slate-700";
 }
 
+function formatMoney(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    currency: "USD",
+    maximumFractionDigits: 0,
+    style: "currency",
+  }).format(value);
+}
+
+function getArEmailDraft(customer: ArCustomer) {
+  return `Hello ${customer.company},\n\nThis is a friendly Sunny Electronics reminder for the current A/R balance of ${formatMoney(customer.amountDue)}, due ${customer.dueDate}.\n\nPlease confirm payment timing when available.\n\nThank you,\nSunny Electronics Corp.`;
+}
+
 export default function SpaAdmin() {
   const [authStatus, setAuthStatus] = useState<"checking" | "authenticated" | "unauthenticated">("checking");
   const [adminUser, setAdminUser] = useState<{ name?: string; role: string; username: string } | null>(null);
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState("All");
+  const [activeToolId, setActiveToolId] = useState(defaultFavoriteIds[0]);
   const [favoriteIds, setFavoriteIds] = useState(() => {
     if (typeof window === "undefined") return defaultFavoriteIds;
 
@@ -127,6 +164,31 @@ export default function SpaAdmin() {
     }
   });
   const [draggedToolId, setDraggedToolId] = useState<string | null>(null);
+  const [arCustomers, setArCustomers] = useState<ArCustomer[]>(() => {
+    if (typeof window === "undefined") return defaultArCustomers;
+
+    try {
+      const savedCustomers = window.localStorage.getItem("sunny-admin-ar-customers");
+      if (!savedCustomers) return defaultArCustomers;
+
+      const parsed = JSON.parse(savedCustomers);
+      if (!Array.isArray(parsed)) return defaultArCustomers;
+
+      return parsed.map((customer, index) => ({
+        id: String(customer.id || `ar-${index + 1}`),
+        company: String(customer.company || "Unnamed customer"),
+        amountDue: Number(customer.amountDue || 0),
+        dueDate: String(customer.dueDate || ""),
+        receivedDate: String(customer.receivedDate || ""),
+        memo: String(customer.memo || ""),
+        focus: Boolean(customer.focus),
+        contactEmail: String(customer.contactEmail || ""),
+      }));
+    } catch {
+      return defaultArCustomers;
+    }
+  });
+  const [emailDraftCustomerId, setEmailDraftCustomerId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -182,11 +244,62 @@ export default function SpaAdmin() {
   const promoteFavorite = (toolId: string | null) => {
     if (!toolId || !adminTools.some((tool) => tool.id === toolId)) return;
 
+    setActiveToolId(toolId);
     setFavoriteIds((currentFavorites) => {
       const nextFavorites = [toolId, ...currentFavorites.filter((id) => id !== toolId)].slice(0, 4);
       window.localStorage.setItem("sunny-admin-favorite-tools", JSON.stringify(nextFavorites));
       return nextFavorites;
     });
+  };
+
+  const receivedCount = arCustomers.filter((customer) => Boolean(customer.receivedDate)).length;
+  const arProgress = arCustomers.length === 0 ? 0 : Math.round((receivedCount / arCustomers.length) * 100);
+  const arTotalDue = arCustomers.reduce((total, customer) => total + customer.amountDue, 0);
+  const arOpenDue = arCustomers
+    .filter((customer) => !customer.receivedDate)
+    .reduce((total, customer) => total + customer.amountDue, 0);
+
+  const saveArCustomers = (nextCustomers: ArCustomer[]) => {
+    setArCustomers(nextCustomers);
+    window.localStorage.setItem("sunny-admin-ar-customers", JSON.stringify(nextCustomers));
+  };
+
+  const updateArCustomer = (customerId: string, update: Partial<ArCustomer>) => {
+    saveArCustomers(arCustomers.map((customer) => (
+      customer.id === customerId ? { ...customer, ...update } : customer
+    )));
+  };
+
+  const handleArUpload = (file: File | undefined) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = String(reader.result || "");
+      const rows = text.split(/\r?\n/).map((row) => row.trim()).filter(Boolean);
+      if (rows.length === 0) return;
+
+      const firstRow = rows[0].toLowerCase();
+      const dataRows = firstRow.includes("company") ? rows.slice(1) : rows;
+      const uploadedCustomers = dataRows.map((row, index) => {
+        const [company = "", amountDue = "0", dueDate = "", contactEmail = "", focus = ""] = row.split(",").map((cell) => cell.trim());
+        return {
+          id: `ar-upload-${Date.now()}-${index}`,
+          company: company || `Uploaded Customer ${index + 1}`,
+          amountDue: Number(amountDue.replace(/[$,]/g, "")) || 0,
+          dueDate,
+          receivedDate: "",
+          memo: "",
+          focus: ["1", "true", "yes", "focus", "red"].includes(focus.toLowerCase()),
+          contactEmail,
+        };
+      });
+
+      saveArCustomers(uploadedCustomers);
+      setEmailDraftCustomerId(null);
+      setActiveToolId("ar-iou");
+    };
+    reader.readAsText(file);
   };
 
   if (authStatus === "checking") {
@@ -253,7 +366,7 @@ export default function SpaAdmin() {
                     onDragStart={() => setDraggedToolId(item.id)}
                     onDragEnd={() => setDraggedToolId(null)}
                     className={`flex h-11 w-full items-center gap-3 px-3 text-left text-sm font-semibold transition-colors ${
-                      index === 0
+                      item.id === activeToolId
                         ? "border border-slate-200 bg-slate-950 text-white"
                         : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
                     }`}
@@ -347,7 +460,10 @@ export default function SpaAdmin() {
                     promoteFavorite(draggedToolId);
                     setDraggedToolId(null);
                   }}
-                  className="border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-slate-300"
+                  onClick={() => promoteFavorite(metric.id)}
+                  className={`cursor-pointer border bg-white p-4 shadow-sm transition-colors hover:border-slate-300 ${
+                    metric.id === activeToolId ? "border-slate-950" : "border-slate-200"
+                  }`}
                   data-testid={`card-favorite-${metric.id}`}
                 >
                   <div className="mb-4 flex items-center justify-between gap-3">
@@ -356,13 +472,197 @@ export default function SpaAdmin() {
                     </div>
                     <span className="text-xs font-semibold text-slate-500">{metric.delta}</span>
                   </div>
-                  <div className="font-display text-3xl font-bold">{index + 1}</div>
-                  <div className="mt-1 text-sm text-slate-600">{metric.label}</div>
+                  {metric.id === "ar-iou" ? (
+                    <>
+                      <div className={`font-display text-3xl font-bold ${arProgress === 100 ? "text-emerald-700" : "text-rose-700"}`}>
+                        {arProgress}%
+                      </div>
+                      <div className="mt-2 h-2 bg-slate-100">
+                        <div
+                          className={`h-2 ${arProgress === 100 ? "bg-emerald-600" : "bg-rose-600"}`}
+                          style={{ width: `${arProgress}%` }}
+                        />
+                      </div>
+                      <div className="mt-2 text-sm text-slate-600">{metric.label}</div>
+                      <div className="mt-2 text-sm text-slate-600">{receivedCount}/{arCustomers.length} collected</div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="font-display text-3xl font-bold">{index + 1}</div>
+                      <div className="mt-1 text-sm text-slate-600">{metric.label}</div>
+                    </>
+                  )}
                 </article>
               ))}
             </div>
 
             <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
+              {activeToolId === "ar-iou" ? (
+                <section className="border border-slate-200 bg-white shadow-sm">
+                  <div className="flex flex-col gap-4 border-b border-slate-200 p-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div>
+                      <h2 className="font-display text-xl font-bold">A/R - IOU Monthly Collection</h2>
+                      <p className="text-sm text-slate-500">
+                        May collection list: date received turns customer green; focus customers stay red until paid.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <label className="inline-flex h-9 cursor-pointer items-center gap-2 border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                        <Upload className="h-4 w-4" />
+                        Upload CSV
+                        <input
+                          type="file"
+                          accept=".csv,text/csv"
+                          className="hidden"
+                          onChange={(event) => handleArUpload(event.target.files?.[0])}
+                          data-testid="input-ar-upload"
+                        />
+                      </label>
+                      <Button
+                        variant="outline"
+                        className="h-9 bg-white"
+                        onClick={() => {
+                          saveArCustomers(defaultArCustomers);
+                          setEmailDraftCustomerId(null);
+                        }}
+                      >
+                        Reset Sample
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3 border-b border-slate-200 p-4 md:grid-cols-3">
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Collection Meter</div>
+                      <div className={`mt-1 font-display text-3xl font-bold ${arProgress === 100 ? "text-emerald-700" : "text-rose-700"}`}>
+                        {arProgress}%
+                      </div>
+                      <div className="mt-2 h-2 bg-white">
+                        <div
+                          className={`h-2 ${arProgress === 100 ? "bg-emerald-600" : "bg-rose-600"}`}
+                          style={{ width: `${arProgress}%` }}
+                        />
+                      </div>
+                    </div>
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Customers Collected</div>
+                      <div className="mt-1 font-display text-3xl font-bold">{receivedCount}/{arCustomers.length}</div>
+                      <div className="mt-2 text-sm text-slate-500">Green lines are paid</div>
+                    </div>
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Open Balance</div>
+                      <div className="mt-1 font-display text-3xl font-bold">{formatMoney(arOpenDue)}</div>
+                      <div className="mt-2 text-sm text-slate-500">{formatMoney(arTotalDue)} monthly total</div>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[980px] text-left text-sm">
+                      <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+                        <tr>
+                          <th className="px-4 py-3 font-bold">Customer</th>
+                          <th className="px-4 py-3 font-bold">Amount Due</th>
+                          <th className="px-4 py-3 font-bold">Due Date</th>
+                          <th className="px-4 py-3 font-bold">Date Received</th>
+                          <th className="px-4 py-3 font-bold">Memo</th>
+                          <th className="px-4 py-3 font-bold">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {arCustomers.map((customer) => {
+                          const isPaid = Boolean(customer.receivedDate);
+                          const emailDraft = getArEmailDraft(customer);
+
+                          return (
+                            <>
+                              <tr
+                                key={customer.id}
+                                className={`${
+                                  isPaid
+                                    ? "bg-emerald-50"
+                                    : customer.focus
+                                      ? "bg-rose-50"
+                                      : "hover:bg-slate-50"
+                                }`}
+                              >
+                                <td className="px-4 py-4">
+                                  <div className="font-semibold text-slate-950">{customer.company}</div>
+                                  <label className="mt-2 inline-flex items-center gap-2 text-xs font-semibold text-rose-700">
+                                    <input
+                                      type="checkbox"
+                                      checked={customer.focus}
+                                      onChange={(event) => updateArCustomer(customer.id, { focus: event.target.checked })}
+                                    />
+                                    Focus customer
+                                  </label>
+                                </td>
+                                <td className="px-4 py-4 font-semibold">{formatMoney(customer.amountDue)}</td>
+                                <td className="px-4 py-4 text-slate-600">{customer.dueDate || "No date"}</td>
+                                <td className="px-4 py-4">
+                                  <Input
+                                    type="date"
+                                    value={customer.receivedDate}
+                                    onChange={(event) => updateArCustomer(customer.id, { receivedDate: event.target.value })}
+                                    className="h-9 min-w-36 bg-white"
+                                    data-testid={`input-ar-received-${customer.id}`}
+                                  />
+                                </td>
+                                <td className="px-4 py-4">
+                                  <Input
+                                    value={customer.memo}
+                                    onChange={(event) => updateArCustomer(customer.id, { memo: event.target.value })}
+                                    placeholder="Memo"
+                                    className="h-9 min-w-48 bg-white"
+                                    data-testid={`input-ar-memo-${customer.id}`}
+                                  />
+                                </td>
+                                <td className="px-4 py-4">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="h-8 bg-white"
+                                    onClick={() => setEmailDraftCustomerId(emailDraftCustomerId === customer.id ? null : customer.id)}
+                                  >
+                                    Email Draft
+                                  </Button>
+                                </td>
+                              </tr>
+                              {emailDraftCustomerId === customer.id && (
+                                <tr key={`${customer.id}-email`} className="bg-slate-50">
+                                  <td className="px-4 py-4" colSpan={6}>
+                                    <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-start">
+                                      <textarea
+                                        readOnly
+                                        value={emailDraft}
+                                        className="min-h-36 w-full border border-slate-200 bg-white p-3 text-sm leading-6 text-slate-700"
+                                      />
+                                      <div className="flex flex-wrap gap-2">
+                                        <Button
+                                          variant="outline"
+                                          className="h-9 bg-white"
+                                          onClick={() => navigator.clipboard?.writeText(emailDraft)}
+                                        >
+                                          Copy Draft
+                                        </Button>
+                                        <a
+                                          className="inline-flex h-9 items-center border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                          href={`mailto:${customer.contactEmail}?subject=${encodeURIComponent("Sunny Electronics A/R Reminder")}&body=${encodeURIComponent(emailDraft)}`}
+                                        >
+                                          Open Email
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
+                            </>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              ) : (
               <section className="border border-slate-200 bg-white shadow-sm">
                 <div className="flex flex-col gap-3 border-b border-slate-200 p-4 md:flex-row md:items-center md:justify-between">
                   <div>
@@ -432,6 +732,7 @@ export default function SpaAdmin() {
                   </table>
                 </div>
               </section>
+              )}
 
               <aside className="space-y-5">
                 <section className="border border-slate-200 bg-white p-4 shadow-sm">
