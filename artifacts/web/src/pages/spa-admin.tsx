@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowLeft,
+  BarChart3,
   Bell,
   Boxes,
   CheckCircle2,
@@ -22,6 +23,7 @@ import {
   RefreshCw,
   Search,
   ShieldCheck,
+  TrendingUp,
   Upload,
   Warehouse,
   X,
@@ -43,11 +45,13 @@ const defaultFavoriteIds = ["rfq-quotes", "inventory-stocks", "hotlist", "ar-iou
 const favoriteStorageKey = "sunny-admin-favorite-tools-v2";
 const arStorageKey = "sunny-admin-ar-customers-2026-may-v1";
 const inventoryStorageKey = "sunny-admin-inventory-stock-v1";
+const salesReportStorageKey = "sunny-admin-sales-report-forecast-v1";
+const krwPerUsd = 1350;
 
 const adminTools = [
   { id: "rfq-quotes", label: "RFQ / Quotes", delta: "Quote queue and pricing follow-up", tone: "text-sky-700 bg-sky-50 border-sky-200", icon: <ClipboardList className="h-5 w-5" />, navIcon: <ClipboardList className="h-4 w-4" /> },
   { id: "inventory-stocks", label: "Inventory-Stocks", delta: "Stock checks and part availability", tone: "text-emerald-700 bg-emerald-50 border-emerald-200", icon: <Warehouse className="h-5 w-5" />, navIcon: <Warehouse className="h-4 w-4" /> },
-  { id: "hotlist", label: "Hotlist", delta: "Urgent parts and priority work", tone: "text-amber-700 bg-amber-50 border-amber-200", icon: <Bell className="h-5 w-5" />, navIcon: <Bell className="h-4 w-4" /> },
+  { id: "hotlist", label: "Reporting, Forecast, Review", delta: "Sales history, forecast, and review", tone: "text-violet-700 bg-violet-50 border-violet-200", icon: <BarChart3 className="h-5 w-5" />, navIcon: <BarChart3 className="h-4 w-4" /> },
   { id: "ar-iou", label: "A/R - IOU", delta: "Receivables, IOUs, and follow-up", tone: "text-rose-700 bg-rose-50 border-rose-200", icon: <CircleDollarSign className="h-5 w-5" />, navIcon: <CircleDollarSign className="h-4 w-4" /> },
   { id: "po-status", label: "PO Status", delta: "Purchase order tracking and status", tone: "text-indigo-700 bg-indigo-50 border-indigo-200", icon: <PackageCheck className="h-5 w-5" />, navIcon: <PackageCheck className="h-4 w-4" /> },
   { id: "documents", label: "Documents", delta: "Files, templates, and shared records", tone: "text-slate-700 bg-slate-50 border-slate-200", icon: <FileText className="h-5 w-5" />, navIcon: <FileText className="h-4 w-4" /> },
@@ -76,6 +80,31 @@ type InventoryRow = {
   status: string;
   customerVisible: boolean;
 };
+
+type SalesReportRow = {
+  id: string;
+  date: string;
+  company: string;
+  modelType: string;
+  partNumber: string;
+  partType: string;
+  frequency: string;
+  qty: number;
+  buyPriceUsd: number;
+  soldPriceUsd: number;
+  buyPriceKrw: number;
+  soldPriceKrw: number;
+};
+
+type ReportView = "date" | "company" | "model" | "frequency" | "qty";
+
+const reportViews: Array<{ id: ReportView; label: string }> = [
+  { id: "date", label: "Date" },
+  { id: "company", label: "Company name" },
+  { id: "model", label: "Model type" },
+  { id: "frequency", label: "Frequency" },
+  { id: "qty", label: "Qty" },
+];
 
 type ArEmailDraftType = "first-reminder" | "paid-thank-you" | "payment-document" | "manual-blank";
 
@@ -119,7 +148,15 @@ const defaultInventoryRows: InventoryRow[] = [
   { id: "stock-001", partNumber: "SX-32 32.768 kHz", description: "Crystal stock check sample", qtyAvailable: 1200, location: "Sunny stock", leadTime: "Ready", status: "Publishable", customerVisible: true },
   { id: "stock-002", partNumber: "ATS Series 26 MHz", description: "RFQ follow-up item", qtyAvailable: 340, location: "Vendor confirm", leadTime: "Check daily", status: "Review", customerVisible: false },
   { id: "stock-003", partNumber: "SX-1 24 MHz", description: "Customer inquiry stock", qtyAvailable: 0, location: "Need sourcing", leadTime: "TBD", status: "Needs update", customerVisible: false },
-  { id: "stock-004", partNumber: "SCO-32 50 MHz", description: "Hotlist related part", qtyAvailable: 85, location: "Private workbook", leadTime: "Internal only", status: "SPA only", customerVisible: false },
+  { id: "stock-004", partNumber: "SCO-32 50 MHz", description: "Reporting review related part", qtyAvailable: 85, location: "Private workbook", leadTime: "Internal only", status: "SPA only", customerVisible: false },
+];
+
+const defaultSalesRows: SalesReportRow[] = [
+  { id: "sale-001", date: "2026-01-08", company: "Approved Customer A", modelType: "SX", partNumber: "SX-32", partType: "Crystal", frequency: "32.768 kHz", qty: 1200, buyPriceUsd: 0.18, soldPriceUsd: 0.32, buyPriceKrw: 243, soldPriceKrw: 432 },
+  { id: "sale-002", date: "2026-02-14", company: "Approved Customer B", modelType: "ATS", partNumber: "ATS-26", partType: "Oscillator", frequency: "26 MHz", qty: 540, buyPriceUsd: 0.82, soldPriceUsd: 1.25, buyPriceKrw: 1107, soldPriceKrw: 1688 },
+  { id: "sale-003", date: "2026-03-06", company: "Approved Customer A", modelType: "SX", partNumber: "SX-1", partType: "Crystal", frequency: "24 MHz", qty: 780, buyPriceUsd: 0.21, soldPriceUsd: 0.38, buyPriceKrw: 284, soldPriceKrw: 513 },
+  { id: "sale-004", date: "2026-03-28", company: "Approved Customer C", modelType: "SCO", partNumber: "SCO-32", partType: "Oscillator", frequency: "50 MHz", qty: 260, buyPriceUsd: 1.1, soldPriceUsd: 1.7, buyPriceKrw: 1485, soldPriceKrw: 2295 },
+  { id: "sale-005", date: "2026-04-18", company: "Approved Customer B", modelType: "SX", partNumber: "SX-8", partType: "Crystal", frequency: "16 MHz", qty: 920, buyPriceUsd: 0.2, soldPriceUsd: 0.35, buyPriceKrw: 270, soldPriceKrw: 473 },
 ];
 
 const activity = [
@@ -200,6 +237,48 @@ function formatMoney(value: number) {
     maximumFractionDigits: 0,
     style: "currency",
   }).format(value);
+}
+
+function formatKrw(value: number) {
+  return new Intl.NumberFormat("ko-KR", {
+    currency: "KRW",
+    maximumFractionDigits: 0,
+    style: "currency",
+  }).format(value);
+}
+
+function parseMoney(value: string) {
+  return Number(value.replace(/[$,\s₩]/g, "")) || 0;
+}
+
+function getUsdLineTotal(row: SalesReportRow) {
+  const unitSoldUsd = row.soldPriceUsd || row.soldPriceKrw / krwPerUsd;
+  return unitSoldUsd * row.qty;
+}
+
+function getUsdProfit(row: SalesReportRow) {
+  const unitSoldUsd = row.soldPriceUsd || row.soldPriceKrw / krwPerUsd;
+  const unitBuyUsd = row.buyPriceUsd || row.buyPriceKrw / krwPerUsd;
+  return (unitSoldUsd - unitBuyUsd) * row.qty;
+}
+
+function getKrwLineTotal(row: SalesReportRow) {
+  const unitSoldKrw = row.soldPriceKrw || row.soldPriceUsd * krwPerUsd;
+  return unitSoldKrw * row.qty;
+}
+
+function getReportKey(row: SalesReportRow, reportView: ReportView) {
+  if (reportView === "date") return row.date || "No date";
+  if (reportView === "company") return row.company || "No company";
+  if (reportView === "model") return row.modelType || "No model";
+  if (reportView === "frequency") return row.frequency || "No frequency";
+  if (reportView === "qty") {
+    if (row.qty >= 1000) return "1,000+ pcs";
+    if (row.qty >= 500) return "500-999 pcs";
+    if (row.qty >= 100) return "100-499 pcs";
+    return "Under 100 pcs";
+  }
+  return "Review";
 }
 
 function getArEmailSubject(templateType: ArEmailDraftType) {
@@ -324,6 +403,36 @@ export default function SpaAdmin() {
       return defaultInventoryRows;
     }
   });
+  const [salesRows, setSalesRows] = useState<SalesReportRow[]>(() => {
+    if (typeof window === "undefined") return defaultSalesRows;
+
+    try {
+      const savedSalesRows = window.localStorage.getItem(salesReportStorageKey);
+      if (!savedSalesRows) return defaultSalesRows;
+
+      const parsed = JSON.parse(savedSalesRows);
+      if (!Array.isArray(parsed)) return defaultSalesRows;
+
+      return parsed.map((row, index) => ({
+        id: String(row.id || `sale-${index + 1}`),
+        date: String(row.date || ""),
+        company: String(row.company || "Unnamed company"),
+        modelType: String(row.modelType || row.model || ""),
+        partNumber: String(row.partNumber || row.part || ""),
+        partType: String(row.partType || row.type || ""),
+        frequency: String(row.frequency || ""),
+        qty: Number(row.qty || row.quantity || 0),
+        buyPriceUsd: Number(row.buyPriceUsd || row.buyUsd || 0),
+        soldPriceUsd: Number(row.soldPriceUsd || row.soldUsd || 0),
+        buyPriceKrw: Number(row.buyPriceKrw || row.buyKrw || 0),
+        soldPriceKrw: Number(row.soldPriceKrw || row.soldKrw || 0),
+      }));
+    } catch {
+      return defaultSalesRows;
+    }
+  });
+  const [reportQuery, setReportQuery] = useState("");
+  const [reportView, setReportView] = useState<ReportView>("date");
 
   useEffect(() => {
     let cancelled = false;
@@ -397,6 +506,42 @@ export default function SpaAdmin() {
   const needsInventoryUpdateCount = inventoryRows.filter((row) => (
     row.qtyAvailable <= 0 || ["Needs update", "Short", "Out of stock"].includes(row.status)
   )).length;
+  const filteredSalesRows = useMemo(() => {
+    const normalizedQuery = reportQuery.trim().toLowerCase();
+    if (!normalizedQuery) return salesRows;
+
+    return salesRows.filter((row) => (
+      [
+        row.date,
+        row.company,
+        row.modelType,
+        row.partNumber,
+        row.partType,
+        row.frequency,
+        String(row.qty),
+      ].join(" ").toLowerCase().includes(normalizedQuery)
+    ));
+  }, [reportQuery, salesRows]);
+  const totalSalesQty = filteredSalesRows.reduce((total, row) => total + row.qty, 0);
+  const totalSalesUsd = filteredSalesRows.reduce((total, row) => total + getUsdLineTotal(row), 0);
+  const totalSalesKrw = filteredSalesRows.reduce((total, row) => total + getKrwLineTotal(row), 0);
+  const totalSalesProfit = filteredSalesRows.reduce((total, row) => total + getUsdProfit(row), 0);
+  const reportGroupRows = useMemo(() => {
+    const groups = new Map<string, { key: string; qty: number; usd: number; profit: number; count: number }>();
+
+    filteredSalesRows.forEach((row) => {
+      const key = getReportKey(row, reportView);
+      const current = groups.get(key) ?? { key, qty: 0, usd: 0, profit: 0, count: 0 };
+      current.qty += row.qty;
+      current.usd += getUsdLineTotal(row);
+      current.profit += getUsdProfit(row);
+      current.count += 1;
+      groups.set(key, current);
+    });
+
+    return Array.from(groups.values()).sort((left, right) => right.usd - left.usd).slice(0, 8);
+  }, [filteredSalesRows, reportView]);
+  const topSalesRow = reportGroupRows[0];
 
   const saveArCustomers = (nextCustomers: ArCustomer[]) => {
     setArCustomers(nextCustomers);
@@ -427,6 +572,51 @@ export default function SpaAdmin() {
     saveInventoryRows(inventoryRows.map((row) => (
       row.id === rowId ? { ...row, ...update } : row
     )));
+  };
+
+  const saveSalesRows = (nextRows: SalesReportRow[]) => {
+    setSalesRows(nextRows);
+    window.localStorage.setItem(salesReportStorageKey, JSON.stringify(nextRows));
+  };
+
+  const handleSalesUpload = (file: File | undefined) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = String(reader.result || "");
+      const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+      if (lines.length === 0) return;
+
+      const firstRow = parseCsvLine(lines[0]);
+      const firstRowLooksLikeHeader = firstRow.some((cell) => (
+        ["date", "company", "customer", "model", "frequency", "qty", "quantity", "sold price"].includes(cell.toLowerCase().trim())
+      ));
+      const headers = firstRowLooksLikeHeader ? firstRow.map(normalizeHeader) : [];
+      const dataLines = firstRowLooksLikeHeader ? lines.slice(1) : lines;
+      const uploadedRows = dataLines.map((line, index) => {
+        const row = parseCsvLine(line);
+
+        return {
+          id: `sale-upload-${Date.now()}-${index}`,
+          date: readCsvCell(row, headers, ["date", "sold date", "invoice date", "order date"], 0),
+          company: readCsvCell(row, headers, ["company", "company name", "customer", "customer name"], 1) || `Uploaded Company ${index + 1}`,
+          modelType: readCsvCell(row, headers, ["model", "model type", "series"], 2),
+          partNumber: readCsvCell(row, headers, ["part", "part number", "partnumber", "item", "mpn"], 3),
+          partType: readCsvCell(row, headers, ["part type", "type", "category", "essential part type"], 4),
+          frequency: readCsvCell(row, headers, ["frequency", "freq"], 5),
+          qty: Number(readCsvCell(row, headers, ["qty", "quantity", "pcs"], 6).replace(/,/g, "")) || 0,
+          buyPriceUsd: parseMoney(readCsvCell(row, headers, ["buy price usd", "buy usd", "cost usd", "unit cost usd"], 7)),
+          soldPriceUsd: parseMoney(readCsvCell(row, headers, ["sold price usd", "sell price usd", "sold usd", "unit sold usd", "unit price usd"], 8)),
+          buyPriceKrw: parseMoney(readCsvCell(row, headers, ["buy price krw", "buy krw", "cost krw", "unit cost krw"], 9)),
+          soldPriceKrw: parseMoney(readCsvCell(row, headers, ["sold price krw", "sell price krw", "sold krw", "unit sold krw", "unit price krw"], 10)),
+        };
+      });
+
+      saveSalesRows(uploadedRows);
+      setActiveToolId("hotlist");
+    };
+    reader.readAsText(file);
   };
 
   const handleInventoryUpload = (file: File | undefined) => {
@@ -691,6 +881,12 @@ export default function SpaAdmin() {
                       <div className="font-display text-3xl font-bold">{inventoryRows.length}</div>
                       <div className="mt-1 text-sm text-slate-600">{metric.label}</div>
                       <div className="mt-2 text-sm text-slate-600">{needsInventoryUpdateCount} need update</div>
+                    </>
+                  ) : metric.id === "hotlist" ? (
+                    <>
+                      <div className="font-display text-3xl font-bold">{salesRows.length}</div>
+                      <div className="mt-1 text-sm text-slate-600">{metric.label}</div>
+                      <div className="mt-2 text-sm text-slate-600">{formatMoney(salesRows.reduce((total, row) => total + getUsdLineTotal(row), 0))} sales</div>
                     </>
                   ) : (
                     <>
@@ -1015,6 +1211,188 @@ export default function SpaAdmin() {
                                   <option key={status} value={status}>{status}</option>
                                 ))}
                               </select>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              ) : activeToolId === "hotlist" ? (
+                <section className="border border-slate-200 bg-white shadow-sm">
+                  <div className="flex flex-col gap-4 border-b border-slate-200 p-4">
+                    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                      <div>
+                        <h2 className="font-display text-xl font-bold">Reporting, Forecast, Review</h2>
+                        <p className="text-sm text-slate-500">
+                          Upload sales history as CSV from Excel: date, company, model, frequency, qty, buy price, and sold price.
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Button
+                          variant="outline"
+                          className="h-9 gap-2 bg-white"
+                          onClick={() => window.location.reload()}
+                        >
+                          <RefreshCw className="h-4 w-4" />
+                          Refresh
+                        </Button>
+                        <label className="inline-flex h-9 cursor-pointer items-center gap-2 border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                          <Upload className="h-4 w-4" />
+                          Upload CSV
+                          <input
+                            type="file"
+                            accept=".csv,text/csv"
+                            className="hidden"
+                            onChange={(event) => handleSalesUpload(event.target.files?.[0])}
+                            data-testid="input-sales-report-upload"
+                          />
+                        </label>
+                        <Button
+                          variant="outline"
+                          className="h-9 bg-white"
+                          onClick={() => saveSalesRows(defaultSalesRows)}
+                        >
+                          Reset Sample
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3 lg:grid-cols-[minmax(260px,1fr)_auto] lg:items-center">
+                      <div className="flex h-10 items-center border border-slate-300 bg-slate-50">
+                        <Input
+                          value={reportQuery}
+                          onChange={(event) => setReportQuery(event.target.value)}
+                          className="h-10 border-0 bg-transparent focus-visible:ring-0"
+                          placeholder="Search date, company, model, frequency, part, qty"
+                          data-testid="input-sales-report-search"
+                        />
+                        <Search className="mr-3 h-4 w-4 shrink-0 text-slate-500" />
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {reportViews.map((view) => (
+                          <button
+                            key={view.id}
+                            onClick={() => setReportView(view.id)}
+                            className={`h-9 border px-3 text-sm font-semibold transition-colors ${
+                              reportView === view.id
+                                ? "border-slate-950 bg-slate-950 text-white"
+                                : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                            }`}
+                          >
+                            {view.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3 border-b border-slate-200 p-4 md:grid-cols-4">
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Sales Lines</div>
+                      <div className="mt-1 font-display text-3xl font-bold">{filteredSalesRows.length}</div>
+                      <div className="mt-2 text-sm text-slate-500">{salesRows.length} total uploaded</div>
+                    </div>
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Qty Sold</div>
+                      <div className="mt-1 font-display text-3xl font-bold text-violet-700">{totalSalesQty.toLocaleString()}</div>
+                      <div className="mt-2 text-sm text-slate-500">Filtered parts quantity</div>
+                    </div>
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Sales Amount</div>
+                      <div className="mt-1 font-display text-3xl font-bold">{formatMoney(totalSalesUsd)}</div>
+                      <div className="mt-2 text-sm text-slate-500">{formatKrw(totalSalesKrw)}</div>
+                    </div>
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Estimated Profit</div>
+                      <div className={`mt-1 font-display text-3xl font-bold ${totalSalesProfit >= 0 ? "text-emerald-700" : "text-rose-700"}`}>
+                        {formatMoney(totalSalesProfit)}
+                      </div>
+                      <div className="mt-2 text-sm text-slate-500">Sold minus buy price</div>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 border-b border-slate-200 p-4 lg:grid-cols-[1fr_280px]">
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="mb-3 flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-violet-700" />
+                        <div className="text-sm font-bold">Report View: {reportViews.find((view) => view.id === reportView)?.label}</div>
+                      </div>
+                      <div className="h-56">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart data={reportGroupRows} margin={{ left: -20, right: 8, top: 8, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <XAxis dataKey="key" tickLine={false} axisLine={false} fontSize={11} />
+                            <YAxis tickLine={false} axisLine={false} fontSize={12} />
+                            <Tooltip />
+                            <Area type="monotone" dataKey="usd" name="USD sales" stroke="#6d28d9" fill="#ede9fe" strokeWidth={2} />
+                            <Area type="monotone" dataKey="profit" name="Profit" stroke="#059669" fill="#d1fae5" strokeWidth={2} />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                    <div className="border border-slate-200 bg-white p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Forecast Focus</div>
+                      <div className="mt-2 font-display text-2xl font-bold">{topSalesRow?.key ?? "No data"}</div>
+                      <div className="mt-3 space-y-2 text-sm text-slate-600">
+                        <div className="flex justify-between gap-3">
+                          <span>Qty</span>
+                          <span className="font-semibold text-slate-950">{(topSalesRow?.qty ?? 0).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between gap-3">
+                          <span>Sales</span>
+                          <span className="font-semibold text-slate-950">{formatMoney(topSalesRow?.usd ?? 0)}</span>
+                        </div>
+                        <div className="flex justify-between gap-3">
+                          <span>Profit</span>
+                          <span className="font-semibold text-slate-950">{formatMoney(topSalesRow?.profit ?? 0)}</span>
+                        </div>
+                      </div>
+                      <p className="mt-4 text-xs leading-5 text-slate-500">
+                        Use the top result to spot parts, frequencies, companies, or qty bands worth preparing for next forecast.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[1120px] text-left text-sm">
+                      <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+                        <tr>
+                          <th className="px-4 py-3 font-bold">Date</th>
+                          <th className="px-4 py-3 font-bold">Company</th>
+                          <th className="px-4 py-3 font-bold">Model / Part</th>
+                          <th className="px-4 py-3 font-bold">Frequency</th>
+                          <th className="px-4 py-3 font-bold">Qty</th>
+                          <th className="px-4 py-3 font-bold">Buy Price</th>
+                          <th className="px-4 py-3 font-bold">Sold Price</th>
+                          <th className="px-4 py-3 font-bold">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {filteredSalesRows.map((row) => (
+                          <tr key={row.id} className="hover:bg-slate-50">
+                            <td className="px-4 py-4 text-slate-600">{row.date || "No date"}</td>
+                            <td className="px-4 py-4">
+                              <div className="font-semibold text-slate-950">{row.company}</div>
+                              <div className="text-xs text-slate-500">{row.partType || "No part type"}</div>
+                            </td>
+                            <td className="px-4 py-4">
+                              <div className="font-semibold text-slate-950">{row.modelType || "No model"}</div>
+                              <div className="text-xs text-slate-500">{row.partNumber || "No part"}</div>
+                            </td>
+                            <td className="px-4 py-4 text-slate-600">{row.frequency || "No frequency"}</td>
+                            <td className="px-4 py-4 font-semibold">{row.qty.toLocaleString()}</td>
+                            <td className="px-4 py-4 text-slate-600">
+                              <div>{formatMoney(row.buyPriceUsd || row.buyPriceKrw / krwPerUsd)}</div>
+                              <div className="text-xs">{formatKrw(row.buyPriceKrw || row.buyPriceUsd * krwPerUsd)}</div>
+                            </td>
+                            <td className="px-4 py-4 text-slate-600">
+                              <div>{formatMoney(row.soldPriceUsd || row.soldPriceKrw / krwPerUsd)}</div>
+                              <div className="text-xs">{formatKrw(row.soldPriceKrw || row.soldPriceUsd * krwPerUsd)}</div>
+                            </td>
+                            <td className="px-4 py-4">
+                              <div className="font-semibold text-slate-950">{formatMoney(getUsdLineTotal(row))}</div>
+                              <div className="text-xs text-slate-500">{formatKrw(getKrwLineTotal(row))}</div>
                             </td>
                           </tr>
                         ))}
