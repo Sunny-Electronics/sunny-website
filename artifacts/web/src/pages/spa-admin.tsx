@@ -24,6 +24,7 @@ import {
   ShieldCheck,
   Upload,
   Warehouse,
+  X,
 } from "lucide-react";
 import {
   Area,
@@ -845,7 +846,17 @@ export default function SpaAdmin() {
                               {emailDraftCustomerId === customer.id && (
                                 <tr key={`${customer.id}-email`} className="bg-slate-50">
                                   <td className="px-4 py-4" colSpan={6}>
-                                    <div className="grid gap-3">
+                                    <div className="relative grid gap-3 pr-10">
+                                      <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        className="absolute right-0 top-0 h-8 w-8 border border-slate-200 bg-white p-0 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                                        onClick={() => setEmailDraftCustomerId(null)}
+                                        aria-label="Close email draft"
+                                      >
+                                        <X className="h-4 w-4" />
+                                      </Button>
                                       <div className="grid gap-2 lg:grid-cols-[220px_1fr] lg:items-center">
                                         <label className="text-xs font-bold uppercase tracking-wide text-slate-500" htmlFor={`select-ar-email-${customer.id}`}>
                                           Draft option
