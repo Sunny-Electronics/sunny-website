@@ -39,7 +39,7 @@ import sunnyLogo from "@assets/image_1775118121182.png";
 
 const defaultFavoriteIds = ["rfq-quotes", "inventory-stocks", "hotlist", "ar-iou"];
 const favoriteStorageKey = "sunny-admin-favorite-tools-v2";
-const arStorageKey = "sunny-admin-ar-customers";
+const arStorageKey = "sunny-admin-ar-customers-2026-may-v1";
 
 const adminTools = [
   { id: "rfq-quotes", label: "RFQ / Quotes", delta: "Quote queue and pricing follow-up", tone: "text-sky-700 bg-sky-50 border-sky-200", icon: <ClipboardList className="h-5 w-5" />, navIcon: <ClipboardList className="h-4 w-4" /> },
@@ -64,16 +64,19 @@ type ArCustomer = {
 };
 
 const defaultArCustomers: ArCustomer[] = [
-  { id: "ar-001", company: "Approved Customer A", amountDue: 12850, dueDate: "2026-05-05", receivedDate: "", memo: "", focus: true, contactEmail: "accounting-a@example.com" },
-  { id: "ar-002", company: "Approved Customer B", amountDue: 7600, dueDate: "2026-05-07", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-b@example.com" },
-  { id: "ar-003", company: "Approved Customer C", amountDue: 21340, dueDate: "2026-05-10", receivedDate: "", memo: "", focus: true, contactEmail: "accounting-c@example.com" },
-  { id: "ar-004", company: "Approved Customer D", amountDue: 4950, dueDate: "2026-05-12", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-d@example.com" },
-  { id: "ar-005", company: "Approved Customer E", amountDue: 16800, dueDate: "2026-05-15", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-e@example.com" },
-  { id: "ar-006", company: "Approved Customer F", amountDue: 9200, dueDate: "2026-05-18", receivedDate: "", memo: "", focus: true, contactEmail: "accounting-f@example.com" },
-  { id: "ar-007", company: "Approved Customer G", amountDue: 3050, dueDate: "2026-05-20", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-g@example.com" },
-  { id: "ar-008", company: "Approved Customer H", amountDue: 11400, dueDate: "2026-05-22", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-h@example.com" },
-  { id: "ar-009", company: "Approved Customer I", amountDue: 6700, dueDate: "2026-05-25", receivedDate: "", memo: "", focus: true, contactEmail: "accounting-i@example.com" },
-  { id: "ar-010", company: "Approved Customer J", amountDue: 18650, dueDate: "2026-05-30", receivedDate: "", memo: "", focus: false, contactEmail: "accounting-j@example.com" },
+  { id: "ar-2026-may-001", company: "SAGA", amountDue: 4486, dueDate: "2026-05-04", receivedDate: "2026-05-04", memo: "입금 완료", focus: false, contactEmail: "" },
+  { id: "ar-2026-may-002", company: "UNIPOWER", amountDue: 378, dueDate: "2026-05-04", receivedDate: "2026-05-04", memo: "입금 완료", focus: false, contactEmail: "" },
+  { id: "ar-2026-may-003", company: "INELTRO AG", amountDue: 7079.5, dueDate: "2026-05-06", receivedDate: "2026-05-06", memo: "입금 완료", focus: false, contactEmail: "" },
+  { id: "ar-2026-may-004", company: "GPV-Lanka", amountDue: 2850, dueDate: "2026-05-31", receivedDate: "2026-05-08", memo: "신규 거래처 선입금", focus: false, contactEmail: "" },
+  { id: "ar-2026-may-005", company: "TME", amountDue: 300, dueDate: "2026-05-31", receivedDate: "2026-05-08", memo: "신규 거래처 선입금", focus: false, contactEmail: "" },
+  { id: "ar-2026-may-006", company: "Dove Electronic Components, Inc", amountDue: 2465, dueDate: "2026-05-31", receivedDate: "2026-05-11", memo: "입금 완료", focus: false, contactEmail: "" },
+  { id: "ar-2026-may-007", company: "The J Fischer Company LLC.", amountDue: 8040, dueDate: "2026-05-31", receivedDate: "2026-05-18", memo: "입금 완료", focus: false, contactEmail: "" },
+  { id: "ar-2026-may-008", company: "HITACHI-Malaysia", amountDue: 1560, dueDate: "2026-05-31", receivedDate: "2026-05-18", memo: "입금 완료", focus: false, contactEmail: "" },
+  { id: "ar-2026-may-009", company: "TSMT", amountDue: 6090, dueDate: "2026-05-31", receivedDate: "2026-05-18", memo: "입금 완료", focus: false, contactEmail: "" },
+  { id: "ar-2026-may-010", company: "GPV SUZHOU", amountDue: 263.4, dueDate: "2026-05-31", receivedDate: "", memo: "업체 동향 파악 및 입금 일정 안내, 일정 준수 요청", focus: true, contactEmail: "" },
+  { id: "ar-2026-may-011", company: "INELTEK GMBH", amountDue: 5729, dueDate: "2026-05-31", receivedDate: "", memo: "SX-21 16MHz 견적 회신 및 입금 일정 안내", focus: true, contactEmail: "" },
+  { id: "ar-2026-may-012", company: "2B", amountDue: 3878.75, dueDate: "2026-05-31", receivedDate: "", memo: "통신장비 적용 SCO-32 50MHz 외 소요량 확인 및 입금 일정 안내", focus: true, contactEmail: "" },
+  { id: "ar-2026-may-013", company: "CHANNEL", amountDue: 390, dueDate: "2026-05-31", receivedDate: "", memo: "SX-8 16MHz 견적 회신 및 입금 일정 안내", focus: true, contactEmail: "" },
 ];
 
 const rfqs = [
@@ -505,7 +508,7 @@ export default function SpaAdmin() {
                     <div>
                       <h2 className="font-display text-xl font-bold">A/R - IOU Monthly Collection</h2>
                       <p className="text-sm text-slate-500">
-                        May collection list: date received turns customer green; focus customers stay red until paid.
+                        May 2026 list from AR 2026.May.xlsx: date received turns customer green; focus customers stay red until paid.
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
