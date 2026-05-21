@@ -362,7 +362,7 @@ export default function SpaAdmin() {
                   <button
                     key={item.label}
                     draggable
-                    onClick={() => promoteFavorite(item.id)}
+                    onClick={() => setActiveToolId(item.id)}
                     onDragStart={() => setDraggedToolId(item.id)}
                     onDragEnd={() => setDraggedToolId(null)}
                     className={`flex h-11 w-full items-center gap-3 px-3 text-left text-sm font-semibold transition-colors ${
@@ -460,7 +460,7 @@ export default function SpaAdmin() {
                     promoteFavorite(draggedToolId);
                     setDraggedToolId(null);
                   }}
-                  onClick={() => promoteFavorite(metric.id)}
+                  onClick={() => setActiveToolId(metric.id)}
                   className={`cursor-pointer border bg-white p-4 shadow-sm transition-colors hover:border-slate-300 ${
                     metric.id === activeToolId ? "border-slate-950" : "border-slate-200"
                   }`}
