@@ -1,9 +1,8 @@
 import {
   encodeSession,
-  getAdminConfig,
+  findAdminUser,
   getSessionSecret,
   readJsonBody,
-  safeCompare,
   sendJson,
   setSessionCookie,
   sessionTtlMs,
@@ -15,10 +14,9 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { password, username } = getAdminConfig();
   const secret = getSessionSecret();
 
-  if (!password || !secret) {
+  if (!secret) {
     sendJson(res, 503, { error: "Admin login is not configured" });
     return;
   }
@@ -29,26 +27,27 @@ export default async function handler(req, res) {
   const submittedPassword =
     typeof body?.password === "string" ? body.password : "";
 
-  if (
-    !safeCompare(submittedUsername, username) ||
-    !safeCompare(submittedPassword, password)
-  ) {
+  const user = findAdminUser(submittedUsername, submittedPassword);
+
+  if (!user) {
     sendJson(res, 401, { error: "Invalid admin credentials" });
     return;
   }
 
   const payload = {
     exp: Date.now() + sessionTtlMs,
-    role: "admin",
-    sub: username,
+    name: user.name,
+    role: user.role,
+    sub: user.username,
   };
   const token = encodeSession(payload, secret);
 
-  setSessionCookie(res, token);
+  setSessionCookie(req, res, token);
   sendJson(res, 200, {
     ok: true,
     user: {
       role: payload.role,
+      name: payload.name,
       username: payload.sub,
     },
   });

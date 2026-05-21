@@ -1,14 +1,18 @@
-import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { Router, type Request, type Response } from "express";
 
 const router = Router();
 
 const cookieName = "sunny_admin_session";
 const sessionTtlMs = 8 * 60 * 60 * 1000;
+const allowedRoles = new Set(["owner", "admin", "member"]);
+
+type AdminRole = "owner" | "admin" | "member";
 
 type AdminSessionPayload = {
   exp: number;
-  role: "admin";
+  name?: string;
+  role: AdminRole;
   sub: string;
 };
 
@@ -16,8 +20,49 @@ function getAdminConfig() {
   return {
     password: process.env.ADMIN_LOGIN_PASSWORD ?? "",
     secret: process.env.ADMIN_SESSION_SECRET ?? "",
-    username: process.env.ADMIN_LOGIN_USERNAME ?? "admin",
+    username: process.env.ADMIN_LOGIN_USERNAME ?? "",
+    users: getConfiguredAdminUsers(),
   };
+}
+
+function getConfiguredAdminUsers() {
+  const usersJson = process.env.ADMIN_USERS_JSON;
+
+  if (usersJson) {
+    try {
+      const parsed = JSON.parse(usersJson);
+
+      if (Array.isArray(parsed)) {
+        return parsed
+          .filter((user) => user && typeof user === "object")
+          .map((user) => ({
+            name: typeof user.name === "string" ? user.name : "",
+            password: typeof user.password === "string" ? user.password : "",
+            role: allowedRoles.has(user.role) ? (user.role as AdminRole) : "member",
+            username: typeof user.username === "string" ? user.username.trim() : "",
+          }))
+          .filter((user) => user.username && user.password);
+      }
+    } catch {
+      return [];
+    }
+  }
+
+  const username = process.env.ADMIN_LOGIN_USERNAME?.trim() ?? "";
+  const password = process.env.ADMIN_LOGIN_PASSWORD ?? "";
+
+  if (!username || !password) {
+    return [];
+  }
+
+  return [
+    {
+      name: process.env.ADMIN_LOGIN_NAME ?? "Sunny Owner",
+      password,
+      role: "owner" as AdminRole,
+      username,
+    },
+  ];
 }
 
 function sign(value: string, secret: string) {
@@ -56,7 +101,7 @@ function verifySession(token: string | undefined, secret: string) {
       Buffer.from(body, "base64url").toString("utf8"),
     ) as AdminSessionPayload;
 
-    if (payload.role !== "admin" || payload.exp <= Date.now()) {
+    if (!allowedRoles.has(payload.role) || payload.exp <= Date.now()) {
       return null;
     }
 
@@ -67,6 +112,10 @@ function verifySession(token: string | undefined, secret: string) {
 }
 
 function safeCompare(left: string, right: string) {
+  if (typeof left !== "string" || typeof right !== "string") {
+    return false;
+  }
+
   const leftBuffer = Buffer.from(left);
   const rightBuffer = Buffer.from(right);
 
@@ -75,6 +124,12 @@ function safeCompare(left: string, right: string) {
   }
 
   return timingSafeEqual(leftBuffer, rightBuffer);
+}
+
+function findAdminUser(username: string, password: string) {
+  return getConfiguredAdminUsers().find(
+    (user) => safeCompare(username, user.username) && safeCompare(password, user.password),
+  );
 }
 
 function setSessionCookie(res: Response, token: string) {
@@ -95,9 +150,9 @@ function clearSessionCookie(res: Response) {
 }
 
 router.post("/admin/auth/login", (req: Request, res: Response) => {
-  const { password, secret, username } = getAdminConfig();
+  const { secret } = getAdminConfig();
 
-  if (!password || !secret) {
+  if (!secret) {
     res.status(503).json({
       error: "Admin login is not configured",
     });
@@ -109,18 +164,18 @@ router.post("/admin/auth/login", (req: Request, res: Response) => {
   const submittedPassword =
     typeof req.body?.password === "string" ? req.body.password : "";
 
-  if (
-    !safeCompare(submittedUsername, username) ||
-    !safeCompare(submittedPassword, password)
-  ) {
+  const user = findAdminUser(submittedUsername, submittedPassword);
+
+  if (!user) {
     res.status(401).json({ error: "Invalid admin credentials" });
     return;
   }
 
   const payload: AdminSessionPayload = {
     exp: Date.now() + sessionTtlMs,
-    role: "admin",
-    sub: username,
+    name: user.name,
+    role: user.role,
+    sub: user.username,
   };
   const token = encodeSession(payload, secret);
 
@@ -128,6 +183,7 @@ router.post("/admin/auth/login", (req: Request, res: Response) => {
   res.json({
     ok: true,
     user: {
+      name: payload.name,
       role: payload.role,
       username: payload.sub,
     },
@@ -151,6 +207,7 @@ router.get("/admin/auth/session", (req: Request, res: Response) => {
   res.json({
     authenticated: true,
     user: {
+      name: payload.name,
       role: payload.role,
       username: payload.sub,
     },

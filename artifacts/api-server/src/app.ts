@@ -18,6 +18,20 @@ const allowedOrigins = new Set(
 );
 const isProduction = process.env.NODE_ENV === "production";
 
+function isLocalDevOrigin(origin: string) {
+  if (isProduction) {
+    return false;
+  }
+
+  try {
+    const { hostname } = new URL(origin);
+
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  } catch {
+    return false;
+  }
+}
+
 app.use(
   pinoHttp({
     logger,
@@ -47,6 +61,7 @@ app.use(
       if (
         !origin ||
         allowedOrigins.has(origin) ||
+        isLocalDevOrigin(origin) ||
         (!isProduction && allowedOrigins.size === 0)
       ) {
         callback(null, true);

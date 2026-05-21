@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
 export default function AdminLogin() {
-  const [username, setUsername] = useState("admin");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ export default function AdminLogin() {
         return;
       }
 
-      window.location.href = "/spa-admin";
+      window.location.href = "/admin.sunny.j0hn";
     } catch {
       setError("Admin API is not reachable. Start the API server before logging in.");
     } finally {
@@ -68,18 +68,18 @@ export default function AdminLogin() {
             Sunny Internal Only
           </div>
           <h1 className="mb-4 max-w-3xl font-display text-4xl font-bold tracking-tight md:text-5xl">
-            Admin access for quote logs, sourcing cost, margin, and private operations.
+            Private admin access for your current Sunny work, tasks, and internal operations.
           </h1>
           <p className="max-w-3xl text-base leading-7 text-slate-600">
-            This area is for Sunny/SunnyKR staff only. Vendor-facing SPA views must stay separate
-            from admin-only files such as sourcing cost, quoted unit price, and sales profit margin logs.
+            This area is locked for one owner account now. Later it can expand to Sunny member
+            accounts without exposing unfinished admin tools on the public website.
           </p>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {[
-              "RFQ quote tracking",
-              "Sourcing cost reference",
-              "Admin-only templates",
+              "Owner-only login now",
+              "Sunny members later",
+              "Admin tasks while site builds",
             ].map((item) => (
               <div key={item} className="border border-slate-200 bg-white p-4 shadow-sm">
                 <LockKeyhole className="mb-3 h-5 w-5 text-rose-700" />
@@ -96,7 +96,7 @@ export default function AdminLogin() {
             </div>
             <h2 className="font-display text-2xl font-bold">Admin Login</h2>
             <p className="mt-2 text-sm text-slate-600">
-              Use credentials configured on the API server.
+              Use the private credentials configured in environment variables.
             </p>
           </div>
 

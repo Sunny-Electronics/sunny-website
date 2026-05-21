@@ -111,6 +111,7 @@ function statusClass(status: string) {
 
 export default function SpaAdmin() {
   const [authStatus, setAuthStatus] = useState<"checking" | "authenticated" | "unauthenticated">("checking");
+  const [adminUser, setAdminUser] = useState<{ name?: string; role: string; username: string } | null>(null);
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState("All");
 
@@ -120,9 +121,17 @@ export default function SpaAdmin() {
     fetch("/api/admin/auth/session", {
       credentials: "include",
     })
-      .then((response) => {
+      .then(async (response) => {
         if (cancelled) return;
-        setAuthStatus(response.ok ? "authenticated" : "unauthenticated");
+
+        if (!response.ok) {
+          setAuthStatus("unauthenticated");
+          return;
+        }
+
+        const body = await response.json().catch(() => null);
+        setAdminUser(body?.user ?? null);
+        setAuthStatus("authenticated");
       })
       .catch(() => {
         if (cancelled) return;
@@ -222,7 +231,7 @@ export default function SpaAdmin() {
               Secure Admin
             </div>
             <p className="text-xs leading-5 text-slate-600">
-              Internal pricing, vendor records, and order status controls are separated from SPA vendor views.
+              Owner-only access now; Sunny member accounts can be added later from private environment config.
             </p>
           </div>
         </aside>
@@ -238,7 +247,9 @@ export default function SpaAdmin() {
                 </Link>
                 <div>
                   <h1 className="font-display text-2xl font-bold tracking-tight">SPA Admin Portal</h1>
-                  <p className="text-sm text-slate-500">SunnyKR.com public, SPA private, and internal file governance</p>
+                  <p className="text-sm text-slate-500">
+                    {adminUser?.name || adminUser?.username || "Sunny admin"} | {adminUser?.role || "owner"} access
+                  </p>
                 </div>
               </div>
 

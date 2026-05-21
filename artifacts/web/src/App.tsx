@@ -36,6 +36,7 @@ function Router() {
       <Route path="/request-quote" component={RequestQuote} />
       <Route path="/stock" component={Stock} />
       <Route path="/order-list" component={OrderList} />
+      <Route path="/admin.sunny.j0hn" component={SpaAdmin} />
       <Route path="/spa-admin" component={SpaAdmin} />
       <Route component={NotFound} />
     </Switch>

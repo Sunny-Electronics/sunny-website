@@ -17,6 +17,7 @@ module.exports = function handler(req, res) {
     authenticated: true,
     user: {
       role: payload.role,
+      name: payload.name,
       username: payload.sub,
     },
   });
