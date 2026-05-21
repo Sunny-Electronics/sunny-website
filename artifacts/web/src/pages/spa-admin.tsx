@@ -38,6 +38,8 @@ import { Input } from "@/components/ui/input";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
 const defaultFavoriteIds = ["rfq-quotes", "inventory-stocks", "hotlist", "ar-iou"];
+const favoriteStorageKey = "sunny-admin-favorite-tools-v2";
+const arStorageKey = "sunny-admin-ar-customers";
 
 const adminTools = [
   { id: "rfq-quotes", label: "RFQ / Quotes", delta: "Quote queue and pricing follow-up", tone: "text-sky-700 bg-sky-50 border-sky-200", icon: <ClipboardList className="h-5 w-5" />, navIcon: <ClipboardList className="h-4 w-4" /> },
@@ -151,7 +153,7 @@ export default function SpaAdmin() {
     if (typeof window === "undefined") return defaultFavoriteIds;
 
     try {
-      const savedFavorites = window.localStorage.getItem("sunny-admin-favorite-tools");
+      const savedFavorites = window.localStorage.getItem(favoriteStorageKey);
       if (!savedFavorites) return defaultFavoriteIds;
 
       const parsed = JSON.parse(savedFavorites);
@@ -168,7 +170,7 @@ export default function SpaAdmin() {
     if (typeof window === "undefined") return defaultArCustomers;
 
     try {
-      const savedCustomers = window.localStorage.getItem("sunny-admin-ar-customers");
+      const savedCustomers = window.localStorage.getItem(arStorageKey);
       if (!savedCustomers) return defaultArCustomers;
 
       const parsed = JSON.parse(savedCustomers);
@@ -247,7 +249,7 @@ export default function SpaAdmin() {
     setActiveToolId(toolId);
     setFavoriteIds((currentFavorites) => {
       const nextFavorites = [toolId, ...currentFavorites.filter((id) => id !== toolId)].slice(0, 4);
-      window.localStorage.setItem("sunny-admin-favorite-tools", JSON.stringify(nextFavorites));
+      window.localStorage.setItem(favoriteStorageKey, JSON.stringify(nextFavorites));
       return nextFavorites;
     });
   };
@@ -261,7 +263,7 @@ export default function SpaAdmin() {
 
   const saveArCustomers = (nextCustomers: ArCustomer[]) => {
     setArCustomers(nextCustomers);
-    window.localStorage.setItem("sunny-admin-ar-customers", JSON.stringify(nextCustomers));
+    window.localStorage.setItem(arStorageKey, JSON.stringify(nextCustomers));
   };
 
   const updateArCustomer = (customerId: string, update: Partial<ArCustomer>) => {
