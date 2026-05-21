@@ -19,6 +19,7 @@ import {
   MailCheck,
   PackageCheck,
   PackageSearch,
+  RefreshCw,
   Search,
   ShieldCheck,
   Upload,
@@ -330,6 +331,15 @@ export default function SpaAdmin() {
     )));
   };
 
+  const updateArReceivedDate = (customerId: string, receivedDate: string) => {
+    updateArCustomer(
+      customerId,
+      receivedDate
+        ? { focus: false, memo: "입금 완료", receivedDate }
+        : { receivedDate },
+    );
+  };
+
   const handleArUpload = (file: File | undefined) => {
     if (!file) return;
 
@@ -567,6 +577,14 @@ export default function SpaAdmin() {
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
+                      <Button
+                        variant="outline"
+                        className="h-9 gap-2 bg-white"
+                        onClick={() => window.location.reload()}
+                      >
+                        <RefreshCw className="h-4 w-4" />
+                        Refresh
+                      </Button>
                       <label className="inline-flex h-9 cursor-pointer items-center gap-2 border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">
                         <Upload className="h-4 w-4" />
                         Upload CSV
@@ -664,7 +682,7 @@ export default function SpaAdmin() {
                                   <Input
                                     type="date"
                                     value={customer.receivedDate}
-                                    onChange={(event) => updateArCustomer(customer.id, { receivedDate: event.target.value })}
+                                    onChange={(event) => updateArReceivedDate(customer.id, event.target.value)}
                                     className="h-9 min-w-36 bg-white"
                                     data-testid={`input-ar-received-${customer.id}`}
                                   />
