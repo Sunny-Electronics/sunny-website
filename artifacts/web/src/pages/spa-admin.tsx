@@ -41,6 +41,7 @@ import sunnyLogo from "@assets/image_1775118121182.png";
 const defaultFavoriteIds = ["rfq-quotes", "inventory-stocks", "hotlist", "ar-iou"];
 const favoriteStorageKey = "sunny-admin-favorite-tools-v2";
 const arStorageKey = "sunny-admin-ar-customers-2026-may-v1";
+const inventoryStorageKey = "sunny-admin-inventory-stock-v1";
 
 const adminTools = [
   { id: "rfq-quotes", label: "RFQ / Quotes", delta: "Quote queue and pricing follow-up", tone: "text-sky-700 bg-sky-50 border-sky-200", icon: <ClipboardList className="h-5 w-5" />, navIcon: <ClipboardList className="h-4 w-4" /> },
@@ -62,6 +63,17 @@ type ArCustomer = {
   memo: string;
   focus: boolean;
   contactEmail: string;
+};
+
+type InventoryRow = {
+  id: string;
+  partNumber: string;
+  description: string;
+  qtyAvailable: number;
+  location: string;
+  leadTime: string;
+  status: string;
+  customerVisible: boolean;
 };
 
 type ArEmailDraftType = "first-reminder" | "paid-thank-you" | "payment-document" | "manual-blank";
@@ -102,11 +114,11 @@ const poRows = [
   { po: "08_OrderList_Stock_Pricing", company: "Internal operations", part: "Order, stock, pricing, lead time", etd: "Confidential", stage: "Internal only", value: "Never publish" },
 ];
 
-const stockRows = [
-  { part: "01_Website_Content", package: "Public website copy and assets", stock: "Public", reserved: "Review", status: "Publishable" },
-  { part: "03_Documents_Public", package: "Public certificates and approved documents", stock: "Public", reserved: "Inspect", status: "Publishable" },
-  { part: "04_Documents_SPA_Private", package: "Vendor/private QA and sourcing files", stock: "Private", reserved: "Signed URL", status: "SPA only" },
-  { part: "08_OrderList_Stock_Pricing", package: "Order, stock, pricing, lead-time rules", stock: "Internal", reserved: "No export", status: "Internal only" },
+const defaultInventoryRows: InventoryRow[] = [
+  { id: "stock-001", partNumber: "SX-32 32.768 kHz", description: "Crystal stock check sample", qtyAvailable: 1200, location: "Sunny stock", leadTime: "Ready", status: "Publishable", customerVisible: true },
+  { id: "stock-002", partNumber: "ATS Series 26 MHz", description: "RFQ follow-up item", qtyAvailable: 340, location: "Vendor confirm", leadTime: "Check daily", status: "Review", customerVisible: false },
+  { id: "stock-003", partNumber: "SX-1 24 MHz", description: "Customer inquiry stock", qtyAvailable: 0, location: "Need sourcing", leadTime: "TBD", status: "Needs update", customerVisible: false },
+  { id: "stock-004", partNumber: "SCO-32 50 MHz", description: "Hotlist related part", qtyAvailable: 85, location: "Private workbook", leadTime: "Internal only", status: "SPA only", customerVisible: false },
 ];
 
 const activity = [
@@ -139,9 +151,46 @@ const chartData = [
 
 function statusClass(status: string) {
   if (status === "Low" || status === "QA hold" || status === "Internal only") return "border-rose-200 bg-rose-50 text-rose-700";
-  if (status === "Tight" || status === "Engineering review" || status === "SPA only") return "border-amber-200 bg-amber-50 text-amber-700";
-  if (status === "Quote ready" || status === "Healthy" || status === "Publishable") return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  if (status === "Needs update" || status === "Short" || status === "Out of stock") return "border-rose-200 bg-rose-50 text-rose-700";
+  if (status === "Tight" || status === "Engineering review" || status === "SPA only" || status === "Review") return "border-amber-200 bg-amber-50 text-amber-700";
+  if (status === "Quote ready" || status === "Healthy" || status === "Publishable" || status === "Ready") return "border-emerald-200 bg-emerald-50 text-emerald-700";
   return "border-slate-200 bg-slate-50 text-slate-700";
+}
+
+function parseCsvLine(line: string) {
+  const cells: string[] = [];
+  let cell = "";
+  let inQuotes = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index];
+    const nextCharacter = line[index + 1];
+
+    if (character === '"' && nextCharacter === '"') {
+      cell += '"';
+      index += 1;
+    } else if (character === '"') {
+      inQuotes = !inQuotes;
+    } else if (character === "," && !inQuotes) {
+      cells.push(cell.trim());
+      cell = "";
+    } else {
+      cell += character;
+    }
+  }
+
+  cells.push(cell.trim());
+  return cells;
+}
+
+function normalizeHeader(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function readCsvCell(row: string[], headers: string[], possibleNames: string[], fallbackIndex: number) {
+  const normalizedNames = possibleNames.map(normalizeHeader);
+  const matchedIndex = headers.findIndex((header) => normalizedNames.includes(header));
+  return row[matchedIndex >= 0 ? matchedIndex : fallbackIndex] || "";
 }
 
 function formatMoney(value: number) {
@@ -250,6 +299,30 @@ export default function SpaAdmin() {
   });
   const [emailDraftCustomerId, setEmailDraftCustomerId] = useState<string | null>(null);
   const [emailDraftTypes, setEmailDraftTypes] = useState<Record<string, ArEmailDraftType>>({});
+  const [inventoryRows, setInventoryRows] = useState<InventoryRow[]>(() => {
+    if (typeof window === "undefined") return defaultInventoryRows;
+
+    try {
+      const savedInventoryRows = window.localStorage.getItem(inventoryStorageKey);
+      if (!savedInventoryRows) return defaultInventoryRows;
+
+      const parsed = JSON.parse(savedInventoryRows);
+      if (!Array.isArray(parsed)) return defaultInventoryRows;
+
+      return parsed.map((row, index) => ({
+        id: String(row.id || `stock-${index + 1}`),
+        partNumber: String(row.partNumber || row.part || "Unnamed part"),
+        description: String(row.description || row.package || ""),
+        qtyAvailable: Number(row.qtyAvailable || row.qty || row.stock || 0),
+        location: String(row.location || ""),
+        leadTime: String(row.leadTime || row.leadtime || ""),
+        status: String(row.status || "Review"),
+        customerVisible: Boolean(row.customerVisible),
+      }));
+    } catch {
+      return defaultInventoryRows;
+    }
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -319,6 +392,10 @@ export default function SpaAdmin() {
   const arOpenDue = arCustomers
     .filter((customer) => !customer.receivedDate)
     .reduce((total, customer) => total + customer.amountDue, 0);
+  const customerVisibleInventoryCount = inventoryRows.filter((row) => row.customerVisible).length;
+  const needsInventoryUpdateCount = inventoryRows.filter((row) => (
+    row.qtyAvailable <= 0 || ["Needs update", "Short", "Out of stock"].includes(row.status)
+  )).length;
 
   const saveArCustomers = (nextCustomers: ArCustomer[]) => {
     setArCustomers(nextCustomers);
@@ -338,6 +415,58 @@ export default function SpaAdmin() {
         ? { focus: false, memo: "입금 완료", receivedDate }
         : { receivedDate },
     );
+  };
+
+  const saveInventoryRows = (nextRows: InventoryRow[]) => {
+    setInventoryRows(nextRows);
+    window.localStorage.setItem(inventoryStorageKey, JSON.stringify(nextRows));
+  };
+
+  const updateInventoryRow = (rowId: string, update: Partial<InventoryRow>) => {
+    saveInventoryRows(inventoryRows.map((row) => (
+      row.id === rowId ? { ...row, ...update } : row
+    )));
+  };
+
+  const handleInventoryUpload = (file: File | undefined) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = String(reader.result || "");
+      const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+      if (lines.length === 0) return;
+
+      const firstRow = parseCsvLine(lines[0]);
+      const firstRowLooksLikeHeader = firstRow.some((cell) => (
+        ["part", "part number", "item", "description", "qty", "stock", "status"].includes(cell.toLowerCase().trim())
+      ));
+      const headers = firstRowLooksLikeHeader ? firstRow.map(normalizeHeader) : [];
+      const dataLines = firstRowLooksLikeHeader ? lines.slice(1) : lines;
+      const uploadedRows = dataLines.map((line, index) => {
+        const row = parseCsvLine(line);
+        const qty = Number(readCsvCell(row, headers, ["qty", "quantity", "stock", "available", "qty available"], 2).replace(/,/g, "")) || 0;
+        const status = readCsvCell(row, headers, ["status", "condition", "publish status"], 5) || (qty > 0 ? "Review" : "Needs update");
+        const customerVisible = ["1", "true", "yes", "y", "public", "customer", "publishable"].includes(
+          readCsvCell(row, headers, ["customer visible", "public", "publish", "show"], 6).toLowerCase(),
+        );
+
+        return {
+          id: `stock-upload-${Date.now()}-${index}`,
+          partNumber: readCsvCell(row, headers, ["part", "part number", "partnumber", "item", "mpn"], 0) || `Uploaded Part ${index + 1}`,
+          description: readCsvCell(row, headers, ["description", "desc", "package", "note"], 1),
+          qtyAvailable: qty,
+          location: readCsvCell(row, headers, ["location", "warehouse", "source"], 3),
+          leadTime: readCsvCell(row, headers, ["lead time", "leadtime", "eta", "availability"], 4),
+          status,
+          customerVisible,
+        };
+      });
+
+      saveInventoryRows(uploadedRows);
+      setActiveToolId("inventory-stocks");
+    };
+    reader.readAsText(file);
   };
 
   const handleArUpload = (file: File | undefined) => {
@@ -556,6 +685,12 @@ export default function SpaAdmin() {
                       <div className="mt-2 text-sm text-slate-600">{metric.label}</div>
                       <div className="mt-2 text-sm text-slate-600">{receivedCount}/{arCustomers.length} collected</div>
                     </>
+                  ) : metric.id === "inventory-stocks" ? (
+                    <>
+                      <div className="font-display text-3xl font-bold">{inventoryRows.length}</div>
+                      <div className="mt-1 text-sm text-slate-600">{metric.label}</div>
+                      <div className="mt-2 text-sm text-slate-600">{needsInventoryUpdateCount} need update</div>
+                    </>
                   ) : (
                     <>
                       <div className="font-display text-3xl font-bold">{index + 1}</div>
@@ -766,6 +901,116 @@ export default function SpaAdmin() {
                     </table>
                   </div>
                 </section>
+              ) : activeToolId === "inventory-stocks" ? (
+                <section className="border border-slate-200 bg-white shadow-sm">
+                  <div className="flex flex-col gap-4 border-b border-slate-200 p-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div>
+                      <h2 className="font-display text-xl font-bold">Inventory-Stocks</h2>
+                      <p className="text-sm text-slate-500">
+                        Upload the latest stock list as CSV. Customer-visible rows can later feed public stock previews after review.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Button
+                        variant="outline"
+                        className="h-9 gap-2 bg-white"
+                        onClick={() => window.location.reload()}
+                      >
+                        <RefreshCw className="h-4 w-4" />
+                        Refresh
+                      </Button>
+                      <label className="inline-flex h-9 cursor-pointer items-center gap-2 border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                        <Upload className="h-4 w-4" />
+                        Upload CSV
+                        <input
+                          type="file"
+                          accept=".csv,text/csv"
+                          className="hidden"
+                          onChange={(event) => handleInventoryUpload(event.target.files?.[0])}
+                          data-testid="input-inventory-upload"
+                        />
+                      </label>
+                      <Button
+                        variant="outline"
+                        className="h-9 bg-white"
+                        onClick={() => saveInventoryRows(defaultInventoryRows)}
+                      >
+                        Reset Sample
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3 border-b border-slate-200 p-4 md:grid-cols-3">
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Inventory Lines</div>
+                      <div className="mt-1 font-display text-3xl font-bold">{inventoryRows.length}</div>
+                      <div className="mt-2 text-sm text-slate-500">Latest uploaded working list</div>
+                    </div>
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Customer Visible</div>
+                      <div className="mt-1 font-display text-3xl font-bold text-emerald-700">{customerVisibleInventoryCount}</div>
+                      <div className="mt-2 text-sm text-slate-500">Can be reused for public preview later</div>
+                    </div>
+                    <div className="border border-slate-200 bg-slate-50 p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Needs Update</div>
+                      <div className={`mt-1 font-display text-3xl font-bold ${needsInventoryUpdateCount > 0 ? "text-rose-700" : "text-emerald-700"}`}>
+                        {needsInventoryUpdateCount}
+                      </div>
+                      <div className="mt-2 text-sm text-slate-500">Zero stock or follow-up rows</div>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[980px] text-left text-sm">
+                      <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+                        <tr>
+                          <th className="px-4 py-3 font-bold">Part / Item</th>
+                          <th className="px-4 py-3 font-bold">Description</th>
+                          <th className="px-4 py-3 font-bold">Qty</th>
+                          <th className="px-4 py-3 font-bold">Location</th>
+                          <th className="px-4 py-3 font-bold">Lead Time</th>
+                          <th className="px-4 py-3 font-bold">Customer View</th>
+                          <th className="px-4 py-3 font-bold">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {inventoryRows.map((row) => (
+                          <tr key={row.id} className={row.qtyAvailable <= 0 || row.status === "Needs update" ? "bg-rose-50" : "hover:bg-slate-50"}>
+                            <td className="px-4 py-4">
+                              <div className="font-semibold text-slate-950">{row.partNumber}</div>
+                            </td>
+                            <td className="px-4 py-4 text-slate-600">{row.description || "No description"}</td>
+                            <td className="px-4 py-4 font-semibold">{row.qtyAvailable.toLocaleString()}</td>
+                            <td className="px-4 py-4 text-slate-600">{row.location || "No location"}</td>
+                            <td className="px-4 py-4 text-slate-600">{row.leadTime || "No lead time"}</td>
+                            <td className="px-4 py-4">
+                              <label className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-700">
+                                <input
+                                  type="checkbox"
+                                  checked={row.customerVisible}
+                                  onChange={(event) => updateInventoryRow(row.id, { customerVisible: event.target.checked })}
+                                />
+                                Customer safe
+                              </label>
+                            </td>
+                            <td className="px-4 py-4">
+                              <select
+                                value={row.status}
+                                onChange={(event) => updateInventoryRow(row.id, { status: event.target.value })}
+                                className={`h-9 border px-2 text-xs font-bold outline-none ${statusClass(row.status)}`}
+                                data-testid={`select-inventory-status-${row.id}`}
+                              >
+                                {["Publishable", "Ready", "Review", "Needs update", "Short", "Out of stock", "SPA only", "Internal only"].map((status) => (
+                                  <option key={status} value={status}>{status}</option>
+                                ))}
+                              </select>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
               ) : (
               <section className="border border-slate-200 bg-white shadow-sm">
                 <div className="flex flex-col gap-3 border-b border-slate-200 p-4 md:flex-row md:items-center md:justify-between">
@@ -927,15 +1172,15 @@ export default function SpaAdmin() {
                   </Button>
                 </div>
                 <div className="divide-y divide-slate-100">
-                  {stockRows.map((row) => (
-                    <div key={row.part} className="grid gap-3 p-4 sm:grid-cols-[1fr_auto_auto] sm:items-center">
+                  {inventoryRows.map((row) => (
+                    <div key={row.id} className="grid gap-3 p-4 sm:grid-cols-[1fr_auto_auto] sm:items-center">
                       <div>
-                        <div className="font-semibold">{row.part}</div>
-                        <div className="text-sm text-slate-500">{row.package}</div>
+                        <div className="font-semibold">{row.partNumber}</div>
+                        <div className="text-sm text-slate-500">{row.description || "Inventory stock line"}</div>
                       </div>
                       <div className="text-sm text-slate-600 sm:text-right">
-                        <div>{row.stock}</div>
-                        <div>{row.reserved}</div>
+                        <div>{row.qtyAvailable.toLocaleString()} available</div>
+                        <div>{row.customerVisible ? "Customer visible" : "Admin only"}</div>
                       </div>
                       <span className={`w-fit border px-2 py-1 text-xs font-bold ${statusClass(row.status)}`}>
                         {row.status}
