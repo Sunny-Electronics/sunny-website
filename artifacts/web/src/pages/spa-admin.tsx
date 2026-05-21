@@ -37,11 +37,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
-const metrics = [
-  { label: "RFQ / Quotes", value: "1", delta: "Quote queue and pricing follow-up", tone: "text-sky-700 bg-sky-50 border-sky-200", icon: <ClipboardList className="h-5 w-5" /> },
-  { label: "Inventory-Stock", value: "2", delta: "Stock checks and part availability", tone: "text-emerald-700 bg-emerald-50 border-emerald-200", icon: <Warehouse className="h-5 w-5" /> },
-  { label: "Hot-list", value: "3", delta: "Urgent parts and priority work", tone: "text-amber-700 bg-amber-50 border-amber-200", icon: <Bell className="h-5 w-5" /> },
-  { label: "A/R-IOU", value: "4", delta: "Receivables, IOUs, and follow-up", tone: "text-rose-700 bg-rose-50 border-rose-200", icon: <CircleDollarSign className="h-5 w-5" /> },
+const defaultFavoriteIds = ["rfq-quotes", "inventory-stocks", "hotlist", "ar-iou"];
+
+const adminTools = [
+  { id: "rfq-quotes", label: "RFQ / Quotes", delta: "Quote queue and pricing follow-up", tone: "text-sky-700 bg-sky-50 border-sky-200", icon: <ClipboardList className="h-5 w-5" />, navIcon: <ClipboardList className="h-4 w-4" /> },
+  { id: "inventory-stocks", label: "Inventory-Stocks", delta: "Stock checks and part availability", tone: "text-emerald-700 bg-emerald-50 border-emerald-200", icon: <Warehouse className="h-5 w-5" />, navIcon: <Warehouse className="h-4 w-4" /> },
+  { id: "hotlist", label: "Hotlist", delta: "Urgent parts and priority work", tone: "text-amber-700 bg-amber-50 border-amber-200", icon: <Bell className="h-5 w-5" />, navIcon: <Bell className="h-4 w-4" /> },
+  { id: "ar-iou", label: "A/R - IOU", delta: "Receivables, IOUs, and follow-up", tone: "text-rose-700 bg-rose-50 border-rose-200", icon: <CircleDollarSign className="h-5 w-5" />, navIcon: <CircleDollarSign className="h-4 w-4" /> },
+  { id: "po-status", label: "PO Status", delta: "Purchase order tracking and status", tone: "text-indigo-700 bg-indigo-50 border-indigo-200", icon: <PackageCheck className="h-5 w-5" />, navIcon: <PackageCheck className="h-4 w-4" /> },
+  { id: "documents", label: "Documents", delta: "Files, templates, and shared records", tone: "text-slate-700 bg-slate-50 border-slate-200", icon: <FileText className="h-5 w-5" />, navIcon: <FileText className="h-4 w-4" /> },
+  { id: "vendors", label: "Vendors", delta: "Vendor access and follow-up", tone: "text-teal-700 bg-teal-50 border-teal-200", icon: <ShieldCheck className="h-5 w-5" />, navIcon: <ShieldCheck className="h-4 w-4" /> },
+  { id: "history", label: "History", delta: "Recent work and audit trail", tone: "text-violet-700 bg-violet-50 border-violet-200", icon: <History className="h-5 w-5" />, navIcon: <History className="h-4 w-4" /> },
 ];
 
 const rfqs = [
@@ -92,15 +98,6 @@ const chartData = [
   { day: "Wed", rfq: 18, po: 42 },
 ];
 
-const navItems = [
-  { label: "RFQ Review", icon: <ClipboardList className="h-4 w-4" /> },
-  { label: "PO Status", icon: <PackageCheck className="h-4 w-4" /> },
-  { label: "Stock", icon: <Warehouse className="h-4 w-4" /> },
-  { label: "Documents", icon: <FileText className="h-4 w-4" /> },
-  { label: "Vendors", icon: <ShieldCheck className="h-4 w-4" /> },
-  { label: "History", icon: <History className="h-4 w-4" /> },
-];
-
 function statusClass(status: string) {
   if (status === "Low" || status === "QA hold" || status === "Internal only") return "border-rose-200 bg-rose-50 text-rose-700";
   if (status === "Tight" || status === "Engineering review" || status === "SPA only") return "border-amber-200 bg-amber-50 text-amber-700";
@@ -113,6 +110,23 @@ export default function SpaAdmin() {
   const [adminUser, setAdminUser] = useState<{ name?: string; role: string; username: string } | null>(null);
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState("All");
+  const [favoriteIds, setFavoriteIds] = useState(() => {
+    if (typeof window === "undefined") return defaultFavoriteIds;
+
+    try {
+      const savedFavorites = window.localStorage.getItem("sunny-admin-favorite-tools");
+      if (!savedFavorites) return defaultFavoriteIds;
+
+      const parsed = JSON.parse(savedFavorites);
+      if (!Array.isArray(parsed)) return defaultFavoriteIds;
+
+      const validIds = parsed.filter((id): id is string => adminTools.some((tool) => tool.id === id));
+      return [...validIds, ...defaultFavoriteIds.filter((id) => !validIds.includes(id))].slice(0, 4);
+    } catch {
+      return defaultFavoriteIds;
+    }
+  });
+  const [draggedToolId, setDraggedToolId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -154,6 +168,26 @@ export default function SpaAdmin() {
       return matchesMode && matchesQuery;
     });
   }, [mode, query]);
+
+  const favoriteTools = useMemo(() => {
+    return favoriteIds
+      .map((id) => adminTools.find((tool) => tool.id === id))
+      .filter((tool): tool is (typeof adminTools)[number] => Boolean(tool));
+  }, [favoriteIds]);
+
+  const otherTools = useMemo(() => {
+    return adminTools.filter((tool) => !favoriteIds.includes(tool.id));
+  }, [favoriteIds]);
+
+  const promoteFavorite = (toolId: string | null) => {
+    if (!toolId || !adminTools.some((tool) => tool.id === toolId)) return;
+
+    setFavoriteIds((currentFavorites) => {
+      const nextFavorites = [toolId, ...currentFavorites.filter((id) => id !== toolId)].slice(0, 4);
+      window.localStorage.setItem("sunny-admin-favorite-tools", JSON.stringify(nextFavorites));
+      return nextFavorites;
+    });
+  };
 
   if (authStatus === "checking") {
     return (
@@ -207,21 +241,50 @@ export default function SpaAdmin() {
             </div>
           </div>
 
-          <nav className="space-y-1 px-3 py-4">
-            {navItems.map((item, index) => (
-              <button
-                key={item.label}
-                className={`flex h-11 w-full items-center gap-3 px-3 text-left text-sm font-semibold transition-colors ${
-                  index === 0
-                    ? "border border-slate-200 bg-slate-950 text-white"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
-                }`}
-                data-testid={`button-admin-nav-${item.label.toLowerCase().replaceAll(" ", "-")}`}
-              >
-                {item.icon}
-                {item.label}
-              </button>
-            ))}
+          <nav className="space-y-4 px-3 py-4">
+            <div>
+              <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wide text-slate-400">Favorites</div>
+              <div className="space-y-1">
+                {favoriteTools.map((item, index) => (
+                  <button
+                    key={item.label}
+                    draggable
+                    onClick={() => promoteFavorite(item.id)}
+                    onDragStart={() => setDraggedToolId(item.id)}
+                    onDragEnd={() => setDraggedToolId(null)}
+                    className={`flex h-11 w-full items-center gap-3 px-3 text-left text-sm font-semibold transition-colors ${
+                      index === 0
+                        ? "border border-slate-200 bg-slate-950 text-white"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
+                    }`}
+                    data-testid={`button-admin-nav-${item.id}`}
+                  >
+                    {item.navIcon}
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wide text-slate-400">Other tools</div>
+              <div className="space-y-1">
+                {otherTools.map((item) => (
+                  <button
+                    key={item.label}
+                    draggable
+                    onClick={() => promoteFavorite(item.id)}
+                    onDragStart={() => setDraggedToolId(item.id)}
+                    onDragEnd={() => setDraggedToolId(null)}
+                    className="flex h-11 w-full items-center gap-3 px-3 text-left text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-950"
+                    data-testid={`button-admin-nav-${item.id}`}
+                  >
+                    {item.navIcon}
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </nav>
 
           <div className="mx-3 mt-3 border border-slate-200 bg-slate-50 p-4">
@@ -276,15 +339,24 @@ export default function SpaAdmin() {
 
           <section className="px-4 py-5 lg:px-6">
             <div className="mb-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-              {metrics.map((metric) => (
-                <article key={metric.label} className="border border-slate-200 bg-white p-4 shadow-sm">
+              {favoriteTools.map((metric, index) => (
+                <article
+                  key={metric.label}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={() => {
+                    promoteFavorite(draggedToolId);
+                    setDraggedToolId(null);
+                  }}
+                  className="border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-slate-300"
+                  data-testid={`card-favorite-${metric.id}`}
+                >
                   <div className="mb-4 flex items-center justify-between gap-3">
                     <div className={`flex h-10 w-10 items-center justify-center border ${metric.tone}`}>
                       {metric.icon}
                     </div>
                     <span className="text-xs font-semibold text-slate-500">{metric.delta}</span>
                   </div>
-                  <div className="font-display text-3xl font-bold">{metric.value}</div>
+                  <div className="font-display text-3xl font-bold">{index + 1}</div>
                   <div className="mt-1 text-sm text-slate-600">{metric.label}</div>
                 </article>
               ))}
