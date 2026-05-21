@@ -43,6 +43,7 @@ import sunnyLogo from "@assets/image_1775118121182.png";
 
 const defaultFavoriteIds = ["rfq-quotes", "inventory-stocks", "hotlist", "ar-iou"];
 const favoriteStorageKey = "sunny-admin-favorite-tools-v2";
+const activeToolStorageKey = "sunny-admin-active-tool-v1";
 const arStorageKey = "sunny-admin-ar-customers-2026-may-v1";
 const inventoryStorageKey = "sunny-admin-inventory-stock-v1";
 const salesReportStorageKey = "sunny-admin-sales-report-forecast-v1";
@@ -335,7 +336,12 @@ export default function SpaAdmin() {
   const [adminUser, setAdminUser] = useState<{ name?: string; role: string; username: string } | null>(null);
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState("All");
-  const [activeToolId, setActiveToolId] = useState(defaultFavoriteIds[0]);
+  const [activeToolId, setActiveToolId] = useState(() => {
+    if (typeof window === "undefined") return defaultFavoriteIds[0];
+
+    const savedToolId = window.localStorage.getItem(activeToolStorageKey);
+    return savedToolId && adminTools.some((tool) => tool.id === savedToolId) ? savedToolId : defaultFavoriteIds[0];
+  });
   const [favoriteIds, setFavoriteIds] = useState(() => {
     if (typeof window === "undefined") return defaultFavoriteIds;
 
@@ -485,10 +491,22 @@ export default function SpaAdmin() {
     return adminTools.filter((tool) => !favoriteIds.includes(tool.id));
   }, [favoriteIds]);
 
+  const openTool = (toolId: string) => {
+    if (!adminTools.some((tool) => tool.id === toolId)) return;
+
+    setActiveToolId(toolId);
+    window.localStorage.setItem(activeToolStorageKey, toolId);
+  };
+
+  const refreshCurrentTool = () => {
+    window.localStorage.setItem(activeToolStorageKey, activeToolId);
+    window.location.reload();
+  };
+
   const promoteFavorite = (toolId: string | null) => {
     if (!toolId || !adminTools.some((tool) => tool.id === toolId)) return;
 
-    setActiveToolId(toolId);
+    openTool(toolId);
     setFavoriteIds((currentFavorites) => {
       const nextFavorites = [toolId, ...currentFavorites.filter((id) => id !== toolId)].slice(0, 4);
       window.localStorage.setItem(favoriteStorageKey, JSON.stringify(nextFavorites));
@@ -614,7 +632,7 @@ export default function SpaAdmin() {
       });
 
       saveSalesRows(uploadedRows);
-      setActiveToolId("hotlist");
+      openTool("hotlist");
     };
     reader.readAsText(file);
   };
@@ -655,7 +673,7 @@ export default function SpaAdmin() {
       });
 
       saveInventoryRows(uploadedRows);
-      setActiveToolId("inventory-stocks");
+      openTool("inventory-stocks");
     };
     reader.readAsText(file);
   };
@@ -687,7 +705,7 @@ export default function SpaAdmin() {
 
       saveArCustomers(uploadedCustomers);
       setEmailDraftCustomerId(null);
-      setActiveToolId("ar-iou");
+      openTool("ar-iou");
     };
     reader.readAsText(file);
   };
@@ -752,7 +770,7 @@ export default function SpaAdmin() {
                   <button
                     key={item.label}
                     draggable
-                    onClick={() => setActiveToolId(item.id)}
+                    onClick={() => openTool(item.id)}
                     onDragStart={() => setDraggedToolId(item.id)}
                     onDragEnd={() => setDraggedToolId(null)}
                     className={`flex h-11 w-full items-center gap-3 px-3 text-left text-sm font-semibold transition-colors ${
@@ -850,7 +868,7 @@ export default function SpaAdmin() {
                     promoteFavorite(draggedToolId);
                     setDraggedToolId(null);
                   }}
-                  onClick={() => setActiveToolId(metric.id)}
+                  onClick={() => openTool(metric.id)}
                   className={`cursor-pointer border bg-white p-4 shadow-sm transition-colors hover:border-slate-300 ${
                     metric.id === activeToolId ? "border-slate-950" : "border-slate-200"
                   }`}
@@ -912,7 +930,7 @@ export default function SpaAdmin() {
                       <Button
                         variant="outline"
                         className="h-9 gap-2 bg-white"
-                        onClick={() => window.location.reload()}
+                        onClick={refreshCurrentTool}
                       >
                         <RefreshCw className="h-4 w-4" />
                         Refresh
@@ -1121,7 +1139,7 @@ export default function SpaAdmin() {
                       <Button
                         variant="outline"
                         className="h-9 gap-2 bg-white"
-                        onClick={() => window.location.reload()}
+                        onClick={refreshCurrentTool}
                       >
                         <RefreshCw className="h-4 w-4" />
                         Refresh
@@ -1232,7 +1250,7 @@ export default function SpaAdmin() {
                         <Button
                           variant="outline"
                           className="h-9 gap-2 bg-white"
-                          onClick={() => window.location.reload()}
+                          onClick={refreshCurrentTool}
                         >
                           <RefreshCw className="h-4 w-4" />
                           Refresh
