@@ -63,6 +63,15 @@ type ArCustomer = {
   contactEmail: string;
 };
 
+type ArEmailDraftType = "first-reminder" | "paid-thank-you" | "payment-document" | "manual-blank";
+
+const arEmailDraftOptions: Array<{ id: ArEmailDraftType; label: string }> = [
+  { id: "first-reminder", label: "Auto generated - 1st reminder" },
+  { id: "paid-thank-you", label: "Friendly reminder / paid thank you" },
+  { id: "payment-document", label: "Please check payment document" },
+  { id: "manual-blank", label: "Blank manual email with signature" },
+];
+
 const defaultArCustomers: ArCustomer[] = [
   { id: "ar-2026-may-001", company: "SAGA", amountDue: 4486, dueDate: "2026-05-04", receivedDate: "2026-05-04", memo: "입금 완료", focus: false, contactEmail: "" },
   { id: "ar-2026-may-002", company: "UNIPOWER", amountDue: 378, dueDate: "2026-05-04", receivedDate: "2026-05-04", memo: "입금 완료", focus: false, contactEmail: "" },
@@ -142,8 +151,53 @@ function formatMoney(value: number) {
   }).format(value);
 }
 
-function getArEmailDraft(customer: ArCustomer) {
-  return `Hello ${customer.company},\n\nThis is a friendly Sunny Electronics reminder for the current A/R balance of ${formatMoney(customer.amountDue)}, due ${customer.dueDate}.\n\nPlease confirm payment timing when available.\n\nThank you,\nSunny Electronics Corp.`;
+function getArEmailSubject(templateType: ArEmailDraftType) {
+  if (templateType === "payment-document") return "Sunny Electronics A/R Payment Document Request";
+  if (templateType === "manual-blank") return "Sunny Electronics";
+  return "Sunny Electronics A/R Reminder";
+}
+
+function getArEmailDraft(customer: ArCustomer, templateType: ArEmailDraftType) {
+  const amount = formatMoney(customer.amountDue);
+  const dueDate = customer.dueDate || "current due date";
+
+  if (templateType === "paid-thank-you") {
+    return `Hello ${customer.company},
+
+This is a friendly Sunny Electronics reminder for the current A/R balance of ${amount}, due ${dueDate}.
+
+If payment has already been made, thank you. Please send the payment detail or remittance copy so we can update our records.
+
+Thank you,
+Sunny Electronics Corp.`;
+  }
+
+  if (templateType === "payment-document") {
+    return `Hello ${customer.company},
+
+Please help us check this open A/R item for ${amount}, due ${dueDate}. We need the payment update or payment document so we can remove it from the current due list and avoid late status.
+
+Thank you,
+Sunny Electronics Corp.`;
+  }
+
+  if (templateType === "manual-blank") {
+    return `Hello ${customer.company},
+
+
+
+Thank you,
+Sunny Electronics Corp.`;
+  }
+
+  return `Hello ${customer.company},
+
+This is a friendly first-of-the-month reminder for Sunny Electronics A/R. Our records show ${amount}, due ${dueDate}.
+
+Please help confirm the planned payment date when available.
+
+Thank you,
+Sunny Electronics Corp.`;
 }
 
 export default function SpaAdmin() {
@@ -194,6 +248,7 @@ export default function SpaAdmin() {
     }
   });
   const [emailDraftCustomerId, setEmailDraftCustomerId] = useState<string | null>(null);
+  const [emailDraftTypes, setEmailDraftTypes] = useState<Record<string, ArEmailDraftType>>({});
 
   useEffect(() => {
     let cancelled = false;
@@ -576,7 +631,9 @@ export default function SpaAdmin() {
                       <tbody className="divide-y divide-slate-100">
                         {arCustomers.map((customer) => {
                           const isPaid = Boolean(customer.receivedDate);
-                          const emailDraft = getArEmailDraft(customer);
+                          const emailDraftType = emailDraftTypes[customer.id] ?? "first-reminder";
+                          const emailDraft = getArEmailDraft(customer, emailDraftType);
+                          const emailSubject = getArEmailSubject(emailDraftType);
 
                           return (
                             <>
@@ -635,26 +692,50 @@ export default function SpaAdmin() {
                               {emailDraftCustomerId === customer.id && (
                                 <tr key={`${customer.id}-email`} className="bg-slate-50">
                                   <td className="px-4 py-4" colSpan={6}>
-                                    <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-start">
-                                      <textarea
-                                        readOnly
-                                        value={emailDraft}
-                                        className="min-h-36 w-full border border-slate-200 bg-white p-3 text-sm leading-6 text-slate-700"
-                                      />
-                                      <div className="flex flex-wrap gap-2">
-                                        <Button
-                                          variant="outline"
-                                          className="h-9 bg-white"
-                                          onClick={() => navigator.clipboard?.writeText(emailDraft)}
-                                        >
-                                          Copy Draft
-                                        </Button>
-                                        <a
-                                          className="inline-flex h-9 items-center border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                                          href={`mailto:${customer.contactEmail}?subject=${encodeURIComponent("Sunny Electronics A/R Reminder")}&body=${encodeURIComponent(emailDraft)}`}
-                                        >
-                                          Open Email
-                                        </a>
+                                    <div className="grid gap-3">
+                                      <div className="grid gap-2 lg:grid-cols-[220px_1fr] lg:items-center">
+                                        <label className="text-xs font-bold uppercase tracking-wide text-slate-500" htmlFor={`select-ar-email-${customer.id}`}>
+                                          Draft option
+                                        </label>
+                                        <div className="relative">
+                                          <select
+                                            id={`select-ar-email-${customer.id}`}
+                                            value={emailDraftType}
+                                            onChange={(event) => setEmailDraftTypes((currentTypes) => ({
+                                              ...currentTypes,
+                                              [customer.id]: event.target.value as ArEmailDraftType,
+                                            }))}
+                                            className="h-10 w-full appearance-none border border-slate-200 bg-white px-3 pr-9 text-sm font-semibold text-slate-700 outline-none focus:border-primary"
+                                            data-testid={`select-ar-email-draft-${customer.id}`}
+                                          >
+                                            {arEmailDraftOptions.map((option) => (
+                                              <option key={option.id} value={option.id}>{option.label}</option>
+                                            ))}
+                                          </select>
+                                          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                                        </div>
+                                      </div>
+                                      <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-start">
+                                        <textarea
+                                          readOnly
+                                          value={emailDraft}
+                                          className="min-h-44 w-full border border-slate-200 bg-white p-3 text-sm leading-6 text-slate-700"
+                                        />
+                                        <div className="flex flex-wrap gap-2">
+                                          <Button
+                                            variant="outline"
+                                            className="h-9 bg-white"
+                                            onClick={() => navigator.clipboard?.writeText(emailDraft)}
+                                          >
+                                            Copy Draft
+                                          </Button>
+                                          <a
+                                            className="inline-flex h-9 items-center border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                            href={`mailto:${customer.contactEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailDraft)}`}
+                                          >
+                                            Open Email
+                                          </a>
+                                        </div>
                                       </div>
                                     </div>
                                   </td>
