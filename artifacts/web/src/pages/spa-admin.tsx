@@ -22,7 +22,6 @@ import {
   Search,
   ShieldCheck,
   Upload,
-  UserCheck,
   Warehouse,
 } from "lucide-react";
 import {
@@ -39,10 +38,10 @@ import { Input } from "@/components/ui/input";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
 const metrics = [
-  { label: "Public folders ready", value: "3", delta: "website, public docs, spec sheets", tone: "text-sky-700 bg-sky-50 border-sky-200", icon: <FileCheck2 className="h-5 w-5" /> },
-  { label: "SPA private files", value: "2", delta: "signed URL only", tone: "text-amber-700 bg-amber-50 border-amber-200", icon: <LockKeyhole className="h-5 w-5" /> },
-  { label: "Confidential folders", value: "2", delta: "internal only", tone: "text-rose-700 bg-rose-50 border-rose-200", icon: <ShieldCheck className="h-5 w-5" /> },
-  { label: "Required roles", value: "4", delta: "admin, vendor, pending, blocked", tone: "text-emerald-700 bg-emerald-50 border-emerald-200", icon: <UserCheck className="h-5 w-5" /> },
+  { label: "RFQ / Quotes", value: "1", delta: "Quote queue and pricing follow-up", tone: "text-sky-700 bg-sky-50 border-sky-200", icon: <ClipboardList className="h-5 w-5" /> },
+  { label: "Inventory-Stock", value: "2", delta: "Stock checks and part availability", tone: "text-emerald-700 bg-emerald-50 border-emerald-200", icon: <Warehouse className="h-5 w-5" /> },
+  { label: "Hot-list", value: "3", delta: "Urgent parts and priority work", tone: "text-amber-700 bg-amber-50 border-amber-200", icon: <Bell className="h-5 w-5" /> },
+  { label: "A/R-IOU", value: "4", delta: "Receivables, IOUs, and follow-up", tone: "text-rose-700 bg-rose-50 border-rose-200", icon: <CircleDollarSign className="h-5 w-5" /> },
 ];
 
 const rfqs = [
