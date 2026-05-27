@@ -41,6 +41,17 @@ type QuoteLine = {
   note: string;
 };
 
+type QuoteAttachment = {
+  name: string;
+  size: number;
+  type: string;
+  content: string;
+};
+
+const maxQuoteFiles = 3;
+const maxQuoteFileSizeBytes = 2 * 1024 * 1024;
+const maxQuoteTotalFileSizeBytes = 5 * 1024 * 1024;
+
 const crystalPackages = [
   { type: "ATS-25/U", code: "C", description: "Lead crystal, older through-hole designs" },
   { type: "ATS-49/U", code: "D", description: "Lead crystal, common industrial format" },
@@ -185,18 +196,31 @@ const formatKHz = (value: string) => {
   return parsed.toFixed(3);
 };
 
+const formatQuantity = (value: string) => {
+  const digits = value.replace(/[^\d]/g, "").replace(/^0+(?=\d)/, "");
+  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+const formatFileSize = (bytes: number) => {
+  if (bytes >= 1024 * 1024) {
+    return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  }
+  return `${Math.ceil(bytes / 1024)} KB`;
+};
+
+const readFileAsBase64 = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || "");
+      resolve(result.split(",")[1] || "");
+    };
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+
 const findLabel = <T extends { code: string; label: string }>(items: T[], code: string) =>
   items.find((item) => item.code === code)?.label ?? code;
-
-const exampleVendorEmail = `Hi John,
-Pls kindly advice best quote for the following:
-
-SCO-223350ADSR12.000M
-Qty = 2Kpc
-
-Proj = H8 Controller
-
-Pls also advice SPQ & LT as well.`;
 
 const pickerClass =
   "h-11 w-full rounded-md border border-input bg-white/80 px-3 text-sm outline-none shadow-sm transition-[border-color,box-shadow,transform,background-color] duration-150 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-white hover:shadow-[0_0_0_3px_rgba(15,92,192,0.10),0_12px_28px_rgba(15,23,42,0.08)] focus:border-primary focus:ring-2 focus:ring-primary/20";
@@ -218,7 +242,7 @@ export default function RequestQuote() {
   const [temperature, setTemperature] = useState("J");
   const [stability, setStability] = useState("6");
   const [mode, setMode] = useState("1");
-  const [quantity, setQuantity] = useState("10000");
+  const [quantity, setQuantity] = useState("10,000");
   const [targetDate, setTargetDate] = useState("");
   const [customerReference, setCustomerReference] = useState("");
   const [note, setNote] = useState("");
@@ -234,7 +258,6 @@ export default function RequestQuote() {
   const [oe, setOe] = useState("S");
   const [output, setOutput] = useState("M");
   const [pulling, setPulling] = useState("5");
-  const [emailText, setEmailText] = useState(exampleVendorEmail);
   const [quoteLines, setQuoteLines] = useState<QuoteLine[]>([]);
   const [contactCompany, setContactCompany] = useState("");
   const [contactEmail, setContactEmail] = useState("");
@@ -242,11 +265,19 @@ export default function RequestQuote() {
   const [contactAnnualQuantity, setContactAnnualQuantity] = useState("");
   const [contactNotes, setContactNotes] = useState("");
   const [quoteSubmitMessage, setQuoteSubmitMessage] = useState("");
+  const [quoteModalOpen, setQuoteModalOpen] = useState(false);
+  const [quoteSubmitting, setQuoteSubmitting] = useState(false);
+  const [quoteAttachments, setQuoteAttachments] = useState<QuoteAttachment[]>([]);
+  const [quoteFileMessage, setQuoteFileMessage] = useState("");
 
   const selectedFamilyCard = familyCards.find((card) => card.id === family) ?? familyCards[0];
   const SelectedFamilyIcon = selectedFamilyCard.icon;
   const selectedCrystalPackage = crystalPackages.find((item) => item.code === crystalPackage) ?? crystalPackages[0];
   const selectedStability = stabilityOptions.find((item) => item.code === stability) ?? stabilityOptions[0];
+  const isSmallOrderMultiple =
+    (family === "crystal" && ["J", "K"].includes(crystalPackage)) ||
+    (family === "xo" && ["SCO-10", "SCO-53"].includes(xoProduct));
+  const orderMultiple = isSmallOrderMultiple ? "1,000 pcs" : "3,000 pcs";
 
   const generatedPart = useMemo(() => {
     if (family === "crystal") {
@@ -362,67 +393,6 @@ export default function RequestQuote() {
     ]);
   };
 
-  const parseVendorEmail = () => {
-    setQuoteSubmitMessage("");
-    const normalized = emailText.replace(/\r/g, "");
-    const partMatch = normalized.match(/\b(?:SCO|SVH|STA|STJ|STI|STH|STG|STF|STE|STB|SX|CS|CR|S[A-Z]{1,2})[-A-Z0-9.]+M?\b/i);
-    const qtyMatch = normalized.match(/\bQty\s*=\s*([^\n\r]+)/i) ?? normalized.match(/\bQTY\s*[:\-]?\s*([^\n\r]+)/i);
-    const projectMatch = normalized.match(/\bProj(?:ect)?\s*=\s*([^\n\r]+)/i);
-    const requestNotes: string[] = [];
-
-    if (/SPQ/i.test(normalized)) {
-      requestNotes.push("Advise SPQ");
-    }
-    if (/\bLT\b|lead\s*time/i.test(normalized)) {
-      requestNotes.push("Advise LT");
-    }
-
-    const partNumber = partMatch?.[0]?.replace(/[,\s]+$/g, "") ?? "Review needed";
-    const qty = qtyMatch?.[1]?.trim() ?? quantity;
-    const project = projectMatch?.[1]?.trim() ?? customerReference;
-    const isXo = partNumber.toUpperCase().startsWith("SCO-");
-    const frequencyMatch = partNumber.match(/(\d+(?:\.\d+)?)M$/i);
-    const productMatch = partNumber.match(/^(SCO-\d+)/i);
-
-    if (isXo) {
-      setFamily("xo");
-      if (productMatch) {
-        setXoProduct(productMatch[1].toUpperCase());
-      }
-      if (frequencyMatch) {
-        setFrequency(frequencyMatch[1]);
-      }
-      const codeStart = productMatch?.[1].length ?? 0;
-      const codeBeforeFrequency = partNumber.slice(codeStart).replace(/(\d+(?:\.\d+)?)M$/i, "");
-      if (codeBeforeFrequency.length >= 8) {
-        setVoltage(codeBeforeFrequency.slice(0, 2));
-        setOscStability(codeBeforeFrequency.slice(2, 4));
-        setOscTemp(codeBeforeFrequency.slice(4, 5));
-        setDuty(codeBeforeFrequency.slice(5, 6));
-        setOe(codeBeforeFrequency.slice(6, 7));
-      }
-    } else {
-      setFamily("other");
-    }
-
-    setQuantity(qty);
-    setCustomerReference(project);
-    setNote(requestNotes.join(" | "));
-    setQuoteLines((current) => [
-      ...current,
-      {
-        id: Date.now(),
-        family: isXo ? "Oscillator (XO)" : "Sunny review",
-        partNumber,
-        packageType: productMatch?.[1].toUpperCase() ?? "Review",
-        frequency: frequencyMatch ? `${formatOscillatorMHz(frequencyMatch[1])} MHz` : "-",
-        spec: isXo ? "Parsed from customer RFQ email" : "Review needed",
-        quantity: qty,
-        note: [project ? `Project: ${project}` : "", requestNotes.join(" | ")].filter(Boolean).join(" | "),
-      },
-    ]);
-  };
-
   const deleteQuoteLine = (id: number) => {
     setQuoteSubmitMessage("");
     setQuoteLines((current) => current.filter((line) => line.id !== id));
@@ -447,89 +417,95 @@ export default function RequestQuote() {
       : "/documents";
   };
 
-  const createQuoteRequest = () => {
+  const openQuoteRequestModal = () => {
     if (!quoteLines.length) {
       setQuoteSubmitMessage("Please add at least one quote line before creating the request.");
       return;
     }
 
-    const today = new Date().toISOString().slice(0, 10);
-    const subject = `SunnyKR RFQ Request - ${contactCompany || "Website visitor"} - ${today}`;
-    const body = [
-      "SunnyKR RFQ Request",
-      "",
-      "Please review the following quote request.",
-      "",
-      "Contact Details",
-      `Company / Name: ${contactCompany || "-"}`,
-      `Email: ${contactEmail || "-"}`,
-      `Industry / Application: ${contactIndustry || "-"}`,
-      `Target Annual Quantity: ${contactAnnualQuantity || "-"}`,
-      `Contact Notes: ${contactNotes || "-"}`,
-      "",
-      "Quote Lines",
-      ...quoteLines.flatMap((line, index) => [
-        "",
-        `${index + 1}. ${line.partNumber}`,
-        `Family: ${line.family}`,
-        `Package: ${line.packageType}`,
-        `Frequency: ${line.frequency}`,
-        `Spec: ${line.spec}`,
-        `Quantity: ${line.quantity}`,
-        `Notes: ${line.note || "-"}`,
-      ]),
-      "",
-      "Requested Sunny review",
-      "Price, lead time, SPQ/MOQ, stock availability, datasheet, and QA document availability.",
-    ].join("\n");
-
-    const mailto = `mailto:web@sunnykr.com?cc=${encodeURIComponent("sunnykoreax@gmail.com")}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    window.location.href = mailto;
-    setQuoteSubmitMessage("Opening email with the quote request filled in.");
+    setQuoteSubmitMessage("");
+    setQuoteModalOpen(true);
   };
 
-  const sendSpaRfqEmail = () => {
-    const pastedRfq = emailText.trim();
-    if (!pastedRfq) {
-      setQuoteSubmitMessage("Please paste the SPA RFQ email before sending.");
+  const handleQuoteAttachmentChange = async (files: FileList | null) => {
+    setQuoteFileMessage("");
+    const selectedFiles = Array.from(files || []);
+
+    if (selectedFiles.length > maxQuoteFiles) {
+      setQuoteFileMessage(`Please attach up to ${maxQuoteFiles} files.`);
+      setQuoteAttachments([]);
       return;
     }
 
-    const body = [
-      "SPA -RFQ",
-      "",
-      "Please review the following SPA value-added RFQ.",
-      "",
-      "Contact Details",
-      `Company / Name: ${contactCompany || "-"}`,
-      `Email: ${contactEmail || "-"}`,
-      `Industry / Application: ${contactIndustry || "-"}`,
-      `Target Annual Quantity: ${contactAnnualQuantity || "-"}`,
-      `Contact Notes: ${contactNotes || "-"}`,
-      "",
-      "Pasted RFQ Email",
-      pastedRfq,
-      "",
-      "Parsed Quote Lines",
-      ...(quoteLines.length
-        ? quoteLines.flatMap((line, index) => [
-            "",
-            `${index + 1}. ${line.partNumber}`,
-            `Family: ${line.family}`,
-            `Package: ${line.packageType}`,
-            `Frequency: ${line.frequency}`,
-            `Spec: ${line.spec}`,
-            `Quantity: ${line.quantity}`,
-            `Notes: ${line.note || "-"}`,
-          ])
-        : ["No parsed quote lines yet. Please review the pasted RFQ email."]),
-    ].join("\n");
+    const oversizedFile = selectedFiles.find((file) => file.size > maxQuoteFileSizeBytes);
+    if (oversizedFile) {
+      setQuoteFileMessage(`${oversizedFile.name} is too large. Limit is ${formatFileSize(maxQuoteFileSizeBytes)} per file.`);
+      setQuoteAttachments([]);
+      return;
+    }
 
-    const mailto = `mailto:web@sunnykr.com?cc=${encodeURIComponent("sunnykoreax@gmail.com")}&subject=${encodeURIComponent("SPA -RFQ")}&body=${encodeURIComponent(body)}`;
+    const totalSize = selectedFiles.reduce((sum, file) => sum + file.size, 0);
+    if (totalSize > maxQuoteTotalFileSizeBytes) {
+      setQuoteFileMessage(`Total upload limit is ${formatFileSize(maxQuoteTotalFileSizeBytes)}.`);
+      setQuoteAttachments([]);
+      return;
+    }
 
-    window.location.href = mailto;
-    setQuoteSubmitMessage("Opening SPA -RFQ email addressed to Sunny.");
+    try {
+      const attachments = await Promise.all(
+        selectedFiles.map(async (file) => ({
+          name: file.name,
+          size: file.size,
+          type: file.type || "application/octet-stream",
+          content: await readFileAsBase64(file),
+        })),
+      );
+      setQuoteAttachments(attachments);
+      setQuoteFileMessage(attachments.length ? `${attachments.length} file(s) attached.` : "");
+    } catch {
+      setQuoteFileMessage("Could not read the selected file. Please try another file.");
+      setQuoteAttachments([]);
+    }
+  };
+
+  const submitQuoteRequest = async () => {
+    if (!contactEmail.trim()) {
+      setQuoteSubmitMessage("Please add your email before sending the quote list.");
+      return;
+    }
+
+    setQuoteSubmitting(true);
+    setQuoteSubmitMessage("");
+
+    try {
+      const response = await fetch("/api/rfq/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contact: {
+            company: contactCompany,
+            email: contactEmail,
+            industry: contactIndustry,
+            annualQuantity: contactAnnualQuantity,
+            notes: contactNotes,
+          },
+          quoteLines,
+          attachments: quoteAttachments,
+        }),
+      });
+
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(result.error || "Quote request could not be sent yet.");
+      }
+
+      setQuoteModalOpen(false);
+      setQuoteSubmitMessage("Quote list sent to Sunny for review. Sunny will get back to you ASAP.");
+    } catch (error) {
+      setQuoteSubmitMessage(error instanceof Error ? error.message : "Quote request could not be sent yet.");
+    } finally {
+      setQuoteSubmitting(false);
+    }
   };
 
   return (
@@ -669,7 +645,7 @@ export default function RequestQuote() {
 
           <div className="grid gap-6 lg:grid-cols-[330px_1fr]">
             <div className="rounded-xl border border-white/70 bg-white/65 p-4 shadow-[0_18px_60px_rgba(15,23,42,0.10)] backdrop-blur-xl">
-              <div className="mb-3 text-xs font-bold uppercase tracking-wide text-primary">1. Choose type</div>
+              <div className="step-callout mb-3 px-3 py-2 text-xs font-bold uppercase tracking-wide">1. Choose type</div>
               <button
                 type="button"
                 onClick={() => setFamilyMenuOpen((open) => !open)}
@@ -722,25 +698,29 @@ export default function RequestQuote() {
                   })}
                 </div>
               )}
+
+              <div className="mt-4 rounded-lg border border-primary/15 bg-white/70 p-4 shadow-inner">
+                <div className="mb-1 text-xs font-bold uppercase tracking-wide text-primary">Sunny-Catalog P/N</div>
+                <div className="break-all font-mono text-xl font-bold leading-tight text-slate-950">{generatedPart}</div>
+                <div className="mt-2 text-xs leading-5 text-slate-600">{specSummary}</div>
+                <Button className="mt-4 h-11 w-full gap-2" onClick={addGeneratedPart} data-testid="button-add-generated-part">
+                  <Plus className="h-4 w-4" />
+                  Add to Quote List
+                </Button>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
+                  <div className="rounded-md border border-primary/10 bg-white/70 px-3 py-2">
+                    SPQ: {orderMultiple}
+                  </div>
+                  <div className="rounded-md border border-primary/10 bg-white/70 px-3 py-2">
+                    MOQ: {orderMultiple}
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="overflow-hidden rounded-xl border border-white/70 bg-white/65 shadow-[0_18px_60px_rgba(15,23,42,0.10)] backdrop-blur-xl">
-              <div className="border-b border-white/70 bg-white/60 p-5">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div>
-                    <div className="mb-1 text-sm font-semibold text-primary">Customer-facing part number</div>
-                    <div className="break-all font-mono text-2xl font-bold text-slate-950">{generatedPart}</div>
-                    <div className="mt-2 text-sm text-slate-600">{specSummary}</div>
-                  </div>
-                  <Button className="h-11 gap-2" onClick={addGeneratedPart} data-testid="button-add-generated-part">
-                    <Plus className="h-4 w-4" />
-                    Add to Quote List
-                  </Button>
-                </div>
-              </div>
-
               <div className="grid gap-4 p-5 md:grid-cols-2 xl:grid-cols-3">
-                <StepHeader title="2. Main choices" />
+                <StepHeader title="2. Required Specs" />
                 {family === "crystal" && (
                   <>
                     <Field label="Package" icon={<Package className="h-4 w-4" />}>
@@ -770,7 +750,6 @@ export default function RequestQuote() {
                         ))}
                       </select>
                     </Field>
-                    <StepHeader title="3. Specs" />
                     <Field label="Tolerance" icon={<ShieldCheck className="h-4 w-4" />}>
                       <select
                         value={tolerance}
@@ -848,7 +827,6 @@ export default function RequestQuote() {
                         <option value="70">7.0 pF</option>
                       </select>
                     </Field>
-                    <StepHeader title="3. Specs" />
                     <Field label="Temperature" icon={<Timer className="h-4 w-4" />}>
                       <select
                         value={tuningForkTemp}
@@ -893,7 +871,6 @@ export default function RequestQuote() {
                         <option value="18">1.8 V</option>
                       </select>
                     </Field>
-                    <StepHeader title="3. Specs" />
                     {family === "xo" && (
                       <>
                         <Field label="Stability" icon={<ShieldCheck className="h-4 w-4" />}>
@@ -989,9 +966,14 @@ export default function RequestQuote() {
                   </div>
                 )}
 
-                <StepHeader title="4. RFQ details" />
+                <StepHeader title="3. RFQ details" />
                 <Field label="Quantity" icon={<ClipboardList className="h-4 w-4" />}>
-                  <Input className={inputGlowClass} value={quantity} onChange={(event) => setQuantity(event.target.value)} />
+                  <Input
+                    className={inputGlowClass}
+                    value={quantity}
+                    onChange={(event) => setQuantity(formatQuantity(event.target.value))}
+                    inputMode="numeric"
+                  />
                 </Field>
                 <Field label="Target date" icon={<Clock className="h-4 w-4" />}>
                   <Input className={inputGlowClass} type="date" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} />
@@ -1001,7 +983,7 @@ export default function RequestQuote() {
                 </Field>
                 {family !== "other" && (
                   <div className="md:col-span-2 xl:col-span-3">
-                    <Field label="Notes" icon={<FileText className="h-4 w-4" />}>
+                    <Field label="Notes (Brief description of your requirements and demands. This helps Sunny process the correct requirements.)" icon={<FileText className="h-4 w-4" />}>
                       <Textarea
                         className={textareaGlowClass}
                         rows={3}
@@ -1017,119 +999,6 @@ export default function RequestQuote() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-5 pb-8">
-          <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-            <div className="border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <h2 className="font-display text-2xl font-bold">SPA Value Added RFQ Email</h2>
-                  <p className="mt-1 text-sm text-slate-600">
-                    SPA value added: please paste the RFQ email text. SunnyKR can pull the part, quantity,
-                    project, SPQ, and lead-time request into the quote list or send it to Sunny for review.
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button type="button" variant="outline" className="h-11 gap-2 bg-white" onClick={parseVendorEmail}>
-                    <Plus className="h-4 w-4" />
-                    Read Email and Add
-                  </Button>
-                  <Button type="button" className="h-11 gap-2" onClick={sendSpaRfqEmail} data-testid="button-send-spa-rfq">
-                    <Check className="h-4 w-4" />
-                    Send SPA -RFQ
-                  </Button>
-                </div>
-              </div>
-              <Textarea
-                value={emailText}
-                onChange={(event) => setEmailText(event.target.value)}
-                rows={8}
-                className="font-mono text-sm"
-                placeholder="Paste customer RFQ email here"
-                data-testid="textarea-paste-rfq-email"
-              />
-            </div>
-
-            <div className="border border-slate-200 bg-slate-50 p-6">
-              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-primary">
-                <FileText className="h-4 w-4" />
-                Example parsed result
-              </div>
-              <div className="grid gap-3 text-sm text-slate-700">
-                <div className="flex justify-between gap-4 border-b border-slate-200 pb-2">
-                  <span className="text-slate-500">Part</span>
-                  <span className="font-mono font-semibold">SCO-223350ADSR12.000M</span>
-                </div>
-                <div className="flex justify-between gap-4 border-b border-slate-200 pb-2">
-                  <span className="text-slate-500">Qty</span>
-                  <span className="font-semibold">2Kpc</span>
-                </div>
-                <div className="flex justify-between gap-4 border-b border-slate-200 pb-2">
-                  <span className="text-slate-500">Project</span>
-                  <span className="font-semibold">H8 Controller</span>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <span className="text-slate-500">Request</span>
-                  <span className="font-semibold">SPQ and LT</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="details" className="mx-auto max-w-7xl px-5 pb-8">
-          <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-            <div className="border border-slate-200 bg-white p-6">
-              <h2 className="font-display text-2xl font-bold">Search before quoting</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                Use the search bar above to find Sunny part numbers, spec sheets, datasheets,
-                RoHS documents, reliability files, and QA documents that visitors can view as PDFs.
-              </p>
-              <Link href="/documents">
-                <Button variant="outline" className="mt-4 h-11 gap-2 bg-white">
-                  <Search className="h-4 w-4" />
-                  Open Document Search
-                </Button>
-              </Link>
-            </div>
-
-            <div className="border border-slate-200 bg-white p-6">
-              <h2 className="mb-4 font-display text-xl font-bold">Contact details</h2>
-              <div className="grid gap-3">
-                <Input
-                  value={contactCompany}
-                  onChange={(event) => setContactCompany(event.target.value)}
-                  placeholder="Company name"
-                  data-testid="input-company"
-                />
-                <Input
-                  value={contactEmail}
-                  onChange={(event) => setContactEmail(event.target.value)}
-                  placeholder="Your email"
-                  data-testid="input-email"
-                />
-                <Input
-                  value={contactIndustry}
-                  onChange={(event) => setContactIndustry(event.target.value)}
-                  placeholder="Industry / application"
-                  data-testid="input-industry"
-                />
-                <Input
-                  value={contactAnnualQuantity}
-                  onChange={(event) => setContactAnnualQuantity(event.target.value)}
-                  placeholder="Target annual quantity"
-                  data-testid="input-annual-quantity"
-                />
-                <Textarea
-                  value={contactNotes}
-                  onChange={(event) => setContactNotes(event.target.value)}
-                  placeholder="Special requirements, QA documents, or notes"
-                  rows={4}
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section id="quote-list" className="mx-auto max-w-7xl px-5 pb-16">
           <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
@@ -1138,10 +1007,13 @@ export default function RequestQuote() {
                 Add one or many parts. Sunny will review pricing, lead time, stock, datasheets, and QA documents.
               </p>
             </div>
-            <Button className="gap-2" onClick={createQuoteRequest} data-testid="button-create-quote-request">
-              <Check className="h-4 w-4" />
-              Create Quote Request
-            </Button>
+            <div className="flex flex-col gap-1 md:items-end">
+              <Button className="gap-2" onClick={openQuoteRequestModal} data-testid="button-create-quote-request">
+                <Check className="h-4 w-4" />
+                Send your quote list to Sunny for review
+              </Button>
+              <p className="text-xs font-medium text-slate-500">Sunny will get back to you ASAP.</p>
+            </div>
           </div>
           {quoteSubmitMessage && (
             <div className="mb-4 border border-primary/20 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary">
@@ -1169,7 +1041,7 @@ export default function RequestQuote() {
                     packageType: "SX-21",
                     frequency: "32.0000 MHz",
                     spec: "30/30 -40~85C/12pF",
-                    quantity: "10000",
+                    quantity: "10,000",
                     note: "Example line",
                   },
                 ]).map((row, index) => {
@@ -1226,7 +1098,147 @@ export default function RequestQuote() {
             </Link>
           </div>
         </section>
+
+        <section id="details" className="mx-auto max-w-7xl px-5 pb-8">
+          <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+            <div className="border border-slate-200 bg-white p-6">
+              <h2 className="font-display text-2xl font-bold">Search before quoting</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Use the search bar above to find Sunny part numbers, spec sheets, datasheets,
+                RoHS documents, reliability files, and QA documents that visitors can view as PDFs.
+              </p>
+              <Link href="/documents">
+                <Button variant="outline" className="mt-4 h-11 gap-2 bg-white">
+                  <Search className="h-4 w-4" />
+                  Open Document Search
+                </Button>
+              </Link>
+            </div>
+
+            <div className="border border-slate-200 bg-white p-6">
+              <h2 className="mb-4 font-display text-xl font-bold">Contact details</h2>
+              <div className="grid gap-3">
+                <Input
+                  value={contactCompany}
+                  onChange={(event) => setContactCompany(event.target.value)}
+                  placeholder="Company name"
+                  data-testid="input-company"
+                />
+                <Input
+                  value={contactEmail}
+                  onChange={(event) => setContactEmail(event.target.value)}
+                  placeholder="Your email"
+                  data-testid="input-email"
+                />
+                <Input
+                  value={contactIndustry}
+                  onChange={(event) => setContactIndustry(event.target.value)}
+                  placeholder="Industry / application"
+                  data-testid="input-industry"
+                />
+                <Input
+                  value={contactAnnualQuantity}
+                  onChange={(event) => setContactAnnualQuantity(event.target.value)}
+                  placeholder="Target annual quantity"
+                  data-testid="input-annual-quantity"
+                />
+                <Textarea
+                  value={contactNotes}
+                  onChange={(event) => setContactNotes(event.target.value)}
+                  placeholder="Special requirements, QA documents, or notes"
+                  rows={4}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
+
+      {quoteModalOpen && (
+        <div className="fixed bottom-0 left-0 right-0 top-0 z-[100] flex items-center justify-center bg-slate-950/50 px-5 py-5">
+          <div className="max-h-screen w-full max-w-3xl overflow-y-auto rounded-lg border border-slate-200 bg-white p-6 shadow-2xl">
+            <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+              <div>
+                <h2 className="font-display text-2xl font-bold">Send quote list to Sunny</h2>
+                <p className="mt-1 text-sm leading-6 text-slate-600">
+                  Review your RFQ, add your email, and attach optional files. Sunny will get back to you ASAP.
+                </p>
+              </div>
+              <Button type="button" variant="outline" className="bg-white" onClick={() => setQuoteModalOpen(false)}>
+                Close
+              </Button>
+            </div>
+
+            <div className="mb-5 grid gap-3 md:grid-cols-2">
+              <Input value={contactCompany} onChange={(event) => setContactCompany(event.target.value)} placeholder="Company name" />
+              <Input value={contactEmail} onChange={(event) => setContactEmail(event.target.value)} placeholder="Your email" type="email" />
+              <Input value={contactIndustry} onChange={(event) => setContactIndustry(event.target.value)} placeholder="Industry / application" />
+              <Input value={contactAnnualQuantity} onChange={(event) => setContactAnnualQuantity(event.target.value)} placeholder="Target annual quantity" />
+              <Textarea
+                className="md:col-span-2"
+                value={contactNotes}
+                onChange={(event) => setContactNotes(event.target.value)}
+                placeholder="Extra message for Sunny"
+                rows={3}
+              />
+            </div>
+
+            <div className="mb-5 overflow-x-auto border border-slate-200">
+              <table className="min-w-[720px] w-full border-collapse text-left text-sm">
+                <thead className="bg-slate-100 text-xs uppercase text-slate-600">
+                  <tr>
+                    {["#", "Sunny-Catalog P/N", "Package", "Frequency", "Qty", "Notes"].map((column) => (
+                      <th key={column} className="border-r border-slate-200 px-3 py-3">{column}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {quoteLines.map((line, index) => (
+                    <tr key={line.id} className="border-t border-slate-200">
+                      <td className="border-r border-slate-200 px-3 py-3">{index + 1}</td>
+                      <td className="border-r border-slate-200 px-3 py-3 font-mono font-semibold text-primary">{line.partNumber}</td>
+                      <td className="border-r border-slate-200 px-3 py-3">{line.packageType}</td>
+                      <td className="border-r border-slate-200 px-3 py-3">{line.frequency}</td>
+                      <td className="border-r border-slate-200 px-3 py-3">{line.quantity}</td>
+                      <td className="px-3 py-3">{line.note || "-"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mb-5 border border-slate-200 bg-slate-50 p-4">
+              <Label className="mb-2 block text-sm font-semibold text-slate-700">Optional PDF or file attachment</Label>
+              <Input
+                type="file"
+                multiple
+                accept=".pdf,.csv,.xls,.xlsx,.txt,.png,.jpg,.jpeg"
+                onChange={(event) => handleQuoteAttachmentChange(event.target.files)}
+              />
+              <p className="mt-2 text-xs leading-5 text-slate-500">
+                Limit: {maxQuoteFiles} files, {formatFileSize(maxQuoteFileSizeBytes)} each, {formatFileSize(maxQuoteTotalFileSizeBytes)} total.
+              </p>
+              {quoteFileMessage && <p className="mt-2 text-sm font-semibold text-primary">{quoteFileMessage}</p>}
+            </div>
+
+            {quoteSubmitMessage && (
+              <div className="mb-4 border border-primary/20 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary">
+                {quoteSubmitMessage}
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2 md:flex-row md:justify-end">
+              <Button type="button" variant="outline" className="bg-white" onClick={() => setQuoteModalOpen(false)}>
+                Keep editing
+              </Button>
+              <Button type="button" className="gap-2" onClick={submitQuoteRequest} disabled={quoteSubmitting}>
+                <Check className="h-4 w-4" />
+                {quoteSubmitting ? "Sending..." : "Send RFQ to Sunny"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1252,11 +1264,12 @@ function Field({
 }
 
 function StepHeader({ title }: { title: string }) {
+  const featured = title === "2. Required Specs" || title === "3. RFQ details";
+
   return (
     <div className="md:col-span-2 xl:col-span-3">
-      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-primary">
-        <span className="h-px flex-1 bg-primary/20" />
-        <span>{title}</span>
+      <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wide ${featured ? "step-callout px-3 py-2" : "text-primary"}`}>
+        <span className="shrink-0">{title}</span>
         <span className="h-px flex-1 bg-primary/20" />
       </div>
     </div>

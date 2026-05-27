@@ -39,6 +39,7 @@ import {
 } from "recharts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
 const defaultFavoriteIds = ["rfq-quotes", "inventory-stocks", "hotlist", "ar-iou"];
@@ -99,6 +100,13 @@ type SalesReportRow = {
 
 type ReportView = "date" | "company" | "model" | "frequency" | "qty";
 
+type SpaParsedRfqResult = {
+  part: string;
+  qty: string;
+  project: string;
+  request: string;
+};
+
 const reportViews: Array<{ id: ReportView; label: string }> = [
   { id: "date", label: "Date" },
   { id: "company", label: "Company name" },
@@ -138,6 +146,16 @@ const rfqs = [
   { id: "RFQ-260505-028", company: "Pending Vendor", handler: "Email verification", item: "QA document request", qty: "N/A", status: "Access review", priority: "High", age: "1d" },
   { id: "RFQ-260505-021", company: "Approved Vendor C", handler: "Verified contact", item: "SX-1 24 MHz", qty: "Private", status: "Quote ready", priority: "Normal", age: "1d" },
 ];
+
+const exampleSpaRfqEmail = `Hi John,
+Pls kindly advice best quote for the following:
+
+SCO-223350ADSR12.000M
+Qty = 2Kpc
+
+Proj = H8 Controller
+
+Pls also advice SPQ & LT as well.`;
 
 const poRows = [
   { po: "orderlist 26.05.06.xlsx", company: "04_Documents_SPA_Private", part: "PO-List 2020~current", etd: "Private workbook", stage: "SPA only", value: "No public URL" },
@@ -439,6 +457,14 @@ export default function SpaAdmin() {
   });
   const [reportQuery, setReportQuery] = useState("");
   const [reportView, setReportView] = useState<ReportView>("date");
+  const [spaRfqEmailText, setSpaRfqEmailText] = useState(exampleSpaRfqEmail);
+  const [spaParsedRfq, setSpaParsedRfq] = useState<SpaParsedRfqResult>({
+    part: "SCO-223350ADSR12.000M",
+    qty: "2Kpc",
+    project: "H8 Controller",
+    request: "SPQ and LT",
+  });
+  const [spaRfqMessage, setSpaRfqMessage] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -480,6 +506,57 @@ export default function SpaAdmin() {
       return matchesMode && matchesQuery;
     });
   }, [mode, query]);
+
+  const parseSpaRfqEmail = () => {
+    const normalized = spaRfqEmailText.replace(/\r/g, "");
+    const partMatch = normalized.match(/\b(?:SCO|SVH|STA|STJ|STI|STH|STG|STF|STE|STB|SX|CS|CR|S[A-Z]{1,2})[-A-Z0-9.]+M?\b/i);
+    const qtyMatch = normalized.match(/\bQty\s*=\s*([^\n\r]+)/i) ?? normalized.match(/\bQTY\s*[:\-]?\s*([^\n\r]+)/i);
+    const projectMatch = normalized.match(/\bProj(?:ect)?\s*=\s*([^\n\r]+)/i);
+    const requestNotes: string[] = [];
+
+    if (/SPQ/i.test(normalized)) {
+      requestNotes.push("SPQ");
+    }
+    if (/\bLT\b|lead\s*time/i.test(normalized)) {
+      requestNotes.push("LT");
+    }
+
+    setSpaParsedRfq({
+      part: partMatch?.[0]?.replace(/[,\s]+$/g, "") ?? "Review needed",
+      qty: qtyMatch?.[1]?.trim() ?? "Review needed",
+      project: projectMatch?.[1]?.trim() ?? "Review needed",
+      request: requestNotes.length ? requestNotes.join(" and ") : "Review needed",
+    });
+    setSpaRfqMessage("SPA RFQ email parsed for internal review.");
+  };
+
+  const sendSpaRfqEmail = () => {
+    const pastedRfq = spaRfqEmailText.trim();
+    if (!pastedRfq) {
+      setSpaRfqMessage("Paste the SPA RFQ email before sending.");
+      return;
+    }
+
+    const body = [
+      "SPA -RFQ",
+      "",
+      "Please review the following SPA value-added RFQ.",
+      "",
+      "Parsed Result",
+      `Part: ${spaParsedRfq.part}`,
+      `Qty: ${spaParsedRfq.qty}`,
+      `Project: ${spaParsedRfq.project}`,
+      `Request: ${spaParsedRfq.request}`,
+      "",
+      "Original RFQ Email",
+      pastedRfq,
+    ].join("\n");
+
+    const mailto = `mailto:web@sunnykr.com?cc=${encodeURIComponent("sunnykoreax@gmail.com")}&subject=${encodeURIComponent("SPA -RFQ")}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailto;
+    setSpaRfqMessage("Opening SPA -RFQ email addressed to Sunny.");
+  };
 
   const favoriteTools = useMemo(() => {
     return favoriteIds
@@ -1419,6 +1496,66 @@ export default function SpaAdmin() {
                   </div>
                 </section>
               ) : (
+              <>
+              <section className="mb-5 border border-slate-200 bg-white shadow-sm">
+                <div className="flex flex-col gap-3 border-b border-slate-200 p-4 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <h2 className="font-display text-xl font-bold">SPA Value Added RFQ Email</h2>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Internal-only helper for pasted RFQ emails. Keep customer text inside admin review.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button type="button" variant="outline" className="h-10 gap-2 bg-white" onClick={parseSpaRfqEmail}>
+                      <ClipboardList className="h-4 w-4" />
+                      Read Email and Add
+                    </Button>
+                    <Button type="button" className="h-10 gap-2" onClick={sendSpaRfqEmail} data-testid="button-admin-send-spa-rfq">
+                      <MailCheck className="h-4 w-4" />
+                      Send SPA -RFQ
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="grid gap-5 p-4 2xl:grid-cols-[minmax(0,1fr)_360px]">
+                  <div>
+                    <Textarea
+                      value={spaRfqEmailText}
+                      onChange={(event) => setSpaRfqEmailText(event.target.value)}
+                      rows={8}
+                      className="font-mono text-sm"
+                      placeholder="Paste customer RFQ email here"
+                      data-testid="textarea-admin-paste-rfq-email"
+                    />
+                    {spaRfqMessage && (
+                      <div className="mt-3 border border-sky-200 bg-sky-50 px-3 py-2 text-sm font-semibold text-sky-800">
+                        {spaRfqMessage}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="border border-slate-200 bg-slate-50 p-4">
+                    <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-primary">
+                      <FileText className="h-4 w-4" />
+                      Parsed internal result
+                    </div>
+                    <div className="grid gap-3 text-sm text-slate-700 sm:grid-cols-2 2xl:grid-cols-1">
+                      {[
+                        ["Part", spaParsedRfq.part],
+                        ["Qty", spaParsedRfq.qty],
+                        ["Project", spaParsedRfq.project],
+                        ["Request", spaParsedRfq.request],
+                      ].map(([label, value]) => (
+                        <div key={label} className="flex justify-between gap-4 border-b border-slate-200 pb-2 last:border-b-0 last:pb-0">
+                          <span className="text-slate-500">{label}</span>
+                          <span className="text-right font-semibold">{value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+
               <section className="border border-slate-200 bg-white shadow-sm">
                 <div className="flex flex-col gap-3 border-b border-slate-200 p-4 md:flex-row md:items-center md:justify-between">
                   <div>
@@ -1488,6 +1625,7 @@ export default function SpaAdmin() {
                   </table>
                 </div>
               </section>
+              </>
               )}
 
               <aside className="space-y-5">
