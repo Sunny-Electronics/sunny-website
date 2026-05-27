@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowLeft,
+  ChevronDown,
   Check,
   ClipboardList,
   Clock,
@@ -197,9 +198,19 @@ Proj = H8 Controller
 
 Pls also advice SPQ & LT as well.`;
 
+const pickerClass =
+  "h-11 w-full rounded-md border border-input bg-white/80 px-3 text-sm outline-none shadow-sm transition-[border-color,box-shadow,transform,background-color] duration-150 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-white hover:shadow-[0_0_0_3px_rgba(15,92,192,0.10),0_12px_28px_rgba(15,23,42,0.08)] focus:border-primary focus:ring-2 focus:ring-primary/20";
+
+const inputGlowClass =
+  "h-11 bg-white/80 transition-[border-color,box-shadow,transform,background-color] duration-150 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-white hover:shadow-[0_0_0_3px_rgba(15,92,192,0.10),0_12px_28px_rgba(15,23,42,0.08)] focus-visible:ring-primary/20";
+
+const textareaGlowClass =
+  "bg-white/80 transition-[border-color,box-shadow,background-color] duration-150 hover:border-primary/60 hover:bg-white hover:shadow-[0_0_0_3px_rgba(15,92,192,0.10),0_12px_28px_rgba(15,23,42,0.08)] focus-visible:ring-primary/20";
+
 export default function RequestQuote() {
   const [searchQuery, setSearchQuery] = useState("");
   const [family, setFamily] = useState<QuoteFamily>("crystal");
+  const [familyMenuOpen, setFamilyMenuOpen] = useState(false);
   const [crystalPackage, setCrystalPackage] = useState("R");
   const [frequency, setFrequency] = useState("32");
   const [capacitance, setCapacitance] = useState("12");
@@ -232,6 +243,8 @@ export default function RequestQuote() {
   const [contactNotes, setContactNotes] = useState("");
   const [quoteSubmitMessage, setQuoteSubmitMessage] = useState("");
 
+  const selectedFamilyCard = familyCards.find((card) => card.id === family) ?? familyCards[0];
+  const SelectedFamilyIcon = selectedFamilyCard.icon;
   const selectedCrystalPackage = crystalPackages.find((item) => item.code === crystalPackage) ?? crystalPackages[0];
   const selectedStability = stabilityOptions.find((item) => item.code === stability) ?? stabilityOptions[0];
 
@@ -417,6 +430,7 @@ export default function RequestQuote() {
 
   const applyPreset = (preset: (typeof quickPresets)[number]) => {
     setFamily("crystal");
+    setFamilyMenuOpen(false);
     setCrystalPackage(preset.packageCode);
     setFrequency(preset.frequency);
     setCapacitance(preset.capacitance);
@@ -653,37 +667,65 @@ export default function RequestQuote() {
             </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
-            <div className="grid gap-3">
-              {familyCards.map((card) => {
-                const Icon = card.icon;
-                const selected = family === card.id;
-                return (
-                  <button
-                    key={card.id}
-                    type="button"
-                    onClick={() => setFamily(card.id)}
-                    className={`border p-4 text-left transition-colors ${
-                      selected
-                        ? "border-primary bg-primary text-white"
-                        : "border-slate-200 bg-white text-slate-900 hover:border-primary/40"
-                    }`}
-                    data-testid={`button-family-${card.id}`}
-                  >
-                    <div className="mb-2 flex items-center gap-3">
-                      <Icon className="h-5 w-5" />
-                      <div className="font-display text-lg font-bold">{card.name}</div>
-                    </div>
-                    <p className={selected ? "text-sm leading-5 text-white/80" : "text-sm leading-5 text-slate-600"}>
-                      {card.summary}
-                    </p>
-                  </button>
-                );
-              })}
+          <div className="grid gap-6 lg:grid-cols-[330px_1fr]">
+            <div className="rounded-xl border border-white/70 bg-white/65 p-4 shadow-[0_18px_60px_rgba(15,23,42,0.10)] backdrop-blur-xl">
+              <div className="mb-3 text-xs font-bold uppercase tracking-wide text-primary">1. Choose type</div>
+              <button
+                type="button"
+                onClick={() => setFamilyMenuOpen((open) => !open)}
+                className="group flex w-full items-center justify-between rounded-lg border border-primary/20 bg-white/80 p-4 text-left shadow-sm transition-[border-color,box-shadow,transform,background-color] duration-150 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-white hover:shadow-[0_0_0_3px_rgba(15,92,192,0.10),0_18px_36px_rgba(15,23,42,0.10)]"
+                aria-expanded={familyMenuOpen}
+              >
+                <span className="flex min-w-0 items-center gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                    <SelectedFamilyIcon className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-display text-lg font-bold text-slate-950">{selectedFamilyCard.name}</span>
+                    <span className="mt-1 block truncate text-xs text-slate-500">{selectedFamilyCard.summary}</span>
+                  </span>
+                </span>
+                <ChevronDown className={`h-5 w-5 shrink-0 text-primary transition-transform ${familyMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {familyMenuOpen && (
+                <div className="mt-3 grid gap-2">
+                  {familyCards.map((card) => {
+                    const Icon = card.icon;
+                    const selected = family === card.id;
+                    return (
+                      <button
+                        key={card.id}
+                        type="button"
+                        onClick={() => {
+                          setFamily(card.id);
+                          setFamilyMenuOpen(false);
+                        }}
+                        className={`group rounded-lg border p-3 text-left transition-[border-color,box-shadow,transform,background-color] duration-150 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-white hover:shadow-[0_0_0_3px_rgba(15,92,192,0.10),0_14px_28px_rgba(15,23,42,0.08)] ${
+                          selected
+                            ? "border-primary/60 bg-primary/10"
+                            : "border-white/70 bg-white/60"
+                        }`}
+                        data-testid={`button-family-${card.id}`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className={selected ? "text-primary" : "text-slate-500 group-hover:text-primary"}>
+                            <Icon className="h-4 w-4" />
+                          </span>
+                          <div>
+                            <div className="font-display text-sm font-bold text-slate-950">{card.name}</div>
+                            <div className="mt-1 text-xs leading-5 text-slate-600">{card.summary}</div>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
-            <div className="border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-200 bg-slate-50 p-5">
+            <div className="overflow-hidden rounded-xl border border-white/70 bg-white/65 shadow-[0_18px_60px_rgba(15,23,42,0.10)] backdrop-blur-xl">
+              <div className="border-b border-white/70 bg-white/60 p-5">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div>
                     <div className="mb-1 text-sm font-semibold text-primary">Customer-facing part number</div>
@@ -697,14 +739,15 @@ export default function RequestQuote() {
                 </div>
               </div>
 
-              <div className="grid gap-5 p-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-4 p-5 md:grid-cols-2 xl:grid-cols-3">
+                <StepHeader title="2. Main choices" />
                 {family === "crystal" && (
                   <>
                     <Field label="Package" icon={<Package className="h-4 w-4" />}>
                       <select
                         value={crystalPackage}
                         onChange={(event) => setCrystalPackage(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         {crystalPackages.map((option) => (
                           <option key={option.code} value={option.code}>
@@ -714,24 +757,25 @@ export default function RequestQuote() {
                       </select>
                     </Field>
                     <Field label="Frequency (MHz)" icon={<Gauge className="h-4 w-4" />}>
-                      <Input value={frequency} onChange={(event) => setFrequency(event.target.value)} inputMode="decimal" />
+                      <Input className={inputGlowClass} value={frequency} onChange={(event) => setFrequency(event.target.value)} inputMode="decimal" />
                     </Field>
                     <Field label="Load capacitance" icon={<Cpu className="h-4 w-4" />}>
                       <select
                         value={capacitance}
                         onChange={(event) => setCapacitance(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         {["06", "07", "08", "09", "10", "12", "16", "18", "20", "30"].map((option) => (
                           <option key={option} value={option}>{Number(option)} pF</option>
                         ))}
                       </select>
                     </Field>
+                    <StepHeader title="3. Specs" />
                     <Field label="Tolerance" icon={<ShieldCheck className="h-4 w-4" />}>
                       <select
                         value={tolerance}
                         onChange={(event) => setTolerance(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         {["10", "15", "20", "30", "50"].map((option) => (
                           <option key={option} value={option}>+/-{option}ppm</option>
@@ -742,7 +786,7 @@ export default function RequestQuote() {
                       <select
                         value={temperature}
                         onChange={(event) => setTemperature(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         {crystalTempOptions.map((option) => (
                           <option key={option.code} value={option.code}>{option.code}: {option.label}</option>
@@ -753,7 +797,7 @@ export default function RequestQuote() {
                       <select
                         value={stability}
                         onChange={(event) => setStability(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         {stabilityOptions.map((option) => (
                           <option key={option.code} value={option.code}>{option.code}: {option.label}</option>
@@ -764,14 +808,14 @@ export default function RequestQuote() {
                       <select
                         value={mode}
                         onChange={(event) => setMode(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         <option value="1">1: Fundamental</option>
                         <option value="3">3: 3rd overtone</option>
                         <option value="5">5: 5th overtone</option>
                       </select>
                     </Field>
-                    <div className="md:col-span-2 xl:col-span-3 border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                    <div className="md:col-span-2 xl:col-span-3 rounded-lg border border-white/70 bg-white/55 p-4 text-sm text-slate-600 shadow-inner">
                       {selectedCrystalPackage.description}
                     </div>
                   </>
@@ -783,7 +827,7 @@ export default function RequestQuote() {
                       <select
                         value={tuningForkPackage}
                         onChange={(event) => setTuningForkPackage(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         {tuningForkPackages.map((option) => (
                           <option key={option.code} value={option.code}>{option.type} ({option.code})</option>
@@ -791,24 +835,25 @@ export default function RequestQuote() {
                       </select>
                     </Field>
                     <Field label="Frequency (kHz)" icon={<Gauge className="h-4 w-4" />}>
-                      <Input value={tuningForkFrequency} onChange={(event) => setTuningForkFrequency(event.target.value)} />
+                      <Input className={inputGlowClass} value={tuningForkFrequency} onChange={(event) => setTuningForkFrequency(event.target.value)} />
                     </Field>
                     <Field label="Load capacitance" icon={<Cpu className="h-4 w-4" />}>
                       <select
                         value={tuningForkCl}
                         onChange={(event) => setTuningForkCl(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         <option value="125">12.5 pF</option>
                         <option value="90">9.0 pF</option>
                         <option value="70">7.0 pF</option>
                       </select>
                     </Field>
+                    <StepHeader title="3. Specs" />
                     <Field label="Temperature" icon={<Timer className="h-4 w-4" />}>
                       <select
                         value={tuningForkTemp}
                         onChange={(event) => setTuningForkTemp(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         <option value="A">A: -40~85C</option>
                         <option value="B">B: -20~70C</option>
@@ -825,7 +870,7 @@ export default function RequestQuote() {
                         <select
                           value={xoProduct}
                           onChange={(event) => setXoProduct(event.target.value)}
-                          className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                          className={pickerClass}
                         >
                           {["SCO-10", "SCO-32", "SCO-53", "SCO-22", "SCO-06"].map((option) => (
                             <option key={option} value={option}>{option}</option>
@@ -834,13 +879,13 @@ export default function RequestQuote() {
                       </Field>
                     )}
                     <Field label="Frequency (MHz)" icon={<Gauge className="h-4 w-4" />}>
-                      <Input value={frequency} onChange={(event) => setFrequency(event.target.value)} />
+                      <Input className={inputGlowClass} value={frequency} onChange={(event) => setFrequency(event.target.value)} />
                     </Field>
                     <Field label="Supply voltage" icon={<Cpu className="h-4 w-4" />}>
                       <select
                         value={voltage}
                         onChange={(event) => setVoltage(event.target.value)}
-                        className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        className={pickerClass}
                       >
                         <option value="50">5.0 V</option>
                         <option value="33">3.3 V</option>
@@ -848,13 +893,14 @@ export default function RequestQuote() {
                         <option value="18">1.8 V</option>
                       </select>
                     </Field>
+                    <StepHeader title="3. Specs" />
                     {family === "xo" && (
                       <>
                         <Field label="Stability" icon={<ShieldCheck className="h-4 w-4" />}>
                           <select
                             value={oscStability}
                             onChange={(event) => setOscStability(event.target.value)}
-                            className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                            className={pickerClass}
                           >
                             <option value="25">+/-25ppm</option>
                             <option value="50">+/-50ppm</option>
@@ -865,7 +911,7 @@ export default function RequestQuote() {
                           <select
                             value={oscTemp}
                             onChange={(event) => setOscTemp(event.target.value)}
-                            className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                            className={pickerClass}
                           >
                             <option value="">0~70C</option>
                             <option value="A">-40~85C</option>
@@ -878,7 +924,7 @@ export default function RequestQuote() {
                           <select
                             value={duty}
                             onChange={(event) => setDuty(event.target.value)}
-                            className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                            className={pickerClass}
                           >
                             <option value="D">45/55</option>
                             <option value="E">40/60</option>
@@ -888,7 +934,7 @@ export default function RequestQuote() {
                           <select
                             value={oe}
                             onChange={(event) => setOe(event.target.value)}
-                            className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                            className={pickerClass}
                           >
                             <option value="S">Tri-state</option>
                             <option value="E">Enable/disable</option>
@@ -903,7 +949,7 @@ export default function RequestQuote() {
                           <select
                             value={output}
                             onChange={(event) => setOutput(event.target.value)}
-                            className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                            className={pickerClass}
                           >
                             <option value="M">HCMOS</option>
                             <option value="S">Clipped sinewave</option>
@@ -913,7 +959,7 @@ export default function RequestQuote() {
                           <select
                             value={pulling}
                             onChange={(event) => setPulling(event.target.value)}
-                            className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                            className={pickerClass}
                           >
                             <option value="">TCXO, no pulling</option>
                             <option value="5">+/-5ppm min</option>
@@ -933,6 +979,7 @@ export default function RequestQuote() {
                     </div>
                     <Field label="What do you know?" icon={<HelpCircle className="h-4 w-4" />}>
                       <Textarea
+                        className={textareaGlowClass}
                         rows={5}
                         value={note}
                         onChange={(event) => setNote(event.target.value)}
@@ -942,19 +989,21 @@ export default function RequestQuote() {
                   </div>
                 )}
 
+                <StepHeader title="4. RFQ details" />
                 <Field label="Quantity" icon={<ClipboardList className="h-4 w-4" />}>
-                  <Input value={quantity} onChange={(event) => setQuantity(event.target.value)} />
+                  <Input className={inputGlowClass} value={quantity} onChange={(event) => setQuantity(event.target.value)} />
                 </Field>
                 <Field label="Target date" icon={<Clock className="h-4 w-4" />}>
-                  <Input type="date" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} />
+                  <Input className={inputGlowClass} type="date" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} />
                 </Field>
                 <Field label="Customer reference" icon={<FileText className="h-4 w-4" />}>
-                  <Input value={customerReference} onChange={(event) => setCustomerReference(event.target.value)} placeholder="Your part # or project" />
+                  <Input className={inputGlowClass} value={customerReference} onChange={(event) => setCustomerReference(event.target.value)} placeholder="Your part # or project" />
                 </Field>
                 {family !== "other" && (
                   <div className="md:col-span-2 xl:col-span-3">
                     <Field label="Notes" icon={<FileText className="h-4 w-4" />}>
                       <Textarea
+                        className={textareaGlowClass}
                         rows={3}
                         value={note}
                         onChange={(event) => setNote(event.target.value)}
@@ -1198,6 +1247,18 @@ function Field({
         {label}
       </Label>
       {children}
+    </div>
+  );
+}
+
+function StepHeader({ title }: { title: string }) {
+  return (
+    <div className="md:col-span-2 xl:col-span-3">
+      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-primary">
+        <span className="h-px flex-1 bg-primary/20" />
+        <span>{title}</span>
+        <span className="h-px flex-1 bg-primary/20" />
+      </div>
     </div>
   );
 }
