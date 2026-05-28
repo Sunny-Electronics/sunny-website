@@ -185,11 +185,12 @@ export default function SunnyChatButton() {
 
       <div className="border-t border-border bg-background p-3">
         {error ? <div className="mb-2 text-xs text-destructive">{error}</div> : null}
-        <form className="flex gap-2" onSubmit={sendMessage}>
-          <input
-            className="min-w-0 flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        <form className="flex items-end gap-2" onSubmit={sendMessage}>
+          <textarea
+            className="min-h-[56px] min-w-0 flex-1 resize-none rounded-md border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:ring-2 focus-visible:ring-ring"
             value={input}
             maxLength={700}
+            rows={2}
             placeholder="Ask Sunny about RFQ, part number, lead time..."
             onChange={(event) => setInput(event.target.value)}
           />
