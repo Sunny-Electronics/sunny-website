@@ -205,6 +205,24 @@ function sanitize(value) {
     .trim();
 }
 
+function isSunnychatScopeAllowed(message, pagePath = "/") {
+  const text = String(message || "").toLowerCase();
+
+  if (/^(hi|hello|hey|안녕|안녕하세요|help|start|thanks|thank you)\b/.test(text.trim())) return true;
+
+  return /sunny|sunnykr|sunny\.co\.kr|catalog|catalogue|datasheet|document|certificate|quality|qa|r&d|engineering|rfq|quote|bom|lead time|stock|inventory|price|pricing|crystal|quartz|resonator|oscillator|frequency control|frequency|mhz|khz|smd|sx-|ats-|sco|spxo|tcxo|vcxo|ocxo|load capacitance|\bcl\b|ppm|package|tolerance|stability|temperature|rohs|reach|iatf|iso|spa|portal|part number|p\/n|pn/.test(
+    text,
+  );
+}
+
+function scopeFallback() {
+  return {
+    reply:
+      "Sunnychat can only help with Sunny catalog, SunnyKR/Sunny website information, Sunny documents, and frequency-control products such as crystals, resonators, oscillators, RFQ, R&D, and QA support. Please ask about a Sunny part number, catalog spec, document, quality request, or quote detail.",
+    links: [siteLinks.products, siteLinks.quote, siteLinks.documents],
+  };
+}
+
 function parseBody(req) {
   if (req.body && typeof req.body === "object") return req.body;
   if (typeof req.body === "string") {
@@ -440,6 +458,8 @@ function suggestSunnyCrystalPart(message) {
 
 function keywordFallback(message, pagePath = "/") {
   const text = `${message} ${pagePath}`.toLowerCase();
+  if (!isSunnychatScopeAllowed(message, pagePath)) return scopeFallback();
+
   const partExplanation = explainSunnyCrystalPart(message);
   if (partExplanation) return partExplanation;
   const partSuggestion = suggestSunnyCrystalPart(message);
@@ -494,13 +514,18 @@ function keywordFallback(message, pagePath = "/") {
 
 function buildSystemGuide(pagePath) {
   return [
-    "You are Sunny, the SunnyKR.com assistant for Sunny Electronics.",
-    "Role: knowledgeable electronics component assistant for SMD crystals, quartz crystal units, tuning-fork crystals, resonators, XO/SPXO, TCXO, VCXO, OCXO, RFQ support, document support, sourcing/manufacturing support, and Sunny Electronics information.",
+    "You are Sunnychat, the SunnyKR.com assistant for Sunny Electronics.",
+    "Strict scope: answer only about Sunny catalogs, Sunny.co.kr, SunnyKR.com, Sunny documents, Sunny frequency-control device products, RFQ, R&D support, and QA support.",
+    "Role: knowledgeable Sunny R&D and QA oriented assistant for SMD crystals, quartz crystal units, tuning-fork crystals, resonators, XO/SPXO, TCXO, VCXO, OCXO, RFQ support, document support, sourcing/manufacturing support, and Sunny Electronics information.",
+    "If the visitor asks for anything outside this scope, politely decline and ask for a Sunny catalog, Sunny website, Sunny document, frequency-control product, RFQ, R&D, or QA question.",
     "Tone: professional, concise, helpful, human sounding, and business focused.",
     "Sunny way: warm but practical, ask for the missing engineering/RFQ fields, guide the visitor to the right SunnyKR flow, and protect customer-specific information.",
     "Use Sunny brain memory from recent conversation and visitor-provided preferences to keep continuity, but do not claim permanent server memory or reveal private notes.",
     "Keep answers short. Use simple English unless Korean is clearly better for the visitor.",
-    "Do not overpromise price, stock, certifications, qualification, lead time, delivery, or order status. Say these require official Sunny confirmation.",
+    "When not proven by Sunny catalog, Sunny website, or provided Sunny documents, phrase engineering output as a suggestion for RFQ review, not a confirmed final answer.",
+    "Do not overpromise price, stock, overstock availability, certifications, qualification, lead time, delivery, or order status. Say these require official Sunny confirmation unless a provided Sunny source explicitly proves the public information.",
+    "For standard frequencies, standard lead time, public price, or excess inventory, only relay it when Sunny catalog, Sunny website, or provided Sunny data explicitly supports it; otherwise route to RFQ or official Sunny confirmation.",
+    "Do not give general advice outside Sunny frequency-control products, and do not make unrelated product, business, legal, financial, medical, coding, or lifestyle suggestions.",
     "Never ask for passwords, tokens, private keys, card numbers, or sensitive personal data.",
     "Do not expose or mention internal infrastructure details such as Ollama, OpenClaw, local ports, Cloudflare tunnel tokens, or API secrets.",
     "Public access must stay frontend to bridge/API to secure tunnel to OpenClaw/Gemma4.",
@@ -629,6 +654,15 @@ export default async function handler(req, res) {
     return res.status(400).json({
       error: "BadRequest",
       message: "Please enter a message.",
+    });
+  }
+
+  if (!isSunnychatScopeAllowed(message, pagePath)) {
+    const fallback = scopeFallback();
+    return res.status(200).json({
+      reply: fallback.reply,
+      links: fallback.links,
+      source: "scope",
     });
   }
 

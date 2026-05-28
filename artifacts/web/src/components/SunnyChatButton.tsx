@@ -20,7 +20,7 @@ const initialMessages: ChatMessage[] = [
   {
     role: "assistant",
     text:
-      "Hi, I am Sunny. I can help with SMD crystals, oscillators, RFQs, documents, lead time, and Sunny Electronics information.",
+      "Hi, I am Sunnychat. I can help with Sunny catalogs, SMD crystals, oscillators, RFQs, documents, R&D, and QA support.",
   },
 ];
 
@@ -116,7 +116,7 @@ export default function SunnyChatButton() {
 
       const data = await response.json().catch(() => null);
       if (!response.ok || !data?.reply) {
-        throw new Error(data?.message || "Sunny chat is unavailable.");
+        throw new Error(data?.message || "Sunnychat is unavailable.");
       }
 
       const links = Array.isArray(data.links)
@@ -130,13 +130,13 @@ export default function SunnyChatButton() {
 
       setMessages((current) => [...current, { role: "assistant", text: data.reply, links }]);
     } catch {
-      setError("Sunny chat API is not reachable yet. Telegram is still available.");
+      setError("Sunnychat API is not reachable yet. Telegram is still available.");
       setMessages((current) => [
         ...current,
         {
           role: "assistant",
           text:
-            "I could not reach the Sunny website chat API right now. For urgent RFQ or order support, please use Telegram or the RFQ page.",
+            "I could not reach Sunnychat right now. For urgent RFQ or order support, please use Telegram or the RFQ page.",
         },
       ]);
     } finally {
@@ -149,11 +149,11 @@ export default function SunnyChatButton() {
       <button
         type="button"
         className="fixed bottom-5 right-5 z-50 inline-flex h-14 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-xl transition hover:-translate-y-0.5 hover:bg-primary/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        aria-label="Chat with Sunny"
+        aria-label="Chat with Sunnychat"
         onClick={() => setIsOpen(true)}
       >
         <MessageCircle className="h-5 w-5" aria-hidden="true" />
-        Chat with Sunny
+        Sunnychat
       </button>
     );
   }
@@ -161,17 +161,17 @@ export default function SunnyChatButton() {
   return (
     <section
       className="fixed bottom-5 right-5 z-50 flex h-[min(620px,calc(100vh-40px))] w-[min(380px,calc(100vw-40px))] flex-col overflow-hidden rounded-lg border border-border bg-background shadow-2xl"
-      aria-label="Sunny chat"
+      aria-label="Sunnychat"
     >
       <div className="flex items-center justify-between border-b border-border bg-primary px-4 py-3 text-primary-foreground">
         <div>
-          <div className="text-sm font-semibold">Sunny</div>
-          <div className="text-xs opacity-85">SMD crystal, oscillator, RFQ, and document support</div>
+          <div className="text-sm font-semibold">Sunnychat</div>
+          <div className="text-xs opacity-85">Sunny catalog, R&D, QA, RFQ support</div>
         </div>
         <button
           type="button"
           className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-          aria-label="Close Sunny chat"
+          aria-label="Close Sunnychat"
           onClick={() => setIsOpen(false)}
         >
           <X className="h-5 w-5" aria-hidden="true" />
@@ -215,7 +215,7 @@ export default function SunnyChatButton() {
         ))}
         {isSending ? (
           <div className="max-w-[85%] rounded-lg border border-border bg-card px-3 py-2 text-sm text-muted-foreground">
-            Sunny is checking...
+            Sunnychat is checking...
           </div>
         ) : null}
       </div>
