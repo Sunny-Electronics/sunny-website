@@ -146,7 +146,6 @@ const crystalPackingOptions = [
   { value: "TR", label: "T/R" },
   { value: "Bulk", label: "Bulk" },
   { value: "Sample", label: "Sample" },
-  { value: "CatalogPN", label: "Sunny catalog P/N" },
 ];
 
 const quickPresets = [
