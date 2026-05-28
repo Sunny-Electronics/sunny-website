@@ -711,7 +711,7 @@ export default function RequestQuote() {
                 <div className="mb-1 text-xs font-bold uppercase tracking-wide text-primary">Sunny-Catalog P/N</div>
                 <div className="break-all font-mono text-xl font-bold leading-tight text-slate-950">{generatedPart}</div>
                 <div className="mt-2 text-xs leading-5 text-slate-600">{specSummary}</div>
-                <Button className="mt-4 h-11 w-full gap-2" onClick={addGeneratedPart} data-testid="button-add-generated-part">
+                <Button className="step-callout mt-4 h-11 w-full gap-2 font-bold" onClick={addGeneratedPart} data-testid="button-add-generated-part">
                   <Plus className="h-4 w-4" />
                   4. Add to Quote List
                 </Button>
@@ -726,7 +726,7 @@ export default function RequestQuote() {
               </div>
 
               <div className="mt-4 rounded-lg border border-primary/15 bg-white/75 p-4 shadow-inner">
-                <div className="mb-3 flex items-center gap-2 text-sm font-bold text-slate-950">
+                <div className="step-callout mb-3 flex items-center gap-2 px-3 py-2 text-base font-bold">
                   <ClipboardList className="h-4 w-4 text-primary" />
                   Quote process help
                 </div>
@@ -1011,7 +1011,11 @@ export default function RequestQuote() {
                 </Field>
                 {family !== "other" && (
                   <div className="md:col-span-2 xl:col-span-3">
-                    <Field label="Notes (Brief description of your requirements and demands. This helps Sunny process the correct requirements.)" icon={<FileText className="h-4 w-4" />}>
+                    <Field
+                      label="Notes (Brief description of your requirements and demands. This helps Sunny process the correct requirements.)"
+                      icon={<FileText className="h-4 w-4" />}
+                      labelClassName="step-callout px-3 py-2"
+                    >
                       <Textarea
                         className={textareaGlowClass}
                         rows={3}
@@ -1036,7 +1040,7 @@ export default function RequestQuote() {
               </p>
             </div>
             <div className="flex flex-col gap-1 md:items-end">
-              <Button className="gap-2" onClick={openQuoteRequestModal} data-testid="button-create-quote-request">
+              <Button className="step-callout h-11 gap-2 px-4 font-bold" onClick={openQuoteRequestModal} data-testid="button-create-quote-request">
                 <Check className="h-4 w-4" />
                 5. Send your quote list to Sunny for review
               </Button>
@@ -1275,14 +1279,16 @@ function Field({
   children,
   icon,
   label,
+  labelClassName = "",
 }: {
   children: React.ReactNode;
   icon: React.ReactNode;
   label: string;
+  labelClassName?: string;
 }) {
   return (
     <div>
-      <Label className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700">
+      <Label className={`mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700 ${labelClassName}`}>
         <span className="text-primary">{icon}</span>
         {label}
       </Label>
