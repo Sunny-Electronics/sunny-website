@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MessageCircle, Send, X } from "lucide-react";
 
 type ChatMessage = {
@@ -57,12 +57,23 @@ export default function SunnyChatButton() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
   const [memory, setMemory] = useState<string[]>([]);
+  const messagesViewportRef = useRef<HTMLDivElement | null>(null);
 
   const canSend = useMemo(() => input.trim().length > 0 && !isSending, [input, isSending]);
 
   useEffect(() => {
     setMemory(readSunnyMemory());
   }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    window.requestAnimationFrame(() => {
+      const viewport = messagesViewportRef.current;
+      if (viewport) {
+        viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
+      }
+    });
+  }, [input, isOpen, isSending, messages]);
 
   async function sendMessage(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -152,7 +163,7 @@ export default function SunnyChatButton() {
         </button>
       </div>
 
-      <div className="flex-1 space-y-3 overflow-y-auto bg-muted/30 px-4 py-4">
+      <div ref={messagesViewportRef} className="flex-1 space-y-3 overflow-y-auto bg-muted/30 px-4 py-4">
         {messages.map((message, index) => (
           <div
             key={`${message.role}-${index}`}
