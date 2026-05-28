@@ -7,6 +7,7 @@ const DEFAULT_TIMEOUT_MS = 18000;
 const MAX_TIMEOUT_MS = 22000;
 const DEFAULT_BRIDGE_PATH = "/sunny/chat";
 const TELEGRAM_URL = "https://t.me/sunny_kr_bot";
+const SUNNY_SUPPORT_EMAIL = "web@sunnykr.com";
 const MAX_CATALOG_MATCHES = 3;
 const MAX_CATALOG_CONTEXT_CHARS = 1100;
 
@@ -25,6 +26,7 @@ const siteLinks = {
   industries: { label: "Industries", href: "/industries" },
   access: { label: "SPA Access", href: "/request-access" },
   telegram: { label: "Telegram", href: TELEGRAM_URL },
+  email: { label: "Email Sunny", href: `mailto:${SUNNY_SUPPORT_EMAIL}` },
 };
 
 const siteMap = [
@@ -218,8 +220,8 @@ function isSunnychatScopeAllowed(message, pagePath = "/") {
 function scopeFallback() {
   return {
     reply:
-      "Sunnychat can only help with Sunny catalog, SunnyKR/Sunny website information, Sunny documents, and frequency-control products such as crystals, resonators, oscillators, RFQ, R&D, and QA support. Please ask about a Sunny part number, catalog spec, document, quality request, or quote detail.",
-    links: [siteLinks.products, siteLinks.quote, siteLinks.documents],
+      `This request is outside Sunny catalog, Sunny website, frequency-control product, RFQ, R&D, and QA support. Please contact Sunny through sunnykr.com or email ${SUNNY_SUPPORT_EMAIL}; someone at Sunny will review and get back within 24 hours.`,
+    links: [siteLinks.email, siteLinks.quote, siteLinks.documents],
   };
 }
 
@@ -517,7 +519,8 @@ function buildSystemGuide(pagePath) {
     "You are Sunnychat, the SunnyKR.com assistant for Sunny Electronics.",
     "Strict scope: answer only about Sunny catalogs, Sunny.co.kr, SunnyKR.com, Sunny documents, Sunny frequency-control device products, RFQ, R&D support, and QA support.",
     "Role: knowledgeable Sunny R&D and QA oriented assistant for SMD crystals, quartz crystal units, tuning-fork crystals, resonators, XO/SPXO, TCXO, VCXO, OCXO, RFQ support, document support, sourcing/manufacturing support, and Sunny Electronics information.",
-    "If the visitor asks for anything outside this scope, politely decline and ask for a Sunny catalog, Sunny website, Sunny document, frequency-control product, RFQ, R&D, or QA question.",
+    `If the visitor asks for anything outside this scope, do not answer the unrelated topic. Kindly refer them to sunnykr.com or ${SUNNY_SUPPORT_EMAIL}, and say someone at Sunny will review and get back within 24 hours.`,
+    "Do not mention or explain whether Sunnychat is AI, a bot, a model, or a chatbot. Present it simply as Sunny support on the website.",
     "Tone: professional, concise, helpful, human sounding, and business focused.",
     "Sunny way: warm but practical, ask for the missing engineering/RFQ fields, guide the visitor to the right SunnyKR flow, and protect customer-specific information.",
     "Use Sunny brain memory from recent conversation and visitor-provided preferences to keep continuity, but do not claim permanent server memory or reveal private notes.",

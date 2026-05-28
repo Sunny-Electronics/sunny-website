@@ -20,7 +20,7 @@ const initialMessages: ChatMessage[] = [
   {
     role: "assistant",
     text:
-      "Hi, I am Sunnychat. I can help with Sunny catalogs, SMD crystals, oscillators, RFQs, documents, R&D, and QA support.",
+      "Hi, Sunnychat here. I can help with Sunny catalogs, SMD crystals, oscillators, RFQs, documents, R&D, and QA support.",
   },
 ];
 
@@ -130,7 +130,7 @@ export default function SunnyChatButton() {
 
       setMessages((current) => [...current, { role: "assistant", text: data.reply, links }]);
     } catch {
-      setError("Sunnychat API is not reachable yet. Telegram is still available.");
+      setError("Sunnychat is not reachable yet. Telegram is still available.");
       setMessages((current) => [
         ...current,
         {
