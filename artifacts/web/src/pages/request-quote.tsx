@@ -838,7 +838,9 @@ export default function RequestQuote() {
                         className={pickerClass}
                       >
                         {["10", "15", "20", "30", "50"].map((option) => (
-                          <option key={option} value={option}>+/-{option}ppm</option>
+                          <option key={option} value={option}>
+                            +/-{option}ppm{option === "50" ? " (standard)" : ""}
+                          </option>
                         ))}
                       </select>
                     </Field>
