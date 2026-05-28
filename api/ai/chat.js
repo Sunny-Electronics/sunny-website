@@ -81,6 +81,20 @@ const crystalStabilityCodes = {
   10: "+/-200ppm",
 };
 
+const crystalStabilityByTempCode = {
+  D: "3",
+  E: "3",
+  F: "3",
+  G: "4",
+  H: "5",
+  I: "5",
+  J: "5",
+  K: "6",
+  L: "6",
+  M: "7",
+  N: "7",
+};
+
 const crystalPackageSizeCodes = [
   { code: "S", packageName: "SX-16", pattern: /\b(?:1\.?6\s*(?:x|×)\s*1\.?2|1612)\b/i },
   { code: "R", packageName: "SX-21", pattern: /\b(?:2\.?0\s*(?:x|×)\s*1\.?6|2016)\b/i },
@@ -207,6 +221,17 @@ function sanitize(value) {
     .trim();
 }
 
+function normalizePpmText(value) {
+  return sanitize(value)
+    .replace(/\\?\$\s*\\?pm\s*(\d{1,3})\s*\\?\$\s*ppm/gi, "+/-$1ppm")
+    .replace(/\\?\$\s*\\?pm\s*(\d{1,3})\s*ppm\s*\\?\$/gi, "+/-$1ppm")
+    .replace(/\\?\\pm\s*(\d{1,3})\s*ppm/gi, "+/-$1ppm")
+    .replace(/\b(\d{1,3})\$\s*ppm\b/gi, "+/-$1ppm")
+    .replace(/\+\s*\/\s*-\s*(\d{1,3})\s*ppm/gi, "+/-$1ppm")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 function isSunnychatScopeAllowed(message, pagePath = "/") {
   const text = String(message || "").toLowerCase();
 
@@ -313,7 +338,7 @@ function readAssistantText(data) {
     data.choices?.[0]?.message?.content ||
     data.choices?.[0]?.text ||
     "";
-  return sanitize(answer);
+  return normalizePpmText(answer);
 }
 
 function explainSunnyCrystalPart(message) {
@@ -377,6 +402,14 @@ function extractPpmNear(text, words) {
   return before ? before[1] : "";
 }
 
+function wantsLowestAvailablePpm(text) {
+  return /\b(?:lowest|best|tightest|min(?:imum)?|as\s+low\s+as\s+possible|low\s+tolerance|low\s+ppm|smallest)\b/i.test(text);
+}
+
+function minimumCrystalStabilityCodeForTemp(tempCode) {
+  return crystalStabilityByTempCode[String(tempCode || "").toUpperCase()] || "7";
+}
+
 function extractCrystalTempCode(text) {
   const match = text.match(/(-\s*\d{1,3})\s*(?:~|-|to)\s*(\+?\s*\d{1,3})\s*(?:c|℃)?/i);
   if (!match) return "";
@@ -419,22 +452,55 @@ function suggestSunnyCrystalPart(message) {
 
   const packageInfo = extractCrystalPackage(text);
   const frequency = extractCrystalFrequency(text);
-  if (!packageInfo || !frequency) return null;
+  if (!packageInfo || !frequency) {
+    const tempCode = extractCrystalTempCode(text);
+    const loadCap = extractCrystalLoadCap(text);
+    if (packageInfo && !frequency && wantsLowestAvailablePpm(text) && tempCode) {
+      const stabilityCode = minimumCrystalStabilityCodeForTemp(tempCode);
+      const ppm = crystalStabilityCodes[stabilityCode]?.match(/\d+/)?.[0] || "50";
+      return {
+        reply: normalizePpmText(
+          `I can prepare most of this Sunny-Catalog crystal RFQ, but I still need the exact frequency in MHz before generating the P/N. From the catalog table, ${crystalTempCodes[tempCode]} supports lowest available ${crystalStabilityCodes[stabilityCode]} for RFQ review, so I would use code ${stabilityCode} and +/-${ppm}ppm. I also read ${packageInfo.packageName} (${crystalPackageCodes[packageInfo.code]})${loadCap ? ` and ${loadCap} pF CL` : ""}. Please provide the exact frequency, then Sunnychat can create the suggested Sunny-Catalog P/N and open the prefilled quote builder.`,
+        ),
+        links: [siteLinks.quote, siteLinks.products],
+      };
+    }
+    return null;
+  }
 
   const assumptions = [];
   const loadCap = extractCrystalLoadCap(text) || "12";
   if (!extractCrystalLoadCap(text)) assumptions.push("load capacitance was not provided, so 12 pF was used for quote-builder review");
-
-  const tolerance = extractPpmNear(text, ["tolerance", "tol"]) || "50";
-  if (!extractPpmNear(text, ["tolerance", "tol"])) assumptions.push("frequency tolerance was not provided, so +/-50ppm was used as a standard RFQ placeholder");
+  const catalogLoadCap = loadCap.padStart(2, "0");
 
   const tempCode = extractCrystalTempCode(text) || "E";
   if (!extractCrystalTempCode(text)) assumptions.push("operating temp range was not provided, so -20~70C was used as a standard RFQ placeholder");
 
-  const stabilityCode = extractCrystalStabilityCode(text) || "7";
-  if (!extractCrystalStabilityCode(text)) assumptions.push("temperature stability was not provided, so +/-50ppm was used as a standard RFQ placeholder");
+  const explicitTolerance = extractPpmNear(text, ["tolerance", "tol"]);
+  const explicitStabilityCode = extractCrystalStabilityCode(text);
+  const inferredLowestStabilityCode = minimumCrystalStabilityCodeForTemp(tempCode);
+  const inferredLowestPpm = crystalStabilityCodes[inferredLowestStabilityCode]?.match(/\d+/)?.[0] || "50";
+  const useLowestFromCatalog = wantsLowestAvailablePpm(text) && Boolean(tempCode);
 
-  const partNumber = `S${packageInfo.code}${loadCap}1${tolerance}${tempCode}${stabilityCode}-${frequency}-T&R`;
+  const tolerance = explicitTolerance || (useLowestFromCatalog ? inferredLowestPpm : "50");
+  if (!explicitTolerance) {
+    assumptions.push(
+      useLowestFromCatalog
+        ? `frequency tolerance was not provided as a number; because the customer asked for lowest/best and ${crystalTempCodes[tempCode]} was provided, +/-${inferredLowestPpm}ppm was used from the Sunny crystal stability table for RFQ review`
+        : "frequency tolerance was not provided, so +/-50ppm was used as a standard RFQ placeholder",
+    );
+  }
+
+  const stabilityCode = explicitStabilityCode || (useLowestFromCatalog ? inferredLowestStabilityCode : "7");
+  if (!explicitStabilityCode) {
+    assumptions.push(
+      useLowestFromCatalog
+        ? `temperature stability was not provided as a number; Sunny catalog table allows ${crystalStabilityCodes[inferredLowestStabilityCode]} for ${crystalTempCodes[tempCode]}, so that lowest available value was used for RFQ review`
+        : "temperature stability was not provided, so +/-50ppm was used as a standard RFQ placeholder",
+    );
+  }
+
+  const partNumber = `S${packageInfo.code}${catalogLoadCap}1${tolerance}${tempCode}${stabilityCode}-${frequency}-T&R`;
   const tempRange = crystalTempCodes[tempCode] || `temp code ${tempCode}`;
   const stability = crystalStabilityCodes[stabilityCode] || `stability code ${stabilityCode}`;
   const href = buildCrystalQuoteHref({
@@ -453,7 +519,7 @@ function suggestSunnyCrystalPart(message) {
 
   return {
     reply:
-      `Based on Sunny catalog coding, a suggested RFQ-review P/N is ${partNumber}. This means ${packageInfo.packageName} (${crystalPackageCodes[packageInfo.code]}), ${frequency} MHz, ${loadCap} pF CL, fundamental mode, +/-${tolerance}ppm frequency tolerance at 25 C, ${tempRange} operating temp, and ${stability} temp stability.${assumptionText} Sunny should confirm the final approved P/N, price, stock, lead time, and qualification. I also prepared the instant quote builder so the customer can review the line and click step 5 to send it to Sunny.`,
+      normalizePpmText(`Based on Sunny catalog coding, a suggested RFQ-review P/N is ${partNumber}. This means ${packageInfo.packageName} (${crystalPackageCodes[packageInfo.code]}), ${frequency} MHz, ${loadCap} pF CL, fundamental mode, +/-${tolerance}ppm frequency tolerance at 25 C, ${tempRange} operating temp, and ${stability} temp stability.${assumptionText} Sunny should confirm the final approved P/N, price, stock, lead time, and qualification. I also prepared the instant quote builder so the customer can review the line and click step 5 to send it to Sunny.`),
     links: [{ label: "Open prefilled quote builder", href }, siteLinks.quote],
   };
 }
@@ -720,7 +786,7 @@ export default async function handler(req, res) {
   });
   const bridgeReply = bridgeResult.reply;
 
-  const reply = bridgeReply || fallback.reply;
+  const reply = normalizePpmText(bridgeReply || fallback.reply);
 
   const payload = {
     reply,

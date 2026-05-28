@@ -31,16 +31,18 @@
       "partNumberExamples": ["SR12130J6-32.0000", "SO10130J7-32.0000-T&R"],
       "partNumberRules": [
         "Package codes: C ATS-25/U, D ATS-49/U, J SX-1, K SX-3, M SX-7, O SX-8, P SX-32, Q SX-22, R SX-21, S SX-16, T SX-A21, U SX-A22, V SX-A32, W SX-A8.",
-        "Load capacitance is written as the pF number, for example 10 for 10 pF or 12 for 12 pF.",
+        "Load capacitance is written as two digits in the P/N, for example 08 for 8 pF, 10 for 10 pF, or 12 for 12 pF.",
         "Mode code 1 means fundamental and is the normal RFQ placeholder for common MHz SMD crystals.",
         "Frequency tolerance at 25 C is written as the ppm value, for example 30 for +/-30ppm or 50 for +/-50ppm.",
         "Operating temp codes: D -10~70C, E -20~70C, F -30~60C, G -20~85C, H -30~70C, I -30~85C, J -40~85C, K -40~90C, L -40~105C, M -40~125C, N -40~150C.",
-        "Temperature stability codes: 3 +/-10ppm, 4 +/-15ppm, 5 +/-20ppm, 6 +/-30ppm, 7 +/-50ppm, 8 +/-100ppm, 9 +/-150ppm, 10 +/-200ppm."
+        "Temperature stability codes: 3 +/-10ppm, 4 +/-15ppm, 5 +/-20ppm, 6 +/-30ppm, 7 +/-50ppm, 8 +/-100ppm, 9 +/-150ppm, 10 +/-200ppm.",
+        "Sunny catalog temperature-stability table minimums by operating temperature: D -10~70C uses code 3 +/-10ppm; E -20~70C uses code 3 +/-10ppm; F -30~60C uses code 3 +/-10ppm; G -20~85C uses code 4 +/-15ppm; H -30~70C uses code 5 +/-20ppm; I -30~85C uses code 5 +/-20ppm; J -40~85C uses code 5 +/-20ppm; K -40~90C uses code 6 +/-30ppm; L -40~105C uses code 6 +/-30ppm; M -40~125C uses code 7 +/-50ppm; N -40~150C uses code 7 +/-50ppm."
       ],
       "defaultRules": [
         "If frequency tolerance is missing, use +/-50ppm as an RFQ placeholder and tell the visitor this assumption.",
         "If operating temperature is missing, use -20~70C as an RFQ placeholder and tell the visitor this assumption.",
         "If temperature stability is missing, use +/-50ppm as an RFQ placeholder and tell the visitor this assumption.",
+        "If the customer asks for lowest, best, tightest, or lowest possible ppm and gives an operating temperature range, use the Sunny catalog temperature-stability table minimum for that temperature range instead of defaulting to +/-50ppm, and tell the visitor this was inferred for RFQ review.",
         "If load capacitance is missing, use 12 pF as an RFQ placeholder and tell the visitor this assumption."
       ],
       "packageSizeMap": [
