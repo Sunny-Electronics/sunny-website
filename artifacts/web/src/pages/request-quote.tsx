@@ -1038,7 +1038,7 @@ export default function RequestQuote() {
             <div className="flex flex-col gap-1 md:items-end">
               <Button className="gap-2" onClick={openQuoteRequestModal} data-testid="button-create-quote-request">
                 <Check className="h-4 w-4" />
-                Send your quote list to Sunny for review
+                5. Send your quote list to Sunny for review
               </Button>
               <p className="text-xs font-medium text-slate-500">Sunny will get back to you ASAP.</p>
             </div>
