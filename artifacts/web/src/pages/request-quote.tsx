@@ -800,7 +800,7 @@ export default function RequestQuote() {
                         ))}
                       </select>
                     </Field>
-                    <Field label="Stability" icon={<Gauge className="h-4 w-4" />}>
+                    <Field label="Temp Stability" icon={<Gauge className="h-4 w-4" />}>
                       <select
                         value={stability}
                         onChange={(event) => setStability(event.target.value)}
@@ -901,7 +901,7 @@ export default function RequestQuote() {
                     </Field>
                     {family === "xo" && (
                       <>
-                        <Field label="Stability" icon={<ShieldCheck className="h-4 w-4" />}>
+                        <Field label="Temp Stability" icon={<ShieldCheck className="h-4 w-4" />}>
                           <select
                             value={oscStability}
                             onChange={(event) => setOscStability(event.target.value)}
