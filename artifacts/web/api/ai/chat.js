@@ -37,6 +37,46 @@ const siteMap = [
   "SPA Access /request-access: buyer, distributor, and customer access request.",
 ];
 
+const crystalPackageCodes = {
+  C: "ATS-25/U",
+  D: "ATS-49/U",
+  J: "SX-1",
+  K: "SX-3",
+  M: "SX-7",
+  O: "SX-8",
+  P: "SX-32",
+  Q: "SX-22",
+  R: "SX-21",
+  S: "SX-16",
+  T: "SX-A21",
+  U: "SX-A22",
+  V: "SX-A32",
+  W: "SX-A8",
+};
+
+const crystalTempCodes = {
+  D: "-10~70C",
+  E: "-20~70C",
+  F: "-30~60C",
+  G: "-20~85C",
+  H: "-30~70C",
+  I: "-30~85C",
+  J: "-40~85C",
+  K: "-40~90C",
+  L: "-40~105C",
+  M: "-40~125C",
+  N: "-40~150C",
+};
+
+const crystalStabilityCodes = {
+  3: "+/-10ppm",
+  4: "+/-15ppm",
+  5: "+/-20ppm",
+  6: "+/-30ppm",
+  7: "+/-50ppm",
+  8: "+/-100ppm",
+};
+
 function loadSunnyCatalog() {
   if (sunnyCatalogCache) return sunnyCatalogCache;
 
@@ -66,6 +106,8 @@ function scoreCatalogEntry(entry, query) {
       entry.summary,
       ...(entry.keywords || []),
       ...(entry.knownSeries || []),
+      entry.partNumberFormat,
+      ...(entry.partNumberExamples || []),
       ...(entry.knownDocuments || []),
       ...(entry.specGuidance || []),
       ...(entry.rfqFields || []),
@@ -118,11 +160,14 @@ function buildCatalogGuide(matches) {
     "Catalog context for this visitor question:",
     ...matches.map((entry) => {
       const knownSeries = (entry.knownSeries || []).slice(0, 8).join(", ");
+      const examples = (entry.partNumberExamples || []).slice(0, 4).join(", ");
       const fields = (entry.rfqFields || catalog.defaultRfqFields || []).slice(0, 8).join(", ");
       const routes = (entry.routes || []).map((route) => `${route.label} ${route.href}`).join("; ");
       return [
         `- ${entry.title}: ${entry.summary}`,
         knownSeries ? `Known series: ${knownSeries}.` : "",
+        entry.partNumberFormat ? `Sunny-Catalog P/N format: ${entry.partNumberFormat}` : "",
+        examples ? `Example Sunny-Catalog P/N: ${examples}.` : "",
         fields ? `Useful RFQ fields: ${fields}.` : "",
         routes ? `Route to: ${routes}.` : "",
       ]
@@ -233,8 +278,30 @@ function readAssistantText(data) {
   return sanitize(answer);
 }
 
+function explainSunnyCrystalPart(message) {
+  const match = normalizeForSearch(message).match(/\b(s)([a-z])(\d{2})([135])(\d{2})([a-z])([3-8])-(\d+(?:\.\d+)?)\b/);
+  if (!match) return null;
+
+  const [, prefix, packageCodeRaw, loadCap, mode, tolerance, tempCodeRaw, stabilityCode, frequency] = match;
+  const packageCode = packageCodeRaw.toUpperCase();
+  const tempCode = tempCodeRaw.toUpperCase();
+  const packageName = crystalPackageCodes[packageCode] || `package code ${packageCode}`;
+  const modeLabel = mode === "1" ? "fundamental" : `${mode}rd/5th overtone mode`;
+  const tempRange = crystalTempCodes[tempCode] || `operating temp code ${tempCode}`;
+  const stability = crystalStabilityCodes[stabilityCode] || `temp stability code ${stabilityCode}`;
+  const partNumber = `${prefix.toUpperCase()}${packageCode}${loadCap}${mode}${tolerance}${tempCode}${stabilityCode}-${frequency}`;
+
+  return {
+    reply:
+      `${partNumber} looks like a Sunny-Catalog crystal P/N for RFQ review: ${packageName}, ${frequency} MHz, ${loadCap} pF load capacitance, ${modeLabel}, +/-${tolerance}ppm frequency tolerance at 25 C, ${tempRange} operating temp range, and ${stability} temp stability. Sunny should still confirm final part number, price, stock, lead time, and qualification.`,
+    links: [siteLinks.quote, siteLinks.products],
+  };
+}
+
 function keywordFallback(message, pagePath = "/") {
   const text = `${message} ${pagePath}`.toLowerCase();
+  const partExplanation = explainSunnyCrystalPart(message);
+  if (partExplanation) return partExplanation;
 
   if (/rfq|quote|bom|price|pricing|cost|qty|quantity|lead time|lt|견적|가격|납기/.test(text)) {
     return {

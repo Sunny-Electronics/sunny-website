@@ -27,6 +27,8 @@
       "keywords": ["crystal", "quartz", "mhz", "sx", "ats", "resonator", "load capacitance", "tolerance", "cl"],
       "summary": "MHz and kHz quartz crystal units for compact electronic designs. Sunny supports SMD and through-hole crystal RFQ review.",
       "knownSeries": ["ATS-25/U", "ATS-49/U", "SX-1", "SX-3", "SX-7", "SX-8", "SX-32", "SX-22", "SX-21", "SX-16", "SX-A21", "SX-A22", "SX-A32", "SX-A8"],
+      "partNumberFormat": "Sunny-Catalog crystal P/N format follows S{package code}{load capacitance}{mode}{frequency tolerance at 25 C}{operating temp code}{temp stability code}-{frequency MHz to 4 decimals}.",
+      "partNumberExamples": ["SR12130J6-32.0000"],
       "specGuidance": ["confirm frequency", "package type or size", "load capacitance", "frequency tolerance", "frequency stability", "operating temperature"],
       "rfqFields": ["frequency", "package", "load capacitance", "tolerance", "stability", "temperature range", "quantity", "target date"],
       "routes": [
