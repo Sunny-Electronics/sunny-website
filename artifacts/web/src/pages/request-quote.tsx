@@ -602,7 +602,7 @@ export default function RequestQuote() {
 
       const result = await response.json().catch(() => ({}));
       if (!response.ok) {
-        throw new Error(result.error || "Quote request could not be sent yet.");
+        throw new Error([result.error, result.detail].filter(Boolean).join(" ") || "Quote request could not be sent yet.");
       }
 
       setQuoteModalOpen(false);
