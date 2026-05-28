@@ -789,7 +789,7 @@ export default function RequestQuote() {
                         ))}
                       </select>
                     </Field>
-                    <Field label="Temperature" icon={<Timer className="h-4 w-4" />}>
+                    <Field label="Operating Temp Range" icon={<Timer className="h-4 w-4" />}>
                       <select
                         value={temperature}
                         onChange={(event) => setTemperature(event.target.value)}
@@ -855,7 +855,7 @@ export default function RequestQuote() {
                         <option value="70">7.0 pF</option>
                       </select>
                     </Field>
-                    <Field label="Temperature" icon={<Timer className="h-4 w-4" />}>
+                    <Field label="Operating Temp Range" icon={<Timer className="h-4 w-4" />}>
                       <select
                         value={tuningForkTemp}
                         onChange={(event) => setTuningForkTemp(event.target.value)}
@@ -912,7 +912,7 @@ export default function RequestQuote() {
                             <option value="100">+/-100ppm</option>
                           </select>
                         </Field>
-                        <Field label="Operating temp" icon={<Timer className="h-4 w-4" />}>
+                        <Field label="Operating Temp Range" icon={<Timer className="h-4 w-4" />}>
                           <select
                             value={oscTemp}
                             onChange={(event) => setOscTemp(event.target.value)}
