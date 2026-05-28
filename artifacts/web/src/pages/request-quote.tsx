@@ -872,7 +872,7 @@ export default function RequestQuote() {
                         onChange={(event) => setMode(event.target.value)}
                         className={pickerClass}
                       >
-                        <option value="1">1: Fundamental</option>
+                        <option value="1">1: Fundamental (standard)</option>
                         <option value="3">3: 3rd overtone</option>
                         <option value="5">5: 5th overtone</option>
                       </select>
