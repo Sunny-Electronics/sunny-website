@@ -39,8 +39,8 @@ export default function Home() {
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans overflow-x-hidden">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+    <div className="min-h-screen bg-[#f5f5f7] text-foreground flex flex-col font-sans overflow-x-hidden">
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/5 bg-white/75 shadow-[0_1px_0_rgba(15,23,42,0.02)] backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-3 shrink-0">
             <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-10 w-auto" />
@@ -50,15 +50,15 @@ export default function Home() {
             </div>
           </div>
           <div className="hidden flex-1 lg:block" />
-          <div className="hidden lg:flex items-center gap-6 font-medium text-sm text-muted-foreground">
-            <a href="#about" className="hover:text-foreground transition-colors" data-testid="link-legacy">Legacy</a>
-            <Link href="/products" className="hover:text-foreground transition-colors" data-testid="link-products">Products</Link>
-            <Link href="/part-number-generator" className="hover:text-foreground transition-colors" data-testid="link-part-number-generator">Part Number Generator</Link>
-            <Link href="/industries" className="hover:text-foreground transition-colors" data-testid="link-industries">Industries</Link>
-            <Link href="/quality" className="hover:text-foreground transition-colors" data-testid="link-quality">Quality</Link>
+          <div className="hidden lg:flex items-center gap-7 font-medium text-[13px] text-slate-600">
+            <a href="#about" className="hover:text-slate-950 transition-colors" data-testid="link-legacy">Legacy</a>
+            <Link href="/products" className="hover:text-slate-950 transition-colors" data-testid="link-products">Products</Link>
+            <Link href="/part-number-generator" className="hover:text-slate-950 transition-colors" data-testid="link-part-number-generator">Part Number Generator</Link>
+            <Link href="/industries" className="hover:text-slate-950 transition-colors" data-testid="link-industries">Industries</Link>
+            <Link href="/quality" className="hover:text-slate-950 transition-colors" data-testid="link-quality">Quality</Link>
             <QuoteOptionsMenu compact />
             <Link href="/request-access">
-              <Button data-testid="button-partners-portal" className="gap-2">
+              <Button data-testid="button-partners-portal" className="h-10 gap-2 rounded-full px-5 shadow-sm">
                 <LogIn className="w-4 h-4" />
                 Sunny Portal Access (SPA) Log In
               </Button>
@@ -67,49 +67,63 @@ export default function Home() {
         </div>
       </nav>
 
-      <section className="relative min-h-[88vh] flex items-center pt-40 lg:pt-28 overflow-hidden">
+      <section
+        className="relative overflow-hidden border-b border-black/5 pt-40 lg:pt-28"
+        style={{
+          minHeight: "min(820px, 88vh)",
+          background:
+            "radial-gradient(circle at 72% 24%, rgba(59, 130, 246, 0.12), transparent 32%), linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%)",
+        }}
+      >
         <motion.div
           className="absolute inset-0 z-0"
           style={{ y, opacity }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/35 z-10" />
+          <div
+            className="absolute inset-0 z-10"
+            style={{
+              background:
+                "linear-gradient(90deg, #fff 0%, rgba(255,255,255,0.94) 32%, rgba(255,255,255,0.62) 58%, rgba(255,255,255,0.2) 100%)",
+            }}
+          />
+          <div className="absolute inset-x-0 bottom-0 z-10 h-44 bg-gradient-to-t from-[#f5f5f7] to-transparent" />
           <img
-            src="/products-photo.jpg"
+            src={productsPhoto}
             alt="Sunny Electronics Corp. crystal units and oscillators"
-            className="w-full h-full object-contain object-right opacity-80"
+            className="absolute inset-y-10 right-[-8%] h-[82%] w-[72%] object-contain object-right opacity-80 mix-blend-multiply saturate-[0.95] lg:right-[-4%]"
           />
         </motion.div>
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
-          <div className="max-w-2xl">
+        <div className="max-w-7xl mx-auto px-6 relative z-10 flex w-full items-center pb-32">
+          <div className="max-w-[720px]">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-blue-200/70 bg-blue-50/80 px-3.5 py-1.5 text-sm font-semibold text-primary shadow-sm backdrop-blur">
+                <span className="w-2 h-2 rounded-full bg-primary" />
                 Precision Frequency Control Since 1966
               </div>
-              <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight leading-[1.05] mb-6">
+              <h1 className="mb-6 max-w-3xl text-5xl font-bold leading-[0.98] tracking-tight text-slate-950 md:text-7xl lg:text-[86px]">
                 The Heartbeat of <br/>
                 <span className="text-primary">Global Innovation.</span>
               </h1>
-              <p className="text-xl text-muted-foreground mb-4 leading-relaxed">
+              <p className="mb-5 max-w-2xl text-xl leading-8 text-slate-600 md:text-2xl md:leading-9">
                 Sunny Electronics Corp. engineers world-class crystal oscillators, resonators, and filters -- powering the most demanding technologies across automotive, telecommunications, and consumer electronics for 60 years.
               </p>
-              <p className="text-sm font-semibold tracking-wider text-primary uppercase mb-8">
+              <p className="mb-9 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
                 Since 1966 &nbsp;|&nbsp; Korea-Based &nbsp;|&nbsp; Global Supply Network
               </p>
               <div className="flex flex-wrap gap-4">
                 <QuoteOptionsMenu size="lg" />
-                <Button size="lg" variant="outline" className="h-14 px-8 text-base bg-background" data-testid="button-view-products" asChild>
+                <Button size="lg" variant="outline" className="h-14 rounded-full border-slate-300/80 bg-white/70 px-8 text-base shadow-sm backdrop-blur hover:bg-white" data-testid="button-view-products" asChild>
                   <Link href="/stock">
                     Sunny Stock Check
                   </Link>
                 </Button>
               </div>
-              <div className="mt-6 grid max-w-xl gap-2 text-sm text-muted-foreground sm:grid-cols-3">
+              <div className="mt-7 grid max-w-2xl gap-3 text-sm font-medium text-slate-500 sm:grid-cols-3">
                 <div className="flex items-center gap-2">
                   <FileText className="h-4 w-4 text-primary" />
                   RFQ list upload
@@ -128,20 +142,20 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="-mt-12 relative z-20 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto grid gap-3 border border-slate-200 bg-white p-3 shadow-xl md:grid-cols-2 lg:grid-cols-4">
+      <section className="-mt-24 relative z-20 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto grid gap-3 rounded-[28px] border border-white/70 bg-white/70 p-3 shadow-[0_28px_80px_rgba(15,23,42,0.12)] backdrop-blur-2xl md:grid-cols-2 lg:grid-cols-4">
           {quickActions.map((action) => (
             <Link
               key={action.title}
               href={action.href}
-              className="group flex min-h-28 gap-4 border border-slate-100 bg-slate-50 p-5 transition-colors hover:border-primary/30 hover:bg-white"
+              className="group flex min-h-32 gap-4 rounded-3xl border border-white/80 bg-white/65 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_45px_rgba(15,23,42,0.10)]"
             >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
                 {action.icon}
               </div>
               <div>
-                <h2 className="font-display text-lg font-bold text-slate-950">{action.title}</h2>
-                <p className="mt-1 text-sm leading-5 text-slate-600">{action.text}</p>
+                <h2 className="text-lg font-semibold tracking-tight text-slate-950">{action.title}</h2>
+                <p className="mt-1.5 text-sm leading-5 text-slate-600">{action.text}</p>
               </div>
             </Link>
           ))}
@@ -667,7 +681,7 @@ function QuoteOptionsMenu({
       <Button
         type="button"
         size={size}
-        className={`${size === "lg" ? "h-14 px-8 text-base" : ""} group/button`}
+        className={`${size === "lg" ? "h-14 rounded-full px-8 text-base shadow-[0_18px_40px_rgba(0,82,180,0.22)]" : "rounded-full"} group/button`}
         data-testid="button-request-quote-menu"
       >
         {label}
@@ -682,30 +696,30 @@ function QuoteOptionsMenu({
 
 function QuoteOptionsPanel() {
   return (
-    <div className="border border-slate-200 bg-white p-2 text-slate-950 shadow-xl">
+    <div className="rounded-3xl border border-white/80 bg-white/90 p-2 text-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.16)] backdrop-blur-2xl">
       <Link
         href="/request-quote"
-        className="group/item flex gap-3 border border-transparent p-3 transition-colors hover:border-primary/20 hover:bg-slate-50"
+        className="group/item flex gap-3 rounded-2xl border border-transparent p-3 transition-colors hover:border-primary/20 hover:bg-blue-50/70"
         data-testid="link-quote-now"
       >
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-primary/10 text-primary group-hover/item:bg-primary group-hover/item:text-white">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary group-hover/item:text-white">
           <Upload className="h-4 w-4" />
         </div>
         <div>
-          <div className="font-display text-base font-bold">Quote Now</div>
+          <div className="text-base font-semibold tracking-tight">Quote Now</div>
           <div className="mt-1 text-xs leading-5 text-slate-600">Create an RFQ or upload a quote list.</div>
         </div>
       </Link>
       <Link
         href="/stock"
-        className="group/item mt-2 flex gap-3 border border-transparent p-3 transition-colors hover:border-primary/20 hover:bg-slate-50"
+        className="group/item mt-2 flex gap-3 rounded-2xl border border-transparent p-3 transition-colors hover:border-primary/20 hover:bg-blue-50/70"
         data-testid="link-sunny-stock-check"
       >
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-primary/10 text-primary group-hover/item:bg-primary group-hover/item:text-white">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary group-hover/item:text-white">
           <Search className="h-4 w-4" />
         </div>
         <div>
-          <div className="font-display text-base font-bold">Sunny Stock Check</div>
+          <div className="text-base font-semibold tracking-tight">Sunny Stock Check</div>
           <div className="mt-1 text-xs leading-5 text-slate-600">Check Sunny availability before or after quoting.</div>
         </div>
       </Link>
