@@ -490,6 +490,24 @@ export default async function handler(req, res) {
     });
   }
 
+  const partExplanation = explainSunnyCrystalPart(message);
+  if (partExplanation) {
+    const payload = {
+      reply: partExplanation.reply,
+      links: linksForAnswer(partExplanation.reply, partExplanation.links),
+      source: "catalog",
+    };
+
+    if (req.headers["x-sunny-debug"] === "1") {
+      payload.debug = {
+        reason: "sunny_catalog_part_number",
+        bridgeSkipped: true,
+      };
+    }
+
+    return res.status(200).json(payload);
+  }
+
   const fallback = keywordFallback(message, pagePath);
   const catalogMatches = findCatalogMatches(message, pagePath);
   const catalogGuide = buildCatalogGuide(catalogMatches);
