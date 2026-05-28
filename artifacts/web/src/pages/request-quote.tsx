@@ -778,7 +778,7 @@ export default function RequestQuote() {
                         ))}
                       </select>
                     </Field>
-                    <Field label="Tolerance" icon={<ShieldCheck className="h-4 w-4" />}>
+                    <Field label="Frequency Tolerance (at 25 C)" icon={<ShieldCheck className="h-4 w-4" />}>
                       <select
                         value={tolerance}
                         onChange={(event) => setTolerance(event.target.value)}
