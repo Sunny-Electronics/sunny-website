@@ -4,6 +4,12 @@ import { MessageCircle, Send, X } from "lucide-react";
 type ChatMessage = {
   role: "assistant" | "user";
   text: string;
+  links?: ChatLink[];
+};
+
+type ChatLink = {
+  label: string;
+  href: string;
 };
 
 const TELEGRAM_URL = "https://t.me/sunny_kr_bot";
@@ -113,7 +119,16 @@ export default function SunnyChatButton() {
         throw new Error(data?.message || "Sunny chat is unavailable.");
       }
 
-      setMessages((current) => [...current, { role: "assistant", text: data.reply }]);
+      const links = Array.isArray(data.links)
+        ? data.links
+            .map((link: Partial<ChatLink>) => ({
+              label: String(link?.label || "").slice(0, 80),
+              href: String(link?.href || "").slice(0, 500),
+            }))
+            .filter((link: ChatLink) => link.label && link.href)
+        : [];
+
+      setMessages((current) => [...current, { role: "assistant", text: data.reply, links }]);
     } catch {
       setError("Sunny chat API is not reachable yet. Telegram is still available.");
       setMessages((current) => [
@@ -174,6 +189,28 @@ export default function SunnyChatButton() {
             }`}
           >
             {message.text}
+            {message.links?.length ? (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {message.links.map((link) => {
+                  const isInternal = link.href.startsWith("/");
+                  return (
+                    <a
+                      key={`${link.href}-${link.label}`}
+                      className={`inline-flex rounded-md border px-2.5 py-1.5 text-xs font-semibold transition ${
+                        message.role === "user"
+                          ? "border-white/30 text-primary-foreground hover:bg-white/10"
+                          : "border-primary/25 bg-primary/5 text-primary hover:bg-primary/10"
+                      }`}
+                      href={link.href}
+                      target={isInternal ? undefined : "_blank"}
+                      rel={isInternal ? undefined : "noopener noreferrer"}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
         ))}
         {isSending ? (

@@ -27,8 +27,30 @@
       "keywords": ["crystal", "quartz", "mhz", "sx", "ats", "resonator", "load capacitance", "tolerance", "cl"],
       "summary": "MHz and kHz quartz crystal units for compact electronic designs. Sunny supports SMD and through-hole crystal RFQ review.",
       "knownSeries": ["ATS-25/U", "ATS-49/U", "SX-1", "SX-3", "SX-7", "SX-8", "SX-32", "SX-22", "SX-21", "SX-16", "SX-A21", "SX-A22", "SX-A32", "SX-A8"],
-      "partNumberFormat": "Sunny-Catalog crystal P/N format follows S{package code}{load capacitance}{mode}{frequency tolerance at 25 C}{operating temp code}{temp stability code}-{frequency MHz to 4 decimals}.",
-      "partNumberExamples": ["SR12130J6-32.0000"],
+      "partNumberFormat": "Sunny-Catalog crystal P/N format follows S{package code}{load capacitance}{mode}{frequency tolerance at 25 C}{operating temp code}{temp stability code}-{frequency MHz to 4 decimals}. Use -T&R when tape-and-reel packing is requested.",
+      "partNumberExamples": ["SR12130J6-32.0000", "SO10130J7-32.0000-T&R"],
+      "partNumberRules": [
+        "Package codes: C ATS-25/U, D ATS-49/U, J SX-1, K SX-3, M SX-7, O SX-8, P SX-32, Q SX-22, R SX-21, S SX-16, T SX-A21, U SX-A22, V SX-A32, W SX-A8.",
+        "Load capacitance is written as the pF number, for example 10 for 10 pF or 12 for 12 pF.",
+        "Mode code 1 means fundamental and is the normal RFQ placeholder for common MHz SMD crystals.",
+        "Frequency tolerance at 25 C is written as the ppm value, for example 30 for +/-30ppm or 50 for +/-50ppm.",
+        "Operating temp codes: D -10~70C, E -20~70C, F -30~60C, G -20~85C, H -30~70C, I -30~85C, J -40~85C, K -40~90C, L -40~105C, M -40~125C, N -40~150C.",
+        "Temperature stability codes: 3 +/-10ppm, 4 +/-15ppm, 5 +/-20ppm, 6 +/-30ppm, 7 +/-50ppm, 8 +/-100ppm, 9 +/-150ppm, 10 +/-200ppm."
+      ],
+      "defaultRules": [
+        "If frequency tolerance is missing, use +/-50ppm as an RFQ placeholder and tell the visitor this assumption.",
+        "If operating temperature is missing, use -20~70C as an RFQ placeholder and tell the visitor this assumption.",
+        "If temperature stability is missing, use +/-50ppm as an RFQ placeholder and tell the visitor this assumption.",
+        "If load capacitance is missing, use 12 pF as an RFQ placeholder and tell the visitor this assumption."
+      ],
+      "packageSizeMap": [
+        "SX-16 / S: 1.6 x 1.2 mm",
+        "SX-21 / R: 2.0 x 1.6 mm",
+        "SX-22 / Q: 2.5 x 2.0 mm",
+        "SX-32 / P: 3.2 x 2.5 mm",
+        "SX-8 / O: 5.0 x 3.2 mm",
+        "SX-7 / M: 7.0 x 5.0 mm"
+      ],
       "specGuidance": ["confirm frequency", "package type or size", "load capacitance", "frequency tolerance", "frequency stability", "operating temperature"],
       "rfqFields": ["frequency", "package", "load capacitance", "tolerance", "stability", "temperature range", "quantity", "target date"],
       "routes": [

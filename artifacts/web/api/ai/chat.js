@@ -75,7 +75,18 @@ const crystalStabilityCodes = {
   6: "+/-30ppm",
   7: "+/-50ppm",
   8: "+/-100ppm",
+  9: "+/-150ppm",
+  10: "+/-200ppm",
 };
+
+const crystalPackageSizeCodes = [
+  { code: "S", packageName: "SX-16", pattern: /\b(?:1\.?6\s*(?:x|×)\s*1\.?2|1612)\b/i },
+  { code: "R", packageName: "SX-21", pattern: /\b(?:2\.?0\s*(?:x|×)\s*1\.?6|2016)\b/i },
+  { code: "Q", packageName: "SX-22", pattern: /\b(?:2\.?5\s*(?:x|×)\s*2\.?0|2520)\b/i },
+  { code: "P", packageName: "SX-32", pattern: /\b(?:3\.?2\s*(?:x|×)\s*2\.?5|3225)\b/i },
+  { code: "O", packageName: "SX-8", pattern: /\b(?:5\.?0?\s*(?:x|×)\s*3\.?2|5032)\b/i },
+  { code: "M", packageName: "SX-7", pattern: /\b(?:7\.?0?\s*(?:x|×)\s*5\.?0?|7050)\b/i },
+];
 
 function loadSunnyCatalog() {
   if (sunnyCatalogCache) return sunnyCatalogCache;
@@ -108,6 +119,9 @@ function scoreCatalogEntry(entry, query) {
       ...(entry.knownSeries || []),
       entry.partNumberFormat,
       ...(entry.partNumberExamples || []),
+      ...(entry.partNumberRules || []),
+      ...(entry.defaultRules || []),
+      ...(entry.packageSizeMap || []),
       ...(entry.knownDocuments || []),
       ...(entry.specGuidance || []),
       ...(entry.rfqFields || []),
@@ -162,11 +176,15 @@ function buildCatalogGuide(matches) {
       const knownSeries = (entry.knownSeries || []).slice(0, 8).join(", ");
       const examples = (entry.partNumberExamples || []).slice(0, 4).join(", ");
       const fields = (entry.rfqFields || catalog.defaultRfqFields || []).slice(0, 8).join(", ");
+      const partRules = (entry.partNumberRules || []).slice(0, 4).join(" ");
+      const defaultRules = (entry.defaultRules || []).slice(0, 4).join(" ");
       const routes = (entry.routes || []).map((route) => `${route.label} ${route.href}`).join("; ");
       return [
         `- ${entry.title}: ${entry.summary}`,
         knownSeries ? `Known series: ${knownSeries}.` : "",
         entry.partNumberFormat ? `Sunny-Catalog P/N format: ${entry.partNumberFormat}` : "",
+        partRules ? `P/N rules: ${partRules}` : "",
+        defaultRules ? `Missing-field defaults: ${defaultRules}` : "",
         examples ? `Example Sunny-Catalog P/N: ${examples}.` : "",
         fields ? `Useful RFQ fields: ${fields}.` : "",
         routes ? `Route to: ${routes}.` : "",
@@ -279,7 +297,7 @@ function readAssistantText(data) {
 }
 
 function explainSunnyCrystalPart(message) {
-  const match = normalizeForSearch(message).match(/\b(s)([a-z])(\d{2})([135])(\d{2})([a-z])([3-8])-(\d+(?:\.\d+)?)\b/);
+  const match = normalizeForSearch(message).match(/\b(s)([a-z])(\d{2})([135])(\d{2})([a-z])(\d{1,2})-(\d+(?:\.\d+)?)\b/);
   if (!match) return null;
 
   const [, prefix, packageCodeRaw, loadCap, mode, tolerance, tempCodeRaw, stabilityCode, frequency] = match;
@@ -298,10 +316,134 @@ function explainSunnyCrystalPart(message) {
   };
 }
 
+function formatCrystalFrequency(value) {
+  const parsed = Number(String(value || "").replace(/[^\d.]/g, ""));
+  if (!Number.isFinite(parsed) || parsed <= 0) return "";
+  return parsed.toFixed(4);
+}
+
+function extractCrystalFrequency(text) {
+  const match = text.match(/\b(\d+(?:\.\d+)?)\s*(?:mhz|m\b)/i);
+  return match ? formatCrystalFrequency(match[1]) : "";
+}
+
+function extractCrystalPackage(text) {
+  const sxMatch = text.match(/\bsx[-\s]?(16|21|22|32|8|7)\b/i);
+  if (sxMatch) {
+    const packageName = `SX-${sxMatch[1]}`;
+    const code = Object.entries(crystalPackageCodes).find(([, value]) => value.toLowerCase() === packageName.toLowerCase())?.[0];
+    if (code) return { code, packageName };
+  }
+
+  const sizeMatch = crystalPackageSizeCodes.find((item) => item.pattern.test(text));
+  if (sizeMatch) return { code: sizeMatch.code, packageName: sizeMatch.packageName };
+  return null;
+}
+
+function extractCrystalLoadCap(text) {
+  const explicitPf = text.match(/\b(\d{1,2}(?:\.\d+)?)\s*pf\b/i);
+  if (explicitPf) return explicitPf[1].replace(/\.0$/, "");
+
+  const loadMatch = text.match(/\b(?:load|capacitance|\bcl\b)\D{0,18}(\d{1,2}(?:\.\d+)?)/i);
+  if (loadMatch) return loadMatch[1].replace(/\.0$/, "");
+  return "";
+}
+
+function extractPpmNear(text, words) {
+  const wordGroup = words.join("|");
+  const after = text.match(new RegExp(`\\b(?:${wordGroup})\\b\\D{0,24}(\\d{1,3})\\s*ppm`, "i"));
+  if (after) return after[1];
+  const before = text.match(new RegExp(`\\b(\\d{1,3})\\s*ppm\\D{0,24}\\b(?:${wordGroup})\\b`, "i"));
+  return before ? before[1] : "";
+}
+
+function extractCrystalTempCode(text) {
+  const match = text.match(/(-\s*\d{1,3})\s*(?:~|-|to)\s*(\+?\s*\d{1,3})\s*(?:c|℃)?/i);
+  if (!match) return "";
+
+  const low = match[1].replace(/\s+/g, "");
+  const high = match[2].replace(/\s+/g, "").replace(/^\+/, "");
+  const normalized = `${low}~${high}C`;
+  return Object.entries(crystalTempCodes).find(([, value]) => value === normalized)?.[0] || "";
+}
+
+function extractCrystalStabilityCode(text) {
+  const ppm = extractPpmNear(text, ["stability", "stable"]);
+  if (!ppm) return "";
+  return Object.entries(crystalStabilityCodes).find(([, value]) => value === `+/-${ppm}ppm`)?.[0] || "";
+}
+
+function buildCrystalQuoteHref(spec) {
+  const params = new URLSearchParams({
+    source: "sunny-chat",
+    family: "crystal",
+    pkg: spec.packageCode,
+    frequency: spec.frequency.replace(/\.?0+$/, ""),
+    cl: spec.loadCap,
+    tolerance: spec.tolerance,
+    temp: spec.tempCode,
+    stability: spec.stabilityCode,
+    mode: "1",
+    packing: "TR",
+    autoAdd: "1",
+  });
+
+  if (spec.assumptions.length) params.set("note", spec.assumptions.join("; "));
+  return `/request-quote?${params.toString()}#quote-list`;
+}
+
+function suggestSunnyCrystalPart(message) {
+  const text = sanitize(message);
+  const lower = text.toLowerCase();
+  if (!/\b(?:crystal|resonator|quartz|smd|sx[-\s]?\d+)\b/.test(lower)) return null;
+
+  const packageInfo = extractCrystalPackage(text);
+  const frequency = extractCrystalFrequency(text);
+  if (!packageInfo || !frequency) return null;
+
+  const assumptions = [];
+  const loadCap = extractCrystalLoadCap(text) || "12";
+  if (!extractCrystalLoadCap(text)) assumptions.push("load capacitance was not provided, so 12 pF was used for quote-builder review");
+
+  const tolerance = extractPpmNear(text, ["tolerance", "tol"]) || "50";
+  if (!extractPpmNear(text, ["tolerance", "tol"])) assumptions.push("frequency tolerance was not provided, so +/-50ppm was used as a standard RFQ placeholder");
+
+  const tempCode = extractCrystalTempCode(text) || "E";
+  if (!extractCrystalTempCode(text)) assumptions.push("operating temp range was not provided, so -20~70C was used as a standard RFQ placeholder");
+
+  const stabilityCode = extractCrystalStabilityCode(text) || "7";
+  if (!extractCrystalStabilityCode(text)) assumptions.push("temperature stability was not provided, so +/-50ppm was used as a standard RFQ placeholder");
+
+  const partNumber = `S${packageInfo.code}${loadCap}1${tolerance}${tempCode}${stabilityCode}-${frequency}-T&R`;
+  const tempRange = crystalTempCodes[tempCode] || `temp code ${tempCode}`;
+  const stability = crystalStabilityCodes[stabilityCode] || `stability code ${stabilityCode}`;
+  const href = buildCrystalQuoteHref({
+    packageCode: packageInfo.code,
+    frequency,
+    loadCap,
+    tolerance,
+    tempCode,
+    stabilityCode,
+    assumptions,
+  });
+
+  const assumptionText = assumptions.length
+    ? ` I used these quote placeholders because the customer did not provide every field: ${assumptions.join("; ")}.`
+    : "";
+
+  return {
+    reply:
+      `Based on Sunny catalog coding, a suggested RFQ-review P/N is ${partNumber}. This means ${packageInfo.packageName} (${crystalPackageCodes[packageInfo.code]}), ${frequency} MHz, ${loadCap} pF CL, fundamental mode, +/-${tolerance}ppm frequency tolerance at 25 C, ${tempRange} operating temp, and ${stability} temp stability.${assumptionText} Sunny should confirm the final approved P/N, price, stock, lead time, and qualification. I also prepared the instant quote builder so the customer can review the line and click step 5 to send it to Sunny.`,
+    links: [{ label: "Open prefilled quote builder", href }, siteLinks.quote],
+  };
+}
+
 function keywordFallback(message, pagePath = "/") {
   const text = `${message} ${pagePath}`.toLowerCase();
   const partExplanation = explainSunnyCrystalPart(message);
   if (partExplanation) return partExplanation;
+  const partSuggestion = suggestSunnyCrystalPart(message);
+  if (partSuggestion) return partSuggestion;
 
   if (/rfq|quote|bom|price|pricing|cost|qty|quantity|lead time|lt|견적|가격|납기/.test(text)) {
     return {
@@ -501,6 +643,24 @@ export default async function handler(req, res) {
     if (req.headers["x-sunny-debug"] === "1") {
       payload.debug = {
         reason: "sunny_catalog_part_number",
+        bridgeSkipped: true,
+      };
+    }
+
+    return res.status(200).json(payload);
+  }
+
+  const partSuggestion = suggestSunnyCrystalPart(message);
+  if (partSuggestion) {
+    const payload = {
+      reply: partSuggestion.reply,
+      links: partSuggestion.links,
+      source: "catalog",
+    };
+
+    if (req.headers["x-sunny-debug"] === "1") {
+      payload.debug = {
+        reason: "sunny_catalog_part_builder",
         bridgeSkipped: true,
       };
     }
