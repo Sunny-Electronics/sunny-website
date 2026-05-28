@@ -706,7 +706,10 @@ export default function RequestQuote() {
 
           <div className="grid gap-6 lg:grid-cols-[330px_1fr]">
             <div className="rounded-xl border border-white/70 bg-white/65 p-4 shadow-[0_18px_60px_rgba(15,23,42,0.10)] backdrop-blur-xl">
-              <div className="step-callout mb-3 px-3 py-2 text-xs font-bold uppercase tracking-wide">1. Choose type</div>
+              <div className="step-callout mb-3 flex items-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-wide">
+                <StepBadge number={1} />
+                <span>Choose type</span>
+              </div>
               <button
                 type="button"
                 onClick={() => setFamilyMenuOpen((open) => !open)}
@@ -766,7 +769,8 @@ export default function RequestQuote() {
                 <div className="mt-2 text-xs leading-5 text-slate-600">{specSummary}</div>
                 <Button className="step-callout mt-4 h-11 w-full gap-2 font-bold" onClick={addGeneratedPart} data-testid="button-add-generated-part">
                   <Plus className="h-4 w-4" />
-                  4. Add to Quote List
+                  <StepBadge number={4} />
+                  Add to Quote List
                 </Button>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
                   <div className="rounded-md border border-primary/10 bg-white/70 px-3 py-2">
@@ -801,7 +805,7 @@ export default function RequestQuote() {
 
             <div className="overflow-hidden rounded-xl border border-white/70 bg-white/65 shadow-[0_18px_60px_rgba(15,23,42,0.10)] backdrop-blur-xl">
               <div className="grid gap-4 p-5 md:grid-cols-2 xl:grid-cols-3">
-                <StepHeader title="2. Required Specs" />
+                <StepHeader number={2} title="Required Specs" />
                 {family === "crystal" && (
                   <>
                     <Field label="Package" icon={<Package className="h-4 w-4" />}>
@@ -1049,7 +1053,7 @@ export default function RequestQuote() {
                   </div>
                 )}
 
-                <StepHeader title="3. RFQ details" />
+                <StepHeader number={3} title="RFQ details" />
                 <Field label="Quantity" icon={<ClipboardList className="h-4 w-4" />}>
                   <Input
                     className={inputGlowClass}
@@ -1097,7 +1101,8 @@ export default function RequestQuote() {
             <div className="flex flex-col gap-1 md:items-end">
               <Button className="step-callout h-11 gap-2 px-4 font-bold" onClick={openQuoteRequestModal} data-testid="button-create-quote-request">
                 <Check className="h-4 w-4" />
-                5. Send your quote list to Sunny for review
+                <StepBadge number={5} />
+                Send your quote list to Sunny for review
               </Button>
               <p className="text-xs font-medium text-slate-500">Sunny will get back to you ASAP.</p>
             </div>
@@ -1352,12 +1357,19 @@ function Field({
   );
 }
 
-function StepHeader({ title }: { title: string }) {
-  const featured = title === "2. Required Specs" || title === "3. RFQ details";
+function StepBadge({ number }: { number: number }) {
+  return (
+    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold leading-none text-white shadow-[0_6px_14px_rgba(15,92,192,0.24)]">
+      {number}
+    </span>
+  );
+}
 
+function StepHeader({ number, title }: { number: number; title: string }) {
   return (
     <div className="md:col-span-2 xl:col-span-3">
-      <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wide ${featured ? "step-callout px-3 py-2" : "text-primary"}`}>
+      <div className="step-callout flex items-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-wide">
+        <StepBadge number={number} />
         <span className="shrink-0">{title}</span>
         <span className="h-px flex-1 bg-primary/20" />
       </div>

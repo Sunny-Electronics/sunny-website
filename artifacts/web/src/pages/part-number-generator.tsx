@@ -543,6 +543,7 @@ export default function PartNumberGenerator() {
                   <option value="TR">Tape and reel</option>
                   <option value="Bulk">Bulk</option>
                   <option value="Sample">Sample</option>
+                  <option value="CatalogPN">Sunny catalog P/N</option>
                 </select>
               </Field>
 
