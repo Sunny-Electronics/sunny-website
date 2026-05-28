@@ -292,6 +292,7 @@ export default function RequestQuote() {
   const [quoteSubmitting, setQuoteSubmitting] = useState(false);
   const [quoteAttachments, setQuoteAttachments] = useState<QuoteAttachment[]>([]);
   const [quoteFileMessage, setQuoteFileMessage] = useState("");
+  const [quoteThankYouOpen, setQuoteThankYouOpen] = useState(false);
 
   const selectedFamilyCard = familyCards.find((card) => card.id === family) ?? familyCards[0];
   const SelectedFamilyIcon = selectedFamilyCard.icon;
@@ -354,6 +355,16 @@ export default function RequestQuote() {
       setQuoteSubmitMessage("Sunny chat filled this quote line. Review it, then click 5. Send your quote list to Sunny for review.");
     }
   }, []);
+
+  useEffect(() => {
+    if (!quoteThankYouOpen) return;
+
+    const timeout = window.setTimeout(() => {
+      setQuoteThankYouOpen(false);
+    }, 5000);
+
+    return () => window.clearTimeout(timeout);
+  }, [quoteThankYouOpen]);
 
   const generatedPart = useMemo(() => {
     if (family === "crystal") {
@@ -595,7 +606,8 @@ export default function RequestQuote() {
       }
 
       setQuoteModalOpen(false);
-      setQuoteSubmitMessage("Quote list sent to Sunny for review. Sunny will get back to you ASAP.");
+      setQuoteSubmitMessage("");
+      setQuoteThankYouOpen(true);
     } catch (error) {
       setQuoteSubmitMessage(error instanceof Error ? error.message : "Quote request could not be sent yet.");
     } finally {
@@ -1366,6 +1378,17 @@ export default function RequestQuote() {
                 <Check className="h-4 w-4" />
                 {quoteSubmitting ? "Sending..." : "Send RFQ to Sunny"}
               </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {quoteThankYouOpen && (
+        <div className="pointer-events-none fixed inset-0 z-[120] flex items-center justify-center px-5">
+          <div className="animate-[quote-thank-you-zoom_5s_ease-in-out_forwards] rounded-xl border border-primary/20 bg-white px-6 py-5 text-center shadow-2xl shadow-primary/20">
+            <div className="text-lg font-bold text-slate-950">Thank you for your submission</div>
+            <div className="mt-2 text-sm font-semibold text-primary">
+              Sunny will get back to you within 24 hours.
             </div>
           </div>
         </div>
