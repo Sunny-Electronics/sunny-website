@@ -142,7 +142,7 @@ const stabilityOptions = [
   { code: "8", label: "+/-100ppm", catalogValue: "100" },
 ];
 
-const crystalPackingOptions = [
+const packingOptions = [
   { value: "TR", label: "T/R" },
   { value: "Bulk", label: "Bulk" },
   { value: "Sample", label: "Sample" },
@@ -237,9 +237,11 @@ const findLabel = <T extends { code: string; label: string }>(items: T[], code: 
   items.find((item) => item.code === code)?.label ?? code;
 
 const findPackingLabel = (value: string) =>
-  crystalPackingOptions.find((item) => item.value === value)?.label ?? value;
+  packingOptions.find((item) => item.value === value)?.label ?? value;
 
 const packingSuffix = (value: string) => (value === "TR" ? "-T&R" : "");
+
+const tuningForkPackingSuffix = (value: string) => (value === "TR" ? "-TR" : "");
 
 const pickerClass =
   "h-11 w-full rounded-md border border-input bg-white/80 px-3 text-sm outline-none shadow-sm transition-[border-color,box-shadow,transform,background-color] duration-150 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-white hover:shadow-[0_0_0_3px_rgba(15,92,192,0.10),0_12px_28px_rgba(15,23,42,0.08)] focus:border-primary focus:ring-2 focus:ring-primary/20";
@@ -262,7 +264,7 @@ export default function RequestQuote() {
   const [temperature, setTemperature] = useState("J");
   const [stability, setStability] = useState("6");
   const [mode, setMode] = useState("1");
-  const [crystalPacking, setCrystalPacking] = useState("TR");
+  const [packing, setPacking] = useState("TR");
   const [quantity, setQuantity] = useState("10,000");
   const [targetDate, setTargetDate] = useState("");
   const [customerReference, setCustomerReference] = useState("");
@@ -332,7 +334,7 @@ export default function RequestQuote() {
     setTemperature(tempOption.code);
     setStability(stabilityOption.code);
     setMode(modeValue);
-    setCrystalPacking(packingValue);
+    setPacking(packingValue);
     setQuantity(quantityValue);
     setNote(noteValue);
 
@@ -355,11 +357,11 @@ export default function RequestQuote() {
 
   const generatedPart = useMemo(() => {
     if (family === "crystal") {
-      return `S${crystalPackage}${capacitance}${mode}${tolerance}${temperature}${stability}-${formatMHz(frequency)}${packingSuffix(crystalPacking)}`;
+      return `S${crystalPackage}${capacitance}${mode}${tolerance}${temperature}${stability}-${formatMHz(frequency)}${packingSuffix(packing)}`;
     }
 
     if (family === "tuningFork") {
-      return `S${tuningForkPackage}${tuningForkCl}20${tuningForkTemp}-${formatKHz(tuningForkFrequency)}-TR`;
+      return `S${tuningForkPackage}${tuningForkCl}20${tuningForkTemp}-${formatKHz(tuningForkFrequency)}${tuningForkPackingSuffix(packing)}`;
     }
 
     if (family === "xo") {
@@ -378,7 +380,7 @@ export default function RequestQuote() {
   }, [
     capacitance,
     crystalPackage,
-    crystalPacking,
+    packing,
     duty,
     family,
     frequency,
@@ -401,31 +403,31 @@ export default function RequestQuote() {
 
   const specSummary = useMemo(() => {
     if (family === "crystal") {
-      return `${tolerance}/${selectedStability.catalogValue} ${findLabel(crystalTempOptions, temperature)}/${capacitance}pF/${findPackingLabel(crystalPacking)}`;
+      return `${tolerance}/${selectedStability.catalogValue} ${findLabel(crystalTempOptions, temperature)}/${capacitance}pF/${findPackingLabel(packing)}`;
     }
 
     if (family === "tuningFork") {
       const clLabel = tuningForkCl === "125" ? "12.5pF" : `${Number(tuningForkCl) / 10}pF`;
       const tempLabel = tuningForkTemp === "A" ? "-40~85C" : tuningForkTemp === "B" ? "-20~70C" : "-10~60C";
-      return `20ppm ${tempLabel}/${clLabel}`;
+      return `20ppm ${tempLabel}/${clLabel}/${findPackingLabel(packing)}`;
     }
 
     if (family === "xo") {
-      return `${voltage.replace(/^(\d)(\d)$/, "$1.$2")}V, +/-${oscStability}ppm, ${oscTemp}, duty ${duty}, OE ${oe}`;
+      return `${voltage.replace(/^(\d)(\d)$/, "$1.$2")}V, +/-${oscStability}ppm, ${oscTemp}, duty ${duty}, OE ${oe}, ${findPackingLabel(packing)}`;
     }
 
     if (family === "vcxo") {
-      return `${voltage.replace(/^(\d)(\d)$/, "$1.$2")}V, VCXO pulling, review details`;
+      return `${voltage.replace(/^(\d)(\d)$/, "$1.$2")}V, VCXO pulling, ${findPackingLabel(packing)}, review details`;
     }
 
     if (family === "tcxo") {
-      return `${voltage.replace(/^(\d)(\d)$/, "$1.$2")}V, TCXO/VCTCXO, output ${output}`;
+      return `${voltage.replace(/^(\d)(\d)$/, "$1.$2")}V, TCXO/VCTCXO, output ${output}, ${findPackingLabel(packing)}`;
     }
 
-    return "Sunny review needed";
+    return `Sunny review needed, ${findPackingLabel(packing)}`;
   }, [
     capacitance,
-    crystalPacking,
+    packing,
     family,
     oe,
     oscStability,
@@ -451,6 +453,22 @@ export default function RequestQuote() {
             : family === "tcxo"
               ? "STA"
               : "Review";
+
+  const packingField = (
+    <Field label="Packing" icon={<Package className="h-4 w-4" />}>
+      <select
+        value={packing}
+        onChange={(event) => setPacking(event.target.value)}
+        className={pickerClass}
+      >
+        {packingOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </Field>
+  );
 
   const addGeneratedPart = () => {
     setQuoteSubmitMessage("");
@@ -483,7 +501,7 @@ export default function RequestQuote() {
     setTolerance(preset.tolerance);
     setTemperature(preset.tempCode);
     setStability(preset.stabilityCode);
-    setCrystalPacking("TR");
+    setPacking("TR");
   };
 
   const submitSearch = (event: React.FormEvent) => {
@@ -897,19 +915,7 @@ export default function RequestQuote() {
                         <option value="5">5: 5th overtone</option>
                       </select>
                     </Field>
-                    <Field label="Packing" icon={<Package className="h-4 w-4" />}>
-                      <select
-                        value={crystalPacking}
-                        onChange={(event) => setCrystalPacking(event.target.value)}
-                        className={pickerClass}
-                      >
-                        {crystalPackingOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                    </Field>
+                    {packingField}
                     <div className="md:col-span-2 xl:col-span-3 rounded-lg border border-white/70 bg-white/55 p-4 text-sm text-slate-600 shadow-inner">
                       {selectedCrystalPackage.description}
                     </div>
@@ -954,6 +960,7 @@ export default function RequestQuote() {
                         <option value="C">C: -10~60C</option>
                       </select>
                     </Field>
+                    {packingField}
                   </>
                 )}
 
@@ -1034,6 +1041,7 @@ export default function RequestQuote() {
                             <option value="">No connection</option>
                           </select>
                         </Field>
+                        {packingField}
                       </>
                     )}
                     {family !== "xo" && (
@@ -1059,6 +1067,7 @@ export default function RequestQuote() {
                             <option value="10">+/-50ppm min</option>
                           </select>
                         </Field>
+                        {packingField}
                       </>
                     )}
                   </>
@@ -1070,6 +1079,7 @@ export default function RequestQuote() {
                       Not sure what to choose? Add your current part number, frequency, size, or application below.
                       Sunny can identify the correct family and recommend the closest catalog format.
                     </div>
+                    {packingField}
                     <Field label="What do you know?" icon={<HelpCircle className="h-4 w-4" />}>
                       <Textarea
                         className={textareaGlowClass}
