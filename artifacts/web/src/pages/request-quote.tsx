@@ -172,6 +172,14 @@ const quickPresets = [
   },
 ];
 
+const quoteProcessSteps = [
+  { title: "Choose Type", detail: "Start with the part family so the right specs appear." },
+  { title: "Required Specs", detail: "Enter the required package, frequency, electrical, and temperature specs." },
+  { title: "RFQ Details", detail: "Add quantity, target date, customer reference, and notes. Input as much as possible so Sunny can process the request correctly." },
+  { title: "Add to Quote List", detail: "Review the Sunny-Catalog P/N, then add the line to your quote list." },
+  { title: "Send your Quote to Sunny", detail: "Open the pop-up, fill in your contact info, attach files if needed, and send it to Sunny." },
+];
+
 const formatMHz = (value: string) => {
   const parsed = Number(value.replace(/[^\d.]/g, ""));
   if (!Number.isFinite(parsed) || parsed <= 0) {
@@ -705,7 +713,7 @@ export default function RequestQuote() {
                 <div className="mt-2 text-xs leading-5 text-slate-600">{specSummary}</div>
                 <Button className="mt-4 h-11 w-full gap-2" onClick={addGeneratedPart} data-testid="button-add-generated-part">
                   <Plus className="h-4 w-4" />
-                  Add to Quote List
+                  4. Add to Quote List
                 </Button>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
                   <div className="rounded-md border border-primary/10 bg-white/70 px-3 py-2">
@@ -715,6 +723,26 @@ export default function RequestQuote() {
                     MOQ: {orderMultiple}
                   </div>
                 </div>
+              </div>
+
+              <div className="mt-4 rounded-lg border border-primary/15 bg-white/75 p-4 shadow-inner">
+                <div className="mb-3 flex items-center gap-2 text-sm font-bold text-slate-950">
+                  <ClipboardList className="h-4 w-4 text-primary" />
+                  Quote process help
+                </div>
+                <ol className="space-y-3">
+                  {quoteProcessSteps.map((step, index) => (
+                    <li key={step.title} className="flex gap-3 text-xs leading-5 text-slate-600">
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-white">
+                        {index + 1}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="font-bold text-slate-900">{step.title}</div>
+                        <p className="mt-0.5">{step.detail}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
               </div>
             </div>
 

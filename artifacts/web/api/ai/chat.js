@@ -2,6 +2,7 @@ import fs from "node:fs";
 
 const MAX_MESSAGE_LENGTH = 700;
 const MAX_HISTORY_ITEMS = 6;
+const MAX_MEMORY_ITEMS = 8;
 const DEFAULT_TIMEOUT_MS = 18000;
 const MAX_TIMEOUT_MS = 22000;
 const DEFAULT_BRIDGE_PATH = "/sunny/chat";
@@ -159,6 +160,27 @@ function readPath(value) {
   return path;
 }
 
+function cleanHistory(value) {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map((item) => ({
+      role: sanitize(item?.role).slice(0, 20),
+      text: sanitize(item?.text).slice(0, 400),
+    }))
+    .filter((item) => item.text && /^(assistant|user)$/i.test(item.role))
+    .slice(-MAX_HISTORY_ITEMS);
+}
+
+function cleanMemory(value) {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map((item) => sanitize(item).slice(0, 180))
+    .filter(Boolean)
+    .slice(-MAX_MEMORY_ITEMS);
+}
+
 function getBridgeUrl() {
   const raw =
     process.env.SUNNY_AI_BRIDGE_URL ||
@@ -217,15 +239,15 @@ function keywordFallback(message, pagePath = "/") {
   if (/rfq|quote|bom|price|pricing|cost|qty|quantity|lead time|lt|견적|가격|납기/.test(text)) {
     return {
       reply:
-        "For RFQ support, please prepare the part number, frequency, package, quantity, target date, and any drawing or BOM. Use Request Quote so Sunny can review price, lead time, stock, and documents.",
+        "For RFQ support, please prepare the part number, frequency, package, quantity, target date, and any drawing or BOM. For SMD crystals include load capacitance, tolerance/stability, and temperature range; for oscillators include voltage, output type, stability, and enable/disable needs.",
       links: [siteLinks.quote, siteLinks.telegram],
     };
   }
 
-  if (/crystal|oscillator|xo|tcxo|vcxo|sx|ats|sco|cs|frequency|mhz|khz|제품|크리스탈|오실레이터/.test(text)) {
+  if (/smd|crystal|quartz|resonator|oscillator|xo|spxo|tcxo|vcxo|ocxo|sx|ats|sco|cs|frequency|mhz|khz|load capacitance|cl|ppm|jitter|stability|electronics component|component|제품|크리스탈|오실레이터/.test(text)) {
     return {
       reply:
-        "Sunny supports crystal and oscillator guidance for B2B RFQs. Share the part number, frequency, package size, tolerance, temperature range, and target quantity so the team can check the right path.",
+        "Sunny can help narrow SMD crystal, tuning-fork crystal, XO/SPXO, TCXO, VCXO, and OCXO RFQ details. Share the part number or target frequency, package size, load capacitance for crystals, voltage/output for oscillators, tolerance or stability, temperature range, and quantity.",
       links: [siteLinks.products, siteLinks.quote],
     };
   }
@@ -264,8 +286,10 @@ function keywordFallback(message, pagePath = "/") {
 function buildSystemGuide(pagePath) {
   return [
     "You are Sunny, the SunnyKR.com assistant for Sunny Electronics.",
-    "Role: electronics manufacturing assistant for crystals, oscillators, RFQ support, document support, sourcing/manufacturing support, and Sunny Electronics information.",
+    "Role: knowledgeable electronics component assistant for SMD crystals, quartz crystal units, tuning-fork crystals, resonators, XO/SPXO, TCXO, VCXO, OCXO, RFQ support, document support, sourcing/manufacturing support, and Sunny Electronics information.",
     "Tone: professional, concise, helpful, human sounding, and business focused.",
+    "Sunny way: warm but practical, ask for the missing engineering/RFQ fields, guide the visitor to the right SunnyKR flow, and protect customer-specific information.",
+    "Use Sunny brain memory from recent conversation and visitor-provided preferences to keep continuity, but do not claim permanent server memory or reveal private notes.",
     "Keep answers short. Use simple English unless Korean is clearly better for the visitor.",
     "Do not overpromise price, stock, certifications, qualification, lead time, delivery, or order status. Say these require official Sunny confirmation.",
     "Never ask for passwords, tokens, private keys, card numbers, or sensitive personal data.",
@@ -279,14 +303,21 @@ function buildSystemGuide(pagePath) {
   ].join("\n");
 }
 
-function buildPrompt({ message, pagePath, history }) {
+function buildPrompt({ message, pagePath, history, memory, catalogGuide }) {
   return [
     buildSystemGuide(pagePath),
+    catalogGuide ? `\n${catalogGuide}` : "",
+    memory.length
+      ? [
+          "",
+          "Sunny brain memory from this visitor browser:",
+          ...memory.map((item) => `- ${item}`),
+          "Use this only for continuity. Ignore it if the visitor corrects it.",
+        ].join("\n")
+      : "",
     "",
     "Recent conversation:",
-    ...history
-      .slice(-MAX_HISTORY_ITEMS)
-      .map((item) => `${sanitize(item.role).slice(0, 20)}: ${sanitize(item.text).slice(0, 400)}`),
+    ...history.map((item) => `${item.role}: ${item.text}`),
     "",
     "Visitor question:",
     message,
@@ -382,7 +413,8 @@ export default async function handler(req, res) {
   const body = parseBody(req);
   const message = sanitize(body.message).slice(0, MAX_MESSAGE_LENGTH);
   const pagePath = readPath(body.pagePath || body.path);
-  const history = Array.isArray(body.history) ? body.history : [];
+  const history = cleanHistory(body.history);
+  const memory = cleanMemory(body.memory);
 
   if (!message) {
     return res.status(400).json({
@@ -399,7 +431,9 @@ export default async function handler(req, res) {
     project: "sunnykr",
     assistant: "Sunny",
     message,
-    systemGuide: catalogGuide,
+    systemGuide: buildPrompt({ message, pagePath, history, memory, catalogGuide }),
+    history,
+    memory,
     pagePath,
   });
   const bridgeReply = bridgeResult.reply;

@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { MessageCircle, Send, X } from "lucide-react";
 
 type ChatMessage = {
@@ -7,12 +7,14 @@ type ChatMessage = {
 };
 
 const TELEGRAM_URL = "https://t.me/sunny_kr_bot";
+const SUNNY_MEMORY_KEY = "sunnyChatMemoryV1";
+const MAX_MEMORY_ITEMS = 8;
 
 const initialMessages: ChatMessage[] = [
   {
     role: "assistant",
     text:
-      "Hi, I am Sunny. I can help with RFQs, crystals, oscillators, documents, lead time, and Sunny Electronics information.",
+      "Hi, I am Sunny. I can help with SMD crystals, oscillators, RFQs, documents, lead time, and Sunny Electronics information.",
   },
 ];
 
@@ -21,14 +23,46 @@ function getCurrentPath() {
   return `${window.location.pathname}${window.location.search}` || "/";
 }
 
+function readSunnyMemory() {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(SUNNY_MEMORY_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed.filter((item) => typeof item === "string").slice(-MAX_MEMORY_ITEMS) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeSunnyMemory(memory: string[]) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(SUNNY_MEMORY_KEY, JSON.stringify(memory.slice(-MAX_MEMORY_ITEMS)));
+}
+
+function extractMemoryNote(message: string) {
+  const cleaned = message.replace(/[<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 180);
+  if (!cleaned) return "";
+
+  const lower = cleaned.toLowerCase();
+  const isUsefulContext =
+    /smd|crystal|quartz|oscillator|xo|spxo|tcxo|vcxo|ocxo|resonator|frequency|mhz|khz|package|capacitance|voltage|ppm|jitter|rfq|quote|bom|lead time|qty|quantity|document|datasheet|rohs|reach|iatf|iso/.test(lower);
+
+  return isUsefulContext ? cleaned : "";
+}
+
 export default function SunnyChatButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
+  const [memory, setMemory] = useState<string[]>([]);
 
   const canSend = useMemo(() => input.trim().length > 0 && !isSending, [input, isSending]);
+
+  useEffect(() => {
+    setMemory(readSunnyMemory());
+  }, []);
 
   async function sendMessage(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -36,6 +70,16 @@ export default function SunnyChatButton() {
     if (!message || isSending) return;
 
     const nextMessages: ChatMessage[] = [...messages, { role: "user", text: message }];
+    const memoryNote = extractMemoryNote(message);
+    const nextMemory = memoryNote
+      ? [...memory.filter((item) => item.toLowerCase() !== memoryNote.toLowerCase()), memoryNote].slice(-MAX_MEMORY_ITEMS)
+      : memory;
+
+    if (memoryNote) {
+      setMemory(nextMemory);
+      writeSunnyMemory(nextMemory);
+    }
+
     setMessages(nextMessages);
     setInput("");
     setError("");
@@ -49,6 +93,7 @@ export default function SunnyChatButton() {
           message,
           pagePath: getCurrentPath(),
           history: nextMessages.slice(-6),
+          memory: nextMemory,
         }),
       });
 
@@ -95,7 +140,7 @@ export default function SunnyChatButton() {
       <div className="flex items-center justify-between border-b border-border bg-primary px-4 py-3 text-primary-foreground">
         <div>
           <div className="text-sm font-semibold">Sunny</div>
-          <div className="text-xs opacity-85">RFQ, crystal, oscillator, and document support</div>
+          <div className="text-xs opacity-85">SMD crystal, oscillator, RFQ, and document support</div>
         </div>
         <button
           type="button"
