@@ -1,6 +1,6 @@
 const maxFiles = 3;
-const maxFileSizeBytes = 2 * 1024 * 1024;
-const maxTotalFileSizeBytes = 5 * 1024 * 1024;
+const maxFileSizeBytes = 1 * 1024 * 1024;
+const maxTotalFileSizeBytes = 3 * 1024 * 1024;
 
 function getAssignedEmails() {
   return (process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com,sunny1@sunny.co.kr")
@@ -18,13 +18,20 @@ function validateRequest(body) {
   if (body.attachments && !Array.isArray(body.attachments)) return "Attachments must be an array.";
 
   const attachments = body.attachments || [];
-  if (attachments.length > maxFiles) return `Attach up to ${maxFiles} files.`;
+  if (attachments.length > maxFiles) return `Attach up to ${maxFiles} PDF files.`;
+
+  const nonPdfFile = attachments.find((file) => {
+    const name = String(file.name || "").toLowerCase();
+    const type = String(file.type || "").toLowerCase();
+    return type !== "application/pdf" && !name.endsWith(".pdf");
+  });
+  if (nonPdfFile) return `${nonPdfFile.name || "Attached file"} is not a PDF. Please attach small PDF files only.`;
 
   const totalSize = attachments.reduce((sum, file) => sum + Number(file.size || 0), 0);
   if (totalSize > maxTotalFileSizeBytes) return "Total attachment size is too large.";
 
   const oversizedFile = attachments.find((file) => Number(file.size || 0) > maxFileSizeBytes);
-  if (oversizedFile) return `${oversizedFile.name || "Attached file"} is too large.`;
+  if (oversizedFile) return `${oversizedFile.name || "Attached file"} is too large. Limit is 1 MB per PDF.`;
 
   return undefined;
 }

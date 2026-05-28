@@ -49,8 +49,8 @@ type QuoteAttachment = {
 };
 
 const maxQuoteFiles = 3;
-const maxQuoteFileSizeBytes = 2 * 1024 * 1024;
-const maxQuoteTotalFileSizeBytes = 5 * 1024 * 1024;
+const maxQuoteFileSizeBytes = 1 * 1024 * 1024;
+const maxQuoteTotalFileSizeBytes = 3 * 1024 * 1024;
 
 const crystalPackages = [
   { type: "ATS-25/U", code: "C", description: "Lead crystal, older through-hole designs" },
@@ -538,7 +538,14 @@ export default function RequestQuote() {
     const selectedFiles = Array.from(files || []);
 
     if (selectedFiles.length > maxQuoteFiles) {
-      setQuoteFileMessage(`Please attach up to ${maxQuoteFiles} files.`);
+      setQuoteFileMessage(`Please attach up to ${maxQuoteFiles} PDF files.`);
+      setQuoteAttachments([]);
+      return;
+    }
+
+    const nonPdfFile = selectedFiles.find((file) => file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf"));
+    if (nonPdfFile) {
+      setQuoteFileMessage(`${nonPdfFile.name} is not a PDF. Please attach small PDF files only.`);
       setQuoteAttachments([]);
       return;
     }
@@ -1351,15 +1358,18 @@ export default function RequestQuote() {
             </div>
 
             <div className="mb-5 border border-slate-200 bg-slate-50 p-4">
-              <Label className="mb-2 block text-sm font-semibold text-slate-700">Optional PDF or file attachment</Label>
+              <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <Label className="block text-sm font-semibold text-slate-700">Optional PDF attachment</Label>
+                <span className="text-xs font-semibold text-slate-500">Small PDFs only, max 1 MB each</span>
+              </div>
               <Input
                 type="file"
                 multiple
-                accept=".pdf,.csv,.xls,.xlsx,.txt,.png,.jpg,.jpeg"
+                accept="application/pdf,.pdf"
                 onChange={(event) => handleQuoteAttachmentChange(event.target.files)}
               />
               <p className="mt-2 text-xs leading-5 text-slate-500">
-                Limit: {maxQuoteFiles} files, {formatFileSize(maxQuoteFileSizeBytes)} each, {formatFileSize(maxQuoteTotalFileSizeBytes)} total.
+                Limit: {maxQuoteFiles} PDF files, {formatFileSize(maxQuoteFileSizeBytes)} each, {formatFileSize(maxQuoteTotalFileSizeBytes)} total. For larger drawings or spreadsheets, mention them in notes and Sunny will request them by email.
               </p>
               {quoteFileMessage && <p className="mt-2 text-sm font-semibold text-primary">{quoteFileMessage}</p>}
             </div>
