@@ -108,7 +108,7 @@
       "type": "document-support",
       "keywords": ["document", "datasheet", "spec sheet", "certificate", "iso", "iatf", "rohs", "reach", "reliability", "material declaration", "qa", "quality"],
       "summary": "SunnyKR has a document library for certificates and spec sheets. Public documents can be opened from Documents; SPA-only project files require approved access.",
-      "knownDocuments": ["ISO 14001 Certificate", "IATF 16949 Certificate", "SX-1 Spec Sheet", "SX-32 Spec Sheet", "ATS Series Spec Sheet"],
+      "knownDocuments": ["ISO 14001 Certificate", "(Sunny Electronics) ISO 14001 Certificate_280908.pdf", "IATF 16949 Certificate", "(Sunny Electronics) IATF 16949 Certificate_270716.pdf", "SX-1 Spec Sheet", "SX-32 Spec Sheet", "ATS Series Spec Sheet"],
       "rfqFields": ["requested document type", "part number or series", "company", "customer purpose"],
       "routes": [
         { "label": "Documents", "href": "/documents" },

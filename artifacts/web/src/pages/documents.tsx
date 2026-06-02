@@ -17,9 +17,11 @@ const documents = [
     title: "ISO 14001 Certificate",
     type: "Certificate",
     category: "QA / QC",
-    description: "Sunny Electronics ISO 14001 certificate for 2025-2028.",
+    description: "Sunny Electronics ISO 14001 environmental management certificate.",
     href: "/documents/sunny-iso-14001-2025-2028.pdf",
-    keywords: "iso 14001 certificate environment environmental 2025 2028 qa qc",
+    fileName: "(Sunny Electronics) ISO 14001 Certificate_280908.pdf",
+    registeredDate: "2026/04/28",
+    keywords: "iso 14001 certificate environment environmental 2025 2028 qa qc 280908 2026/04/28 public download",
   },
   {
     title: "IATF 16949 Certificate",
@@ -27,7 +29,9 @@ const documents = [
     category: "QA / QC",
     description: "Sunny Electronics IATF 16949 certificate.",
     href: "/documents/sunny-iatf-16949-certificate.pdf",
-    keywords: "iatf 16949 certificate automotive quality qa qc",
+    fileName: "(Sunny Electronics) IATF 16949 Certificate_270716.pdf",
+    registeredDate: "2026/04/28",
+    keywords: "iatf 16949 certificate automotive quality qa qc 270716 2026/04/28 public download",
   },
   {
     title: "SX-1 Spec Sheet",
@@ -35,6 +39,8 @@ const documents = [
     category: "Crystal Unit",
     description: "SX-1 product specification sheet.",
     href: "/documents/sx-1-spec-sheet.pdf",
+    fileName: "sx-1-spec-sheet.pdf",
+    registeredDate: "",
     keywords: "sx-1 sx1 spec sheet crystal unit datasheet",
   },
   {
@@ -43,6 +49,8 @@ const documents = [
     category: "Crystal Unit",
     description: "SX-32 product specification sheet.",
     href: "/documents/sx-32-spec-sheet.pdf",
+    fileName: "sx-32-spec-sheet.pdf",
+    registeredDate: "",
     keywords: "sx-32 sx32 spec sheet crystal unit datasheet",
   },
   {
@@ -51,6 +59,8 @@ const documents = [
     category: "Oscillator",
     description: "ATS Series product specification sheet.",
     href: "/documents/ats-series-spec-sheet.pdf",
+    fileName: "ats-series-spec-sheet.pdf",
+    registeredDate: "",
     keywords: "ats ats series spec sheet oscillator datasheet",
   },
 ];
@@ -71,6 +81,8 @@ export default function Documents() {
         document.type,
         document.category,
         document.description,
+        document.fileName,
+        document.registeredDate,
         document.keywords,
       ]
         .join(" ")
@@ -181,6 +193,11 @@ export default function Documents() {
                     </div>
                     <h3 className="font-display text-xl font-bold">{document.title}</h3>
                     <p className="mt-2 text-sm leading-6 text-slate-600">{document.description}</p>
+                    {"registeredDate" in document && document.registeredDate ? (
+                      <p className="mt-2 text-xs font-semibold text-slate-500">
+                        Registered {document.registeredDate} · {document.fileName}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-3">
