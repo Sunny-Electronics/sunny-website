@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowLeft,
@@ -105,6 +105,30 @@ type SpaParsedRfqResult = {
   qty: string;
   project: string;
   request: string;
+};
+
+type OrderListRow = {
+  rowNumber: number;
+  values: Array<string | number>;
+};
+
+type OrderListData = {
+  error?: string;
+  headerRow: number;
+  headers: string[];
+  locked: boolean;
+  maxRow: number;
+  rows: OrderListRow[];
+  sheetName: string;
+  totalRows: number;
+  workbookName: string;
+  workbookPath: string;
+};
+
+type OrderFilterDraft = {
+  columnIndex: number;
+  search: string;
+  selected: string[];
 };
 
 const reportViews: Array<{ id: ReportView; label: string }> = [
@@ -264,6 +288,73 @@ function formatKrw(value: number) {
     maximumFractionDigits: 0,
     style: "currency",
   }).format(value);
+}
+
+function parseOrderNumber(value: string) {
+  const normalized = value.replace(/[$,\s]/g, "");
+  if (!/^-?\d+(\.\d+)?$/.test(normalized)) return null;
+  return Number(normalized);
+}
+
+function formatOrderListCell(value: string | number, header: string) {
+  const stringValue = String(value ?? "");
+  const numericValue = parseOrderNumber(stringValue);
+  const normalizedHeader = header.toLowerCase();
+
+  if (numericValue === null) {
+    return stringValue;
+  }
+
+  if (["quantity", "sent qty", "sent qt", "total"].some((label) => normalizedHeader.includes(label))) {
+    return new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(numericValue);
+  }
+
+  if (normalizedHeader.includes("$usd")) {
+    return new Intl.NumberFormat("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(numericValue);
+  }
+
+  if (normalizedHeader === "u/p" || normalizedHeader.includes("unit")) {
+    return new Intl.NumberFormat("en-US", { maximumFractionDigits: 4 }).format(numericValue);
+  }
+
+  return stringValue;
+}
+
+function getOrderColumnWidth(header: string) {
+  const normalizedHeader = header.toLowerCase();
+
+  if (normalizedHeader === "date" || normalizedHeader === "etd") return "min-w-[104px]";
+  if (normalizedHeader === "p/o") return "min-w-[116px]";
+  if (normalizedHeader.includes("customer")) return "min-w-[150px]";
+  if (normalizedHeader.includes("part")) return "min-w-[190px]";
+  if (normalizedHeader.includes("sunny")) return "min-w-[125px]";
+  if (normalizedHeader === "misc" || normalizedHeader === "status" || normalizedHeader === "spec") return "min-w-[135px]";
+  if (normalizedHeader === "u/p") return "min-w-[82px]";
+  if (normalizedHeader.includes("quantity") || normalizedHeader.includes("$usd") || normalizedHeader.includes("total")) return "min-w-[96px]";
+
+  return "min-w-[76px]";
+}
+
+function compareOrderValues(left: string | number, right: string | number) {
+  const leftString = String(left ?? "");
+  const rightString = String(right ?? "");
+  const leftNumber = parseOrderNumber(leftString);
+  const rightNumber = parseOrderNumber(rightString);
+
+  if (leftNumber !== null && rightNumber !== null) {
+    return leftNumber - rightNumber;
+  }
+
+  return leftString.localeCompare(rightString, undefined, { numeric: true, sensitivity: "base" });
+}
+
+function getOrderRawValue(row: OrderListRow, columnIndex: number) {
+  return String(row.values[columnIndex - 1] ?? "");
+}
+
+function getOrderUniqueValues(rows: OrderListRow[], columnIndex: number) {
+  return Array.from(new Set(rows.map((row) => getOrderRawValue(row, columnIndex))))
+    .sort((left, right) => compareOrderValues(left, right));
 }
 
 function parseMoney(value: string) {
@@ -465,6 +556,14 @@ export default function SpaAdmin() {
     request: "SPQ and LT",
   });
   const [spaRfqMessage, setSpaRfqMessage] = useState("");
+  const [orderListData, setOrderListData] = useState<OrderListData | null>(null);
+  const [orderListStatus, setOrderListStatus] = useState("Open PO Status to load the workbook.");
+  const [orderListSavingCell, setOrderListSavingCell] = useState<string | null>(null);
+  const [orderListSearch, setOrderListSearch] = useState("");
+  const [showOrderSentColumns, setShowOrderSentColumns] = useState(false);
+  const [orderListSort, setOrderListSort] = useState<{ columnIndex: number; direction: "asc" | "desc" } | null>(null);
+  const [orderColumnFilters, setOrderColumnFilters] = useState<Record<number, string[]>>({});
+  const [orderFilterDraft, setOrderFilterDraft] = useState<OrderFilterDraft | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -494,6 +593,81 @@ export default function SpaAdmin() {
     };
   }, []);
 
+  const loadOrderList = async () => {
+    setOrderListStatus("Loading local Excel order list...");
+
+    try {
+      const response = await fetch("/api/admin/order-list?limit=350", {
+        credentials: "include",
+      });
+      const body = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(body?.error || "Unable to load order list workbook");
+      }
+
+      setOrderListData(body);
+      setOrderListStatus(
+        `${body.workbookName} loaded from ${body.sheetName}. Showing latest ${body.rows.length} rows from Excel row ${body.headerRow + 1} onward.`,
+      );
+    } catch (error) {
+      setOrderListStatus(error instanceof Error ? error.message : "Unable to load order list workbook");
+    }
+  };
+
+  useEffect(() => {
+    if (authStatus === "authenticated" && activeToolId === "po-status" && !orderListData) {
+      void loadOrderList();
+    }
+  }, [authStatus, activeToolId, orderListData]);
+
+  const updateOrderListCell = async (rowNumber: number, columnIndex: number, value: string) => {
+    const cellKey = `${rowNumber}-${columnIndex}`;
+    setOrderListSavingCell(cellKey);
+    setOrderListStatus(`Saving Excel row ${rowNumber}, column ${columnIndex}...`);
+
+    try {
+      const response = await fetch("/api/admin/order-list/cell", {
+        body: JSON.stringify({
+          columnIndex,
+          rowNumber,
+          sheet: orderListData?.sheetName,
+          value,
+        }),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PATCH",
+      });
+      const body = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(body?.error || "Unable to save Excel cell");
+      }
+
+      setOrderListData((current) => {
+        if (!current) return current;
+
+        return {
+          ...current,
+          rows: current.rows.map((row) => {
+            if (row.rowNumber !== rowNumber) return row;
+
+            const values = [...row.values];
+            values[columnIndex - 1] = value;
+            return { ...row, values };
+          }),
+        };
+      });
+      setOrderListStatus(`Saved Excel row ${rowNumber}, column ${columnIndex}.`);
+    } catch (error) {
+      setOrderListStatus(error instanceof Error ? error.message : "Unable to save Excel cell");
+    } finally {
+      setOrderListSavingCell(null);
+    }
+  };
+
   const filteredRfqs = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
@@ -506,6 +680,88 @@ export default function SpaAdmin() {
       return matchesMode && matchesQuery;
     });
   }, [mode, query]);
+
+  const visibleOrderListColumns = useMemo(() => {
+    return (orderListData?.headers ?? [])
+      .map((header, index) => ({ header, index, columnIndex: index + 1 }))
+      .filter((column) => showOrderSentColumns || ![17, 18, 19, 20].includes(column.columnIndex));
+  }, [orderListData, showOrderSentColumns]);
+
+  const filteredOrderListRows = useMemo(() => {
+    const normalizedQuery = (orderListSearch || query).trim().toLowerCase();
+    const rows = orderListData?.rows ?? [];
+    const activeFilters = Object.entries(orderColumnFilters);
+    const columnFilteredRows = activeFilters.length
+      ? rows.filter((row) =>
+          activeFilters.every(([columnIndex, allowedValues]) => {
+            if (allowedValues.length === 0) return false;
+            return allowedValues.includes(getOrderRawValue(row, Number(columnIndex)));
+          }),
+        )
+      : rows;
+    const filteredRows = normalizedQuery
+      ? columnFilteredRows.filter((row) =>
+          row.values.join(" ").toLowerCase().includes(normalizedQuery),
+        )
+      : columnFilteredRows;
+
+    if (!orderListSort) {
+      return filteredRows;
+    }
+
+    return [...filteredRows].sort((left, right) => {
+      const result = compareOrderValues(
+        left.values[orderListSort.columnIndex - 1],
+        right.values[orderListSort.columnIndex - 1],
+      );
+
+      return orderListSort.direction === "asc" ? result : -result;
+    });
+  }, [orderColumnFilters, orderListData, orderListSearch, orderListSort, query]);
+
+  const orderFilterValues = useMemo(() => {
+    if (!orderFilterDraft) return [];
+
+    return getOrderUniqueValues(orderListData?.rows ?? [], orderFilterDraft.columnIndex);
+  }, [orderFilterDraft, orderListData]);
+
+  const visibleOrderFilterValues = useMemo(() => {
+    if (!orderFilterDraft) return [];
+
+    const header = orderListData?.headers[orderFilterDraft.columnIndex - 1] ?? "";
+    const normalizedSearch = orderFilterDraft.search.trim().toLowerCase();
+    if (!normalizedSearch) return orderFilterValues;
+
+    return orderFilterValues.filter((value) => {
+      const displayValue = formatOrderListCell(value, header);
+      return `${value} ${displayValue}`.toLowerCase().includes(normalizedSearch);
+    });
+  }, [orderFilterDraft, orderFilterValues, orderListData]);
+
+  const openOrderFilter = (columnIndex: number) => {
+    const values = getOrderUniqueValues(orderListData?.rows ?? [], columnIndex);
+    setOrderFilterDraft({
+      columnIndex,
+      search: "",
+      selected: orderColumnFilters[columnIndex] ?? values,
+    });
+  };
+
+  const applyOrderFilter = () => {
+    if (!orderFilterDraft) return;
+
+    const allValues = getOrderUniqueValues(orderListData?.rows ?? [], orderFilterDraft.columnIndex);
+    setOrderColumnFilters((currentFilters) => {
+      const nextFilters = { ...currentFilters };
+      if (orderFilterDraft.selected.length === allValues.length) {
+        delete nextFilters[orderFilterDraft.columnIndex];
+      } else {
+        nextFilters[orderFilterDraft.columnIndex] = orderFilterDraft.selected;
+      }
+      return nextFilters;
+    });
+    setOrderFilterDraft(null);
+  };
 
   const parseSpaRfqEmail = () => {
     const normalized = spaRfqEmailText.replace(/\r/g, "");
@@ -653,7 +909,7 @@ export default function SpaAdmin() {
     updateArCustomer(
       customerId,
       receivedDate
-        ? { focus: false, memo: "입금 완료", receivedDate }
+        ? { focus: false, memo: "?낃툑 ?꾨즺", receivedDate }
         : { receivedDate },
     );
   };
@@ -852,7 +1108,7 @@ export default function SpaAdmin() {
                     onDragEnd={() => setDraggedToolId(null)}
                     className={`flex h-11 w-full items-center gap-3 px-3 text-left text-sm font-semibold transition-colors ${
                       item.id === activeToolId
-                        ? "border border-slate-200 bg-slate-950 text-white"
+                        ? "border border-primary/30 bg-primary/10 text-primary"
                         : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
                     }`}
                     data-testid={`button-admin-nav-${item.id}`}
@@ -936,6 +1192,7 @@ export default function SpaAdmin() {
           </header>
 
           <section className="px-4 py-5 lg:px-6">
+            {activeToolId !== "po-status" && (
             <div className="mb-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
               {favoriteTools.map((metric, index) => (
                 <article
@@ -992,8 +1249,9 @@ export default function SpaAdmin() {
                 </article>
               ))}
             </div>
+            )}
 
-            <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
+            <div className={activeToolId === "po-status" ? "grid gap-5" : "grid gap-5 xl:grid-cols-[1fr_380px]"}>
               {activeToolId === "ar-iou" ? (
                 <section className="border border-slate-200 bg-white shadow-sm">
                   <div className="flex flex-col gap-4 border-b border-slate-200 p-4 lg:flex-row lg:items-center lg:justify-between">
@@ -1199,6 +1457,261 @@ export default function SpaAdmin() {
                             </>
                           );
                         })}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              ) : activeToolId === "po-status" ? (
+                <section className="border border-slate-400 bg-white shadow-sm">
+                  <div className="flex flex-col gap-3 border-b border-slate-400 bg-white p-3 lg:flex-row lg:items-center lg:justify-between">
+                    <div>
+                      <h2 className="font-display text-xl font-bold">PO Status - OrderList</h2>
+                      <p className="mt-1 text-xs font-semibold text-slate-500">
+                        {orderListData?.workbookName || "OrderList workbook"} | {orderListData?.sheetName || "PO-List"} | {filteredOrderListRows.length.toLocaleString()} rows
+                        {orderListData?.locked ? " | Excel open: save disabled" : " | Save ready"}
+                      </p>
+                      <p className="hidden">
+                        Local workbook sync: C:\Users\admin\Documents\Work_files\Sunny?곸뾽 _File\OrderList-?ㅻ뜑???                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex h-9 min-w-80 items-center border border-slate-400 bg-white">
+                        <Input
+                          value={orderListSearch}
+                          onChange={(event) => setOrderListSearch(event.target.value)}
+                          className="h-9 border-0 bg-transparent text-sm focus-visible:ring-0"
+                          placeholder="Search PO, customer, part, ETD, status"
+                          data-testid="input-order-list-search"
+                        />
+                        <Search className="mr-3 h-4 w-4 shrink-0 text-slate-500" />
+                      </div>
+                      <Button
+                        variant="outline"
+                        className="h-9 gap-2 bg-white"
+                        onClick={() => setShowOrderSentColumns((current) => !current)}
+                      >
+                        {showOrderSentColumns ? "Hide Q-T" : "Show Q-T"}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="h-9 gap-2 bg-white"
+                        onClick={loadOrderList}
+                        disabled={orderListSavingCell !== null}
+                      >
+                        <RefreshCw className="h-4 w-4" />
+                        Reload Excel
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="hidden">
+                    <div className="border border-slate-300 bg-white p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Workbook</div>
+                      <div className="mt-1 truncate text-sm font-bold text-slate-950">{orderListData?.workbookName || "Not loaded"}</div>
+                    </div>
+                    <div className="border border-slate-300 bg-white p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Sheet</div>
+                      <div className="mt-1 text-sm font-bold text-slate-950">{orderListData?.sheetName || "Not loaded"}</div>
+                    </div>
+                    <div className="border border-slate-300 bg-white p-3">
+                      <div className="text-xs font-bold uppercase text-slate-500">Rows Shown</div>
+                      <div className="mt-1 text-sm font-bold text-slate-950">{filteredOrderListRows.length.toLocaleString()}</div>
+                    </div>
+                    <div className={`border p-3 ${orderListData?.locked ? "border-rose-300 bg-rose-50" : "border-emerald-300 bg-emerald-50"}`}>
+                      <div className="text-xs font-bold uppercase text-slate-500">Excel Lock</div>
+                      <div className={`mt-1 text-sm font-bold ${orderListData?.locked ? "text-rose-700" : "text-emerald-700"}`}>
+                        {orderListData?.locked ? "Workbook open - save disabled" : "Ready to save"}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`border-b border-slate-400 px-3 py-2 text-xs font-semibold ${orderListData?.locked ? "bg-rose-50 text-rose-700" : "bg-slate-50 text-slate-700"}`}>
+                    {orderListStatus}
+                  </div>
+
+                  <div className="max-h-[calc(100vh-210px)] overflow-auto bg-white">
+                    <table className="w-full min-w-[1540px] border-collapse text-left text-xs leading-tight">
+                      <thead className="sticky top-0 z-20 bg-[#b7b7b7] text-slate-950">
+                        <tr>
+                          <th className="sticky left-0 z-30 w-14 border border-black bg-[#7f7f7f] px-1 py-2 text-center font-bold text-white">#</th>
+                          {visibleOrderListColumns.map(({ header, index, columnIndex }) => (
+                            <th
+                              key={`${header}-${index}`}
+                              className={`relative border border-black bg-[#b7b7b7] px-1 py-1.5 font-bold ${getOrderColumnWidth(header)}`}
+                            >
+                              <div className="flex w-full items-center gap-1">
+                                <span className="min-w-0 flex-1 truncate">{header}</span>
+                                {orderColumnFilters[columnIndex] && (
+                                  <Filter className="h-3 w-3 shrink-0 text-slate-700" />
+                                )}
+                                <button
+                                  type="button"
+                                  className="flex h-4 w-4 shrink-0 items-center justify-center border border-slate-500 bg-slate-100 text-[10px] leading-none text-slate-700 hover:bg-white"
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    openOrderFilter(columnIndex);
+                                  }}
+                                  aria-label={`Filter ${header}`}
+                                >
+                                  <ChevronDown className="h-3 w-3" />
+                                </button>
+                              </div>
+                              {orderFilterDraft?.columnIndex === columnIndex && (
+                                <div className="absolute left-0 top-full z-50 w-72 border border-slate-500 bg-white p-2 text-xs font-normal text-slate-900 shadow-xl">
+                                  <button
+                                    type="button"
+                                    className="flex w-full items-center gap-2 px-2 py-1 text-left hover:bg-slate-100"
+                                    onClick={() => {
+                                      setOrderListSort({ columnIndex, direction: "asc" });
+                                      setOrderFilterDraft(null);
+                                    }}
+                                  >
+                                    <span className="font-bold text-sky-700">A-Z</span>
+                                    Sort Smallest to Largest
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="flex w-full items-center gap-2 px-2 py-1 text-left hover:bg-slate-100"
+                                    onClick={() => {
+                                      setOrderListSort({ columnIndex, direction: "desc" });
+                                      setOrderFilterDraft(null);
+                                    }}
+                                  >
+                                    <span className="font-bold text-sky-700">Z-A</span>
+                                    Sort Largest to Smallest
+                                  </button>
+                                  <div className="my-2 border-t border-slate-200" />
+                                  <button
+                                    type="button"
+                                    className="w-full px-2 py-1 text-left text-slate-500 hover:bg-slate-100"
+                                    onClick={() => {
+                                      setOrderColumnFilters((currentFilters) => {
+                                        const nextFilters = { ...currentFilters };
+                                        delete nextFilters[columnIndex];
+                                        return nextFilters;
+                                      });
+                                      setOrderFilterDraft(null);
+                                    }}
+                                  >
+                                    Clear Filter From "{header}"
+                                  </button>
+                                  <div className="my-2 border-t border-slate-200" />
+                                  <div className="flex h-8 items-center border border-slate-300 bg-white">
+                                    <input
+                                      value={orderFilterDraft.search}
+                                      onChange={(event) => setOrderFilterDraft((currentDraft) => currentDraft ? { ...currentDraft, search: event.target.value } : currentDraft)}
+                                      className="h-7 min-w-0 flex-1 border-0 px-2 text-xs outline-none"
+                                      placeholder="Search"
+                                    />
+                                    <Search className="mr-2 h-3.5 w-3.5 text-slate-500" />
+                                  </div>
+                                  <div className="mt-2 max-h-52 overflow-auto border border-slate-300 bg-white p-1">
+                                    <label className="flex items-center gap-2 px-1 py-0.5">
+                                      <input
+                                        type="checkbox"
+                                        checked={orderFilterDraft.selected.length === orderFilterValues.length}
+                                        onChange={(event) => {
+                                          setOrderFilterDraft((currentDraft) => currentDraft ? {
+                                            ...currentDraft,
+                                            selected: event.target.checked ? orderFilterValues : [],
+                                          } : currentDraft);
+                                        }}
+                                      />
+                                      <span>(Select All)</span>
+                                    </label>
+                                    {visibleOrderFilterValues.map((value) => {
+                                      const displayValue = formatOrderListCell(value, header) || "(Blank)";
+                                      return (
+                                        <label key={value || "__blank__"} className="flex items-center gap-2 px-1 py-0.5">
+                                          <input
+                                            type="checkbox"
+                                            checked={orderFilterDraft.selected.includes(value)}
+                                            onChange={(event) => {
+                                              setOrderFilterDraft((currentDraft) => {
+                                                if (!currentDraft) return currentDraft;
+
+                                                const selected = event.target.checked
+                                                  ? Array.from(new Set([...currentDraft.selected, value]))
+                                                  : currentDraft.selected.filter((item) => item !== value);
+                                                return { ...currentDraft, selected };
+                                              });
+                                            }}
+                                          />
+                                          <span className="truncate">{displayValue}</span>
+                                        </label>
+                                      );
+                                    })}
+                                  </div>
+                                  <div className="mt-3 flex justify-end gap-2">
+                                    <Button type="button" size="sm" className="h-8 px-5" onClick={applyOrderFilter}>
+                                      OK
+                                    </Button>
+                                    <Button type="button" size="sm" variant="outline" className="h-8 bg-white px-4" onClick={() => setOrderFilterDraft(null)}>
+                                      Cancel
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredOrderListRows.length === 0 ? (
+                          <tr>
+                            <td className="border border-black px-3 py-6 text-center text-sm text-slate-500" colSpan={visibleOrderListColumns.length + 1}>
+                              {orderListData ? "No matching order rows." : "Click Reload Excel to load the workbook."}
+                            </td>
+                          </tr>
+                        ) : (
+                          filteredOrderListRows.map((row) => (
+                            <tr key={row.rowNumber} className="hover:bg-sky-50">
+                              <td className="sticky left-0 z-10 border border-black bg-slate-100 px-1 py-0.5 text-center font-mono text-[11px] text-slate-600">
+                                {row.rowNumber}
+                              </td>
+                              {visibleOrderListColumns.map(({ header, index, columnIndex }) => {
+                                const value = row.values[index];
+                                const cellKey = `${row.rowNumber}-${columnIndex}`;
+                                const textValue = String(value ?? "");
+                                const isSaving = orderListSavingCell === cellKey;
+                                const displayValue = formatOrderListCell(textValue, header);
+                                const isNumericCell = ["u/p", "Quantity", "$USD", "Sent qty", "Sent qt", "TOTAL"].some((label) => header.includes(label));
+
+                                return (
+                                  <td
+                                    key={cellKey}
+                                    className={`border border-black p-0 ${
+                                      header.includes("CUSTOMER") && textValue.includes("NEW") ? "bg-rose-50 text-rose-700" : ""
+                                    }`}
+                                  >
+                                    <input
+                                      defaultValue={displayValue}
+                                      disabled={Boolean(orderListData?.locked) || isSaving}
+                                      onFocus={(event) => {
+                                        event.currentTarget.value = textValue;
+                                      }}
+                                      onBlur={(event) => {
+                                        if (event.currentTarget.value !== textValue) {
+                                          void updateOrderListCell(row.rowNumber, columnIndex, event.currentTarget.value);
+                                        } else {
+                                          event.currentTarget.value = displayValue;
+                                        }
+                                      }}
+                                      onKeyDown={(event) => {
+                                        if (event.key === "Enter") {
+                                          event.currentTarget.blur();
+                                        }
+                                      }}
+                                      className={`h-6 w-full border-0 bg-transparent px-1 text-xs outline-none focus:bg-white focus:ring-2 focus:ring-primary ${getOrderColumnWidth(header)} ${
+                                        isNumericCell ? "text-right tabular-nums" : ""
+                                      } ${isSaving ? "bg-amber-50" : ""}`}
+                                      data-testid={`input-order-list-${row.rowNumber}-${columnIndex}`}
+                                    />
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          ))
+                        )}
                       </tbody>
                     </table>
                   </div>
@@ -1628,6 +2141,7 @@ export default function SpaAdmin() {
               </>
               )}
 
+              {activeToolId !== "po-status" && (
               <aside className="space-y-5">
                 <section className="border border-slate-200 bg-white p-4 shadow-sm">
                   <div className="mb-4 flex items-center justify-between">
@@ -1702,8 +2216,11 @@ export default function SpaAdmin() {
                   </div>
                 </section>
               </aside>
+              )}
             </div>
 
+            {activeToolId !== "po-status" && (
+            <>
             <div className="mt-5 grid gap-5 xl:grid-cols-2">
               <section className="border border-slate-200 bg-white shadow-sm">
                 <div className="flex items-center justify-between border-b border-slate-200 p-4">
@@ -1800,6 +2317,8 @@ export default function SpaAdmin() {
                 <Button variant="outline" className="mt-4 h-9 bg-white">Prepare Quote</Button>
               </section>
             </div>
+            </>
+            )}
           </section>
         </main>
       </div>
