@@ -19,6 +19,17 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
+function getAssigneeEmails() {
+  const configured = process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com,john@sunny.co.kr";
+  const normalized = configured
+    .split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean)
+    .map((email) => (email === "sunny1@sunny.co.kr" ? "john@sunny.co.kr" : email));
+
+  return [...new Set(normalized)];
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     sendJson(res, 405, { error: "Method not allowed" });
@@ -27,10 +38,7 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.RFQ_FROM_EMAIL;
-  const assigneeEmails = (process.env.RFQ_ASSIGNEE_EMAILS ?? "")
-    .split(",")
-    .map((email) => email.trim())
-    .filter(Boolean);
+  const assigneeEmails = getAssigneeEmails();
 
   if (!apiKey || !fromEmail || assigneeEmails.length === 0) {
     sendJson(res, 503, { error: "Quote service is not configured yet." });
