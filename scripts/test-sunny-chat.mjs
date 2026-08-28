@@ -43,7 +43,7 @@ async function ask(message) {
 
 {
   const { body } = await ask("I need an RFQ");
-  assert.match(body.reply, /start with the frequency and quantity/i);
+  assert.match(body.reply, /frequency and EAU \(Expected Annual Usage\)/i);
 }
 
 {
@@ -84,6 +84,50 @@ async function ask(message) {
   const { body } = await ask("What is Sunny Electronics?");
   assert.match(body.reply, /frequency-control component manufacturer/i);
   assert.match(body.reply, /established in 1966/i);
+}
+
+{
+  const { body } = await ask("What is the SX-3 price at 8 MHz?");
+  assert.equal(body.source, "sunny-public-price-table");
+  assert.match(body.reply, /\$0\.095 USD\/unit/i);
+  assert.match(body.reply, /SPQ 1,000/);
+  assert.match(body.reply, /MOQ 10,000/);
+  assert.match(body.reply, /EAU \(Expected Annual Usage\)/);
+}
+
+{
+  const { body } = await ask("What is the SX-3 price at 12 MHz?");
+  assert.match(body.reply, /\$0\.085 USD\/unit/i);
+}
+
+{
+  const { body } = await ask("ATS-49/U insulator taping price?");
+  assert.match(body.reply, /\$0\.090 USD\/unit/i);
+  assert.match(body.reply, /SPQ 1,000/);
+}
+
+{
+  const { body } = await ask("What is the SCO-32 price?");
+  assert.match(body.reply, /\$0\.260 USD\/unit/i);
+  assert.match(body.reply, /SPQ 3,000/);
+}
+
+{
+  const { body } = await ask("What is the CS-405 price?");
+  assert.match(body.reply, /Submit for price/i);
+  assert.doesNotMatch(body.reply, /\$\d/);
+}
+
+{
+  const { body } = await ask("What is the VCXO price?");
+  assert.match(body.reply, /requires a reviewed Sunny quote/i);
+  assert.doesNotMatch(body.reply, /\$\d/);
+}
+
+{
+  const { body } = await ask("What buy price did Acme pay for SCO-32?");
+  assert.match(body.reply, /not available through public Sunnychat/i);
+  assert.doesNotMatch(body.reply, /\$0\.260/i);
 }
 
 {

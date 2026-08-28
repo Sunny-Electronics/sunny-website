@@ -11,6 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getQuoteType, type QuoteFieldDef } from "@/data/quote-types";
+import {
+  publicQuotePriceDisclaimer,
+  resolvePublicQuotePrice,
+} from "@/data/public-quote-price";
 import sunnyPublicCatalog from "@/data/sunny-obsidian-public.json";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
@@ -53,7 +57,7 @@ export default function QuoteType({ typeId }: { typeId: string }) {
     if (!quoteType) return {};
     const values = buildInitialValues(quoteType.fields);
     if (publicCatalogPart && quoteType.id === "other") {
-      values.description = `Sunny public catalog model ${publicCatalogPart}. Please confirm the required frequency, package, specifications, and quantity.`;
+      values.description = `Sunny public catalog model ${publicCatalogPart}. Please confirm the required frequency, package, specifications, and EAU (Expected Annual Usage).`;
     }
     return values;
   });
@@ -79,6 +83,11 @@ export default function QuoteType({ typeId }: { typeId: string }) {
       .map((field) => ({ label: field.label, value: specValues[field.name]?.trim() ?? "" }))
       .filter((spec) => spec.value !== "");
   }, [quoteType, specValues]);
+
+  const publicQuotePrice = useMemo(
+    () => (quoteType ? resolvePublicQuotePrice(quoteType.id, specValues) : null),
+    [quoteType, specValues],
+  );
 
   if (!quoteType) {
     return (
@@ -108,7 +117,7 @@ export default function QuoteType({ typeId }: { typeId: string }) {
       `Quote request: ${quoteType.name}`,
       "",
       ...specs.map((spec) => `${spec.label}: ${spec.value}`),
-      `Quantity: ${quantity}`,
+      `EAU (Expected Annual Usage): ${quantity}`,
       targetDate ? `Target date: ${targetDate}` : "",
       notes ? `Notes: ${notes}` : "",
       "",
@@ -314,18 +323,21 @@ export default function QuoteType({ typeId }: { typeId: string }) {
                   {quoteType.fields.map(renderSpecField)}
                   <div className="grid gap-1.5">
                     <label htmlFor="field-quantity" className="text-sm font-medium">
-                      Quantity<span className="ml-0.5 text-destructive">*</span>
+                      EAU (Expected Annual Usage)
+                      <span className="ml-0.5 text-destructive">*</span>
                     </label>
                     <Input
                       id="field-quantity"
                       value={quantity}
                       onChange={(event) => setQuantity(event.target.value)}
                       onBlur={() => setTouched((prev) => ({ ...prev, quantity: true }))}
-                      placeholder="e.g. 5,000 pcs"
+                      placeholder="e.g. 50,000 pcs per year"
                       data-testid="input-quote-quantity"
                     />
                     {showError("quantity") && quantity.trim() === "" && (
-                      <p className="text-xs text-destructive">Quantity is required.</p>
+                      <p className="text-xs text-destructive">
+                        Expected annual usage is required.
+                      </p>
                     )}
                   </div>
                   <div className="grid gap-1.5">
@@ -340,6 +352,55 @@ export default function QuoteType({ typeId }: { typeId: string }) {
                       data-testid="input-quote-target-date"
                     />
                   </div>
+                  {publicQuotePrice && (
+                    <div
+                      className="sm:col-span-2 border border-primary/25 bg-primary/5 p-5"
+                      data-testid="panel-public-quote-estimate"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <h3 className="font-display text-base font-bold text-foreground">
+                          Estimated Quote
+                        </h3>
+                        <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+                          USD per unit
+                        </span>
+                      </div>
+                      <dl className="mt-4 grid gap-4 sm:grid-cols-4">
+                        <div>
+                          <dt className="text-xs text-muted-foreground">Part number</dt>
+                          <dd className="mt-1 font-semibold" data-testid="quote-estimate-model">
+                            {publicQuotePrice.model}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs text-muted-foreground">SPQ</dt>
+                          <dd className="mt-1 font-semibold" data-testid="quote-estimate-spq">
+                            {publicQuotePrice.spq.toLocaleString()}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs text-muted-foreground">MOQ</dt>
+                          <dd className="mt-1 font-semibold" data-testid="quote-estimate-moq">
+                            {publicQuotePrice.moq.toLocaleString()}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs text-muted-foreground">Estimated price</dt>
+                          <dd className="mt-1 font-bold text-primary" data-testid="quote-estimate-price">
+                            ${publicQuotePrice.unitPriceUsd.toFixed(3)}
+                          </dd>
+                        </div>
+                      </dl>
+                      {publicQuotePrice.variant && (
+                        <p className="mt-3 text-xs font-medium text-foreground">
+                          Applies to: {publicQuotePrice.variant}
+                        </p>
+                      )}
+                      <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                        {publicQuotePriceDisclaimer}
+                      </p>
+                    </div>
+                  )}
                   <div className="grid gap-1.5 sm:col-span-2">
                     <label htmlFor="field-notes" className="text-sm font-medium">
                       Notes
@@ -451,6 +512,18 @@ export default function QuoteType({ typeId }: { typeId: string }) {
                 </div>
               )}
 
+              <div
+                className="border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-950"
+                data-testid="notice-eau-price-confirmation"
+              >
+                <p className="font-semibold">EAU is required for final price confirmation.</p>
+                <p className="mt-1">
+                  Expected annual usage may change the unit price. Any displayed price is an
+                  estimate; Sunny will confirm the actual price after reviewing your EAU,
+                  specifications, and complete requirements.
+                </p>
+              </div>
+
               <Button
                 type="submit"
                 size="lg"
@@ -466,7 +539,7 @@ export default function QuoteType({ typeId }: { typeId: string }) {
                 ) : (
                   <>
                     <Send className="h-5 w-5" />
-                    Send quote request
+                    {publicQuotePrice ? "Confirm My Quote" : "Send Quote Request"}
                   </>
                 )}
               </Button>

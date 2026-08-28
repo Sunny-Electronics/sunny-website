@@ -21,6 +21,7 @@ const SUNNY_PUBLIC_COMPANY = Object.freeze({
 });
 
 let publicCatalogCache;
+let publicPricesCache;
 
 export const config = { maxDuration: 30 };
 
@@ -54,6 +55,10 @@ const emailAddressPattern = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i;
 const currencyPattern = /[$€£¥₩]|\b(?:usd|eur|krw|jpy|cny)\b/i;
 const privateContactTargetPattern =
   /\b(?:customers?|buyers?|clients?)(?:['’]s|['’])?\s+(?:names?|emails?|phones?|telephone|addresses?|contacts?|accounts?|orders?|list)\b|\b(?:names?|emails?|phones?|telephone|addresses?|contacts?)\s+(?:of|for)\s+(?:a\s+)?(?:customer|buyer|client)\b/i;
+const publicPriceIntentPattern =
+  /\b(?:price|pricing|quote price|unit price|spq|moq|minimum order|standard packing quantity)\b/i;
+const privatePriceQuestionPattern =
+  /private|confidential|admin|customer|buyer|client|paid|purchased|bought|sold|invoice|order number|purchase order|\bpo\b|buy price|cost price|our cost|margin|receivable|a\/r|another project|other project|unrelated project/i;
 
 function isSensitiveText(value) {
   const text = String(value || "");
@@ -143,6 +148,17 @@ function loadPublicCatalog() {
   return publicCatalogCache;
 }
 
+function loadPublicPrices() {
+  if (publicPricesCache) return publicPricesCache;
+  try {
+    const pricesUrl = new URL("./sunny-public-prices.json", import.meta.url);
+    publicPricesCache = JSON.parse(fs.readFileSync(pricesUrl, "utf8"));
+  } catch {
+    publicPricesCache = { entries: [], submitForPriceModels: [], submitForPriceFamilies: [] };
+  }
+  return publicPricesCache;
+}
+
 function normalize(value) {
   return sanitize(value, 1200).toLowerCase();
 }
@@ -177,6 +193,88 @@ function humanList(items) {
   if (values.length <= 1) return values[0] || "";
   if (values.length === 2) return `${values[0]} and ${values[1]}`;
   return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
+}
+
+function parseFrequencyMHz(value) {
+  const match = String(value || "").match(/(\d+(?:\.\d+)?)\s*mhz/i);
+  if (!match) return null;
+  const frequency = Number.parseFloat(match[1]);
+  return Number.isFinite(frequency) && frequency > 0 ? frequency : null;
+}
+
+function formatPublicPrice(entry) {
+  const variant = entry.variant ? ` (${entry.variant})` : "";
+  return `${entry.model}${variant}: $${Number(entry.unitPriceUsd).toFixed(3)} USD/unit, SPQ ${Number(entry.spq).toLocaleString("en-US")}, MOQ ${Number(entry.moq).toLocaleString("en-US")}`;
+}
+
+function publicPriceAnswer(message) {
+  const raw = String(message || "");
+  const text = normalize(raw);
+  if (!publicPriceIntentPattern.test(text) || privatePriceQuestionPattern.test(text)) return null;
+  if (privateContactTargetPattern.test(raw) || hasUnapprovedEmailAddress(raw)) return null;
+
+  const priceTable = loadPublicPrices();
+  const entries = Array.isArray(priceTable.entries) ? priceTable.entries : [];
+  const models = [
+    ...new Set([
+      ...entries.map((entry) => entry.model),
+      ...(priceTable.submitForPriceModels || []),
+    ]),
+  ].sort((left, right) => right.length - left.length);
+  const model = models.find((candidate) => modelIsMentioned(text, candidate));
+
+  if (!model) {
+    const family = (priceTable.submitForPriceFamilies || []).find((candidate) =>
+      modelIsMentioned(text, candidate),
+    );
+    if (!family) return null;
+    return {
+      reply: `${family} requires a reviewed Sunny quote, so no public estimated price is shown. Please send the frequency, specifications, and EAU (Expected Annual Usage) through the quote form.`,
+      links: [links.quote],
+    };
+  }
+
+  if ((priceTable.submitForPriceModels || []).includes(model)) {
+    return {
+      reply: `${model} is marked “Submit for price” in Sunny's approved public table. Please send the specifications and EAU (Expected Annual Usage) through the quote form for review.`,
+      links: [links.quote],
+    };
+  }
+
+  const candidates = entries.filter((entry) => entry.model === model);
+  if (!candidates.length) return null;
+
+  const frequency = parseFrequencyMHz(text);
+  let matches = candidates;
+  if (model === "ATS-49/U") {
+    if (/insulator.{0,20}(?:tap|t&r)|(?:tap|t&r).{0,20}insulator/i.test(text)) {
+      matches = candidates.filter((entry) => /insulator-taping/i.test(entry.variant));
+    } else if (/insulator/i.test(text)) {
+      matches = candidates.filter((entry) => /insulator-bulk/i.test(entry.variant));
+    } else if (/tap|t&r/i.test(text)) {
+      matches = candidates.filter((entry) => /taping t&r/i.test(entry.variant) && !/insulator/i.test(entry.variant));
+    } else if (/bulk/i.test(text)) {
+      matches = candidates.filter((entry) => /bulk packing/i.test(entry.variant));
+    }
+  } else if (frequency !== null) {
+    const exact = candidates.filter((entry) => entry.frequencyExactMHz === frequency);
+    const band = candidates.filter(
+      (entry) =>
+        entry.frequencyExactMHz === undefined &&
+        !entry.defaultVariant &&
+        (entry.frequencyMaxMHz === undefined || frequency <= entry.frequencyMaxMHz) &&
+        (entry.frequencyMinExclusiveMHz === undefined || frequency > entry.frequencyMinExclusiveMHz),
+    );
+    matches = exact.length ? exact : band.length ? band : candidates.filter((entry) => entry.defaultVariant);
+  }
+
+  const lines = matches.map(formatPublicPrice);
+  if (!lines.length) return null;
+  const detail = lines.length === 1 ? lines[0] : lines.map((line) => `• ${line}`).join("\n");
+  return {
+    reply: `${detail}\n\nThese are estimated public prices dated ${priceTable.publishedDate}. ${priceTable.disclaimer}`,
+    links: [links.quote, links.products],
+  };
 }
 
 function followUpFor(model) {
@@ -330,7 +428,7 @@ function publicAnswer(message, modelMatches) {
 
   if (/quote|rfq|price|lead time|delivery|bom/.test(text)) {
     return {
-      reply: "Sure—send me the Sunny or customer part number if you have it. If not, start with the frequency and quantity, and I'll guide you through the remaining catalog fields one step at a time.",
+      reply: "Sure—send me the Sunny or customer part number if you have it. If not, start with the frequency and EAU (Expected Annual Usage), and I'll guide you through the remaining catalog fields one step at a time.",
       links: [links.quote, links.partNumber],
     };
   }
@@ -459,6 +557,10 @@ export default async function handler(req, res) {
   const history = cleanHistory(body.history);
   const memory = cleanMemory(body.memory);
   const modelMatches = findModelMatches(message, pagePath);
+  const priceAnswer = publicPriceAnswer(message);
+  if (priceAnswer) {
+    return res.status(200).json({ ...priceAnswer, source: "sunny-public-price-table" });
+  }
   const fallback = publicAnswer(message, modelMatches);
 
   if (isPrivateContext(message) || !isSunnyScope(message)) {

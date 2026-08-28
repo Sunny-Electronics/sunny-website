@@ -77,6 +77,13 @@ try {
   assert.match(publicPhone.body.reply, /\+82-43-853-1760/);
   assert.match(publicTicker.body.reply, /004770/);
 
+  const publicPrice = await ask("What is the SCO-32 price?");
+  const submitPrice = await ask("What is the CS-405 price?");
+  assert.equal(calls, 0, "approved public estimates and submit-for-price answers must not call the bridge");
+  assert.equal(publicPrice.body.source, "sunny-public-price-table");
+  assert.match(publicPrice.body.reply, /\$0\.260 USD\/unit/i);
+  assert.doesNotMatch(submitPrice.body.reply, /\$\d/);
+
   process.env.SUNNY_AI_BRIDGE_URL = "https://bridge.sunnykr.com:8443/sunny/chat";
   await ask("Tell me about SCO-10");
   assert.equal(calls, 0, "a non-default production bridge port must be rejected before fetch");

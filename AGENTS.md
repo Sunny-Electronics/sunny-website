@@ -8,7 +8,8 @@ SunnyKR is independent. Do not share its hostnames, tunnel routes, service label
 
 ## Public boundary
 
-- Never place customer, buyer, order, receivable, price, cost, margin, personal mailbox, credential, local path, or internal-system data in public code or files.
+- Never place customer, buyer, order, receivable, negotiated price, buy price, cost, margin, personal mailbox, credential, local path, or internal-system data in public code or files.
+- Public pricing is limited to the approved, versioned Sunny estimate table. It must be labeled USD per unit, subject to EAU and final specification review, and must never be represented as a final or customer-specific price.
 - Public stock is limited to stock number, Sunny part number, and quantity.
 - Keep private admin and operational tools outside this public repository and deployment.
 - The public Vercel handler is the AI security boundary. It must refuse private or unrelated requests before any model call.

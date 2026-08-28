@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "publishedDate": "2026-08-28",
+  "currency": "USD",
+  "unit": "per unit",
+  "disclaimer": "Estimated USD unit price only. EAU (Expected Annual Usage) may change the unit price. Final price is confirmed by Sunny sales after reviewing the EAU, specifications, and all required information.",
+  "source": {
+    "workbook": "PRICE-TABLE SUNNYKR 26.08.28.xlsx",
+    "sheet": "Sheet1 (2)"
+  },
+  "submitForPriceModels": ["CS-146", "CS-306", "CS-405", "CS-406", "CS-519"],
+  "submitForPriceFamilies": ["VCXO", "TCXO", "VCTCXO"],
+  "entries": [
+    { "id": "ats-49u-13mm-bulk", "quoteType": "ats", "model": "ATS-49/U", "selection": "ATS-49/U — 13 mm Bulk Packing", "variant": "13 mm Bulk Packing", "unitPriceUsd": 0.065, "spq": 500, "moq": 5000 },
+    { "id": "ats-49u-16mm-taping", "quoteType": "ats", "model": "ATS-49/U", "selection": "ATS-49/U — 16 mm Taping T&R", "variant": "16 mm Taping T&R", "unitPriceUsd": 0.075, "spq": 1000, "moq": 5000 },
+    { "id": "ats-49u-16mm-insulator-bulk", "quoteType": "ats", "model": "ATS-49/U", "selection": "ATS-49/U — 16 mm Insulator-Bulk", "variant": "16 mm Insulator-Bulk", "unitPriceUsd": 0.075, "spq": 500, "moq": 5000 },
+    { "id": "ats-49u-16mm-insulator-taping", "quoteType": "ats", "model": "ATS-49/U", "selection": "ATS-49/U — 16 mm Insulator-Taping T&R", "variant": "16 mm Insulator-Taping T&R", "unitPriceUsd": 0.09, "spq": 1000, "moq": 5000 },
+    { "id": "ats-25u", "quoteType": "ats", "model": "ATS-25/U", "unitPriceUsd": 0.07, "spq": 1000, "moq": 5000 },
+    { "id": "sx-1", "quoteType": "smd-crystal", "model": "SX-1", "unitPriceUsd": 0.07, "spq": 1000, "moq": 10000 },
+    { "id": "sx-3-low", "quoteType": "smd-crystal", "model": "SX-3", "variant": "8 MHz and below", "frequencyMaxMHz": 8, "unitPriceUsd": 0.095, "spq": 1000, "moq": 10000 },
+    { "id": "sx-3-high", "quoteType": "smd-crystal", "model": "SX-3", "variant": "Above 8 MHz", "frequencyMinExclusiveMHz": 8, "unitPriceUsd": 0.085, "spq": 1000, "moq": 10000 },
+    { "id": "sx-3l1", "quoteType": "smd-crystal", "model": "SX-3L1", "unitPriceUsd": 0.12, "spq": 1000, "moq": 10000 },
+    { "id": "sx-7", "quoteType": "smd-crystal", "model": "SX-7", "unitPriceUsd": 0.2, "spq": 1000, "moq": 1000 },
+    { "id": "sx-8", "quoteType": "smd-crystal", "model": "SX-8", "unitPriceUsd": 0.23, "spq": 1000, "moq": 1000 },
+    { "id": "sx-32-standard", "quoteType": "smd-crystal", "model": "SX-32", "variant": "Standard frequency", "defaultVariant": true, "unitPriceUsd": 0.055, "spq": 3000, "moq": 3000 },
+    { "id": "sx-32-8mhz", "quoteType": "smd-crystal", "model": "SX-32", "variant": "8 MHz", "frequencyExactMHz": 8, "unitPriceUsd": 0.11, "spq": 3000, "moq": 3000 },
+    { "id": "sx-32-10mhz", "quoteType": "smd-crystal", "model": "SX-32", "variant": "10 MHz", "frequencyExactMHz": 10, "unitPriceUsd": 0.07, "spq": 3000, "moq": 3000 },
+    { "id": "sx-22", "quoteType": "smd-crystal", "model": "SX-22", "unitPriceUsd": 0.06, "spq": 3000, "moq": 3000 },
+    { "id": "sx-21", "quoteType": "smd-crystal", "model": "SX-21", "unitPriceUsd": 0.07, "spq": 3000, "moq": 3000 },
+    { "id": "sx-16", "quoteType": "smd-crystal", "model": "SX-16", "unitPriceUsd": 0.11, "spq": 3000, "moq": 3000 },
+    { "id": "sco-10", "quoteType": "smd-oscillator", "model": "SCO-10", "unitPriceUsd": 0.5, "spq": 1000, "moq": 1000 },
+    { "id": "sco-53", "quoteType": "smd-oscillator", "model": "SCO-53", "unitPriceUsd": 0.45, "spq": 1000, "moq": 1000 },
+    { "id": "sco-32", "quoteType": "smd-oscillator", "model": "SCO-32", "unitPriceUsd": 0.26, "spq": 3000, "moq": 3000 },
+    { "id": "sco-22", "quoteType": "smd-oscillator", "model": "SCO-22", "unitPriceUsd": 0.27, "spq": 3000, "moq": 3000 },
+    { "id": "sco-21", "quoteType": "smd-oscillator", "model": "SCO-21", "unitPriceUsd": 0.3, "spq": 3000, "moq": 3000 },
+    { "id": "cs-3215", "quoteType": "tuning-fork", "model": "CS-3215", "variant": "12.5 pF, +/-20 ppm", "loadCapacitance": "12.5 pF", "tolerance": "+/-20 ppm", "unitPriceUsd": 0.12, "spq": 3000, "moq": 3000 },
+    { "id": "cs-2012", "quoteType": "tuning-fork", "model": "CS-2012", "variant": "12.5 pF, +/-20 ppm", "loadCapacitance": "12.5 pF", "tolerance": "+/-20 ppm", "unitPriceUsd": 0.14, "spq": 3000, "moq": 3000 },
+    { "id": "cs-1610", "quoteType": "tuning-fork", "model": "CS-1610", "variant": "12.5 pF, +/-20 ppm", "loadCapacitance": "12.5 pF", "tolerance": "+/-20 ppm", "unitPriceUsd": 0.15, "spq": 3000, "moq": 3000 },
+    { "id": "sco-02", "quoteType": "smd-oscillator", "model": "SCO-02", "variant": "Full-size metal can", "unitPriceUsd": 2.0, "spq": 100, "moq": 100 },
+    { "id": "sco-06", "quoteType": "smd-oscillator", "model": "SCO-06", "variant": "Half-size metal can", "unitPriceUsd": 2.0, "spq": 100, "moq": 100 }
+  ]
+}

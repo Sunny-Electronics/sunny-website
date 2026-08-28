@@ -10,6 +10,8 @@ const copies = [
   ["api/ai/sunny-catalog.json", "artifacts/web/api/ai/sunny-catalog.json"],
   ["api/ai/sunny-obsidian-public.json", "artifacts/web/api/ai/sunny-obsidian-public.json"],
   ["api/ai/sunny-obsidian-public.json", "artifacts/web/src/data/sunny-obsidian-public.json"],
+  ["api/ai/sunny-public-prices.json", "artifacts/web/api/ai/sunny-public-prices.json"],
+  ["api/ai/sunny-public-prices.json", "artifacts/web/src/data/sunny-public-prices.json"],
 ];
 
 for (const [sourceRelative, targetRelative] of copies) {

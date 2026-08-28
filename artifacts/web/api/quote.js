@@ -95,7 +95,7 @@ export default async function handler(req, res) {
 
   const detailRows = [
     ...specs,
-    { label: "Quantity", value: quantity },
+    { label: "EAU (Expected Annual Usage)", value: quantity },
     ...(targetDate ? [{ label: "Target date", value: targetDate }] : []),
     ...(notes ? [{ label: "Notes", value: notes }] : []),
     { label: "Name", value: contact.name },
