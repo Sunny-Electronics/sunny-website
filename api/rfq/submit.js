@@ -2,11 +2,12 @@ const maxFiles = 3;
 const maxFileSizeBytes = 1 * 1024 * 1024;
 const maxTotalFileSizeBytes = 3 * 1024 * 1024;
 
-function getRecipientEmails() {
-  return (process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com")
+export function getRecipientEmails() {
+  return [...new Set((process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com,john@sunny.co.kr")
     .split(",")
-    .map((email) => email.trim())
-    .filter(Boolean);
+    .map((email) => email.trim().toLowerCase())
+    .map((email) => (email === "sunny1@sunny.co.kr" ? "john@sunny.co.kr" : email))
+    .filter(Boolean))];
 }
 
 function validateRequest(body) {

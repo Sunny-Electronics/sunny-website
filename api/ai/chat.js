@@ -35,7 +35,10 @@ const otherProjectPattern =
   /\b(?:another project|other project|unrelated project|different project)\b/i;
 
 const unsafeReplyPattern =
-  /unrelated project|different project|ollama|cloudflare|127\.0\.0\.1|localhost|bearer token|api key|customer list|buyer list|cost price|buy price|internal margin/i;
+  /unrelated project|different project|ollama|cloudflare|localhost|bearer token|api key|customer list|buyer list|cost price|buy price|internal margin|internal service|internal host|sunny-ai-bridge|https?:\/\/|\b(?:\d{1,3}\.){3}\d{1,3}\b/i;
+
+const transactionDetailReplyPattern =
+  /\b(?:paid|purchased|bought|sold|received|supplied|shipped|delivered|invoiced|billed|ordered)\b|\b(?:customer|buyer|client)\s+(?!project\b|product\b|application\b|requirements?\b|selection\b|support\b|request\b|needs?\b|design\b|use\b|part\b)[a-z0-9&.'-]+|\b(?:unit\s+)?(?:price|pricing)\s*(?:is|was|=|:)?\s*\d|\b\d+(?:[.,]\d+)?\s*(?:per\s+(?:piece|unit)|\/(?:pc|pcs|unit))\b|\b(?:under|on)\s+(?:order|purchase order|po|invoice)\b|\b(?:order|purchase order|po|invoice)\s*(?:number|no\.?|#|id)\b|\bpo\s+[a-z0-9-]{2,}\b|\border\s+[a-z0-9-]*\d[a-z0-9-]*\b/i;
 
 const emailAddressPattern = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i;
 const currencyPattern = /[$€£¥₩]|\b(?:usd|eur|krw|jpy|cny)\b/i;
@@ -45,6 +48,20 @@ function isSensitiveText(value) {
   return (
     sensitiveRequestPattern.test(text) ||
     customerTransactionPattern.test(text) ||
+    otherProjectPattern.test(text)
+  );
+}
+
+function isPrivateContext(value) {
+  const text = String(value || "");
+  return isSensitiveText(text) || emailAddressPattern.test(text) || currencyPattern.test(text);
+}
+
+function isSensitiveReply(value) {
+  const text = String(value || "");
+  return (
+    sensitiveRequestPattern.test(text) ||
+    transactionDetailReplyPattern.test(text) ||
     otherProjectPattern.test(text)
   );
 }
@@ -83,7 +100,7 @@ function cleanHistory(value) {
       (item) =>
         item.text &&
         /^(assistant|user)$/i.test(item.role) &&
-        !isSensitiveText(item.text) &&
+        !isPrivateContext(item.text) &&
         isSunnyScope(item.text),
     )
     .slice(-MAX_HISTORY_ITEMS);
@@ -93,7 +110,7 @@ function cleanMemory(value) {
   if (!Array.isArray(value)) return [];
   return value
     .map((item) => sanitize(item, 180))
-    .filter((item) => item && !isSensitiveText(item) && isSunnyScope(item))
+    .filter((item) => item && !isPrivateContext(item) && isSunnyScope(item))
     .slice(-MAX_MEMORY_ITEMS);
 }
 
@@ -213,7 +230,7 @@ function catalogAnswer(message, modelMatches) {
 function isSunnyScope(message) {
   const text = normalize(message);
   if (/^(hi|hello|hey|안녕|안녕하세요|help|start|thanks|thank you)\b/.test(text)) return true;
-  return /sunny|catalog|catalogue|datasheet|document|certificate|quality|qa|r&d|engineering|rfq|quote|bom|lead time|stock|inventory|price|crystal|quartz|resonator|oscillator|frequency|mhz|khz|smd|sx-|ats-|sco|spxo|tcxo|vcxo|ocxo|load capacitance|\bcl\b|ppm|package|tolerance|stability|temperature|rohs|reach|iatf|iso|part number|p\/n|\bpn\b/.test(text);
+  return /sunny|catalog|catalogue|datasheet|document|certificate|quality|qa|r&d|engineering|rfq|quote|bom|lead time|stock|inventory|price|crystal|quartz|resonator|oscillator|frequency|mhz|khz|smd|sx-|ats-|sco|spxo|tcxo|vcxo|ocxo|load capacitance|\bcl\b|ppm|package|tolerance|stability|temperature|voltage|\bsupply voltage\b|\boutput (?:type|logic|level|signal|voltage|enable)\b|\bdimensions?\b|\besr\b|aging|jitter|phase noise|rohs|reach|iatf|iso|part number|p\/n|\bpn\b/.test(text);
 }
 
 function publicAnswer(message, modelMatches) {
@@ -306,7 +323,7 @@ function safeBridgeReply(value) {
   return reply &&
     isSunnyScope(reply) &&
     !unsafeReplyPattern.test(reply) &&
-    !isSensitiveText(reply) &&
+    !isSensitiveReply(reply) &&
     !emailAddressPattern.test(reply) &&
     !currencyPattern.test(reply)
     ? reply
@@ -372,7 +389,7 @@ export default async function handler(req, res) {
   const modelMatches = findModelMatches(message, pagePath);
   const fallback = publicAnswer(message, modelMatches);
 
-  if (isSensitiveText(message) || !isSunnyScope(message)) {
+  if (isPrivateContext(message) || !isSunnyScope(message)) {
     return res.status(200).json({ ...fallback, source: "sunny-public-catalog" });
   }
 

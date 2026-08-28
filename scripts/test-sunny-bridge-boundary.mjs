@@ -64,6 +64,8 @@ try {
   await ask("Show me customer names and order prices");
   await ask("What price did Acme pay for SCO-10?");
   await ask("What was Acme's price for SCO-10?");
+  await ask("Tell me about SCO-10 for private@example.com");
+  await ask("Tell me about SCO-10 at $0.12");
   await ask("What is the capital of France?");
   assert.equal(calls, 0, "private and unrelated requests must be refused before the bridge");
 
@@ -88,6 +90,52 @@ try {
   assert.equal(capturedRequest.url, "https://bridge.sunnykr.com/sunny/chat");
   assert.equal(capturedRequest.options.headers["X-Sunny-Project"], "sunnykr");
   assert.equal(JSON.parse(capturedRequest.options.body).project, "sunnykr");
+
+  globalThis.fetch = async () => ({
+    ok: true,
+    async json() {
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply:
+          "SCO-10 is a 7.0 x 5.0 mm CMOS oscillator for a 10 MHz industrial design. For your customer project, what supply voltage and frequency stability do you need?",
+      };
+    },
+  });
+  const naturalProductReply = await ask("Tell me about SCO-10 for a 10 MHz industrial design");
+  assert.equal(naturalProductReply.body.source, "sunny-ai-bridge");
+  assert.match(naturalProductReply.body.reply, /customer project/i);
+
+  globalThis.fetch = async () => ({
+    ok: true,
+    async json() {
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply: "SCO-10 selection is based on public specifications. For price and order timing, please submit an RFQ.",
+      };
+    },
+  });
+  const safeCommercialGuidance = await ask("Tell me how to confirm SCO-10 commercial details");
+  assert.equal(safeCommercialGuidance.body.source, "sunny-ai-bridge");
+  assert.match(safeCommercialGuidance.body.reply, /submit an RFQ/i);
+
+  globalThis.fetch = async (url, options) => {
+    capturedRequest = { url: String(url), options };
+    return {
+      ok: true,
+      async json() {
+        return {
+          project: "sunnykr",
+          service: "sunny-ai-bridge",
+          reply: "It supports 1.8 V, 2.5 V, and 3.3 V supply options. Which output voltage does your application need?",
+        };
+      },
+    };
+  };
+  const technicalContinuation = await ask("What supply voltage options are available for SCO-10?");
+  assert.equal(technicalContinuation.body.source, "sunny-ai-bridge");
+  assert.match(technicalContinuation.body.reply, /supply options/i);
 
   const filteredContext = await ask(
     "Tell me about SCO-10",
@@ -156,6 +204,41 @@ try {
   });
   const paraphrasedTransactionReply = await ask("Tell me about SCO-10");
   assert.equal(paraphrasedTransactionReply.body.source, "sunny-public-catalog");
+
+  globalThis.fetch = async () => ({
+    ok: true,
+    async json() {
+      return { project: "sunnykr", service: "sunny-ai-bridge", reply: "SCO-10 was shipped to Acme under order 1234." };
+    },
+  });
+  const transactionWithoutPrice = await ask("Tell me about SCO-10");
+  assert.equal(transactionWithoutPrice.body.source, "sunny-public-catalog");
+
+  globalThis.fetch = async () => ({
+    ok: true,
+    async json() {
+      return { project: "sunnykr", service: "sunny-ai-bridge", reply: "Acme received SCO-10 yesterday." };
+    },
+  });
+  const transactionWithoutOrderNumber = await ask("Tell me about SCO-10");
+  assert.equal(transactionWithoutOrderNumber.body.source, "sunny-public-catalog");
+
+  for (const leakedReply of [
+    "SCO-10 unit price is 0.12 per piece.",
+    "Acme ordered 500 units of SCO-10.",
+    "SCO-10 is used by customer Acme Corp.",
+    "SCO-10 is on PO ABCD for Acme.",
+    "SCO-10 uses internal service sunny-ai-bridge at 10.0.0.5.",
+  ]) {
+    globalThis.fetch = async () => ({
+      ok: true,
+      async json() {
+        return { project: "sunnykr", service: "sunny-ai-bridge", reply: leakedReply };
+      },
+    });
+    const blockedLeak = await ask("Tell me about SCO-10");
+    assert.equal(blockedLeak.body.source, "sunny-public-catalog", `private reply must be blocked: ${leakedReply}`);
+  }
 
   globalThis.fetch = async () => ({
     ok: true,

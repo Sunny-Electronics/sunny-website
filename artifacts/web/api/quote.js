@@ -19,11 +19,12 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
-function getAssigneeEmails() {
-  const configured = process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com";
+export function getAssigneeEmails() {
+  const configured = process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com,john@sunny.co.kr";
   const normalized = configured
     .split(",")
     .map((email) => email.trim().toLowerCase())
+    .map((email) => (email === "sunny1@sunny.co.kr" ? "john@sunny.co.kr" : email))
     .filter(Boolean);
 
   return [...new Set(normalized)];
