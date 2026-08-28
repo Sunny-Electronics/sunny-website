@@ -51,9 +51,9 @@ type GeneratorState = {
 };
 
 const typeOptions: TypeOption[] = [
-  { group: "crystal", type: "SX-32", prefix: "AR", catalogCode: "P", label: "SX-32 / AR / P", helper: "High-volume SMD crystal family found in SunnyKR order and sourcing records." },
+  { group: "crystal", type: "SX-32", prefix: "AR", catalogCode: "P", label: "SX-32 / AR / P", helper: "Compact SMD crystal family for frequency-control applications." },
   { group: "crystal", type: "ATS-49/U", prefix: "AD", catalogCode: "D", label: "ATS-49/U / AD / D", helper: "Through-hole crystal package family." },
-  { group: "crystal", type: "SX-1", prefix: "AK", catalogCode: "J", label: "SX-1 / AK / J", helper: "Crystal family used across long-running customer programs." },
+  { group: "crystal", type: "SX-1", prefix: "AK", catalogCode: "J", label: "SX-1 / AK / J", helper: "Crystal family for established electronic applications." },
   { group: "crystal", type: "SX-8", prefix: "AP", catalogCode: "O", label: "SX-8 / AP / O", helper: "Small crystal family with frequent 10-20 pF load options." },
   { group: "crystal", type: "SX-7", prefix: "AO", catalogCode: "M", label: "SX-7 / AO / M", helper: "Crystal package family with 8-30 pF load options." },
   { group: "crystal", type: "SX-22", prefix: "AS", catalogCode: "Q", label: "SX-22 / AS / Q", helper: "Compact crystal family for 24-32 MHz examples." },
@@ -345,10 +345,9 @@ export default function PartNumberGenerator() {
                 Generate Sunny MPN drafts from real SunnyKR package families.
               </h1>
               <p className="max-w-3xl text-base leading-7 text-slate-600">
-                This tool uses the package type and prefix patterns organized in
-                `SunnyKR_Project_Files`. Crystal-family numbers follow the observed
-                Sunny MPN structure; oscillator and special-module outputs are marked
-                for Sunny review because their suffix rules vary by program.
+                This tool uses Sunny package and prefix patterns to create an RFQ reference.
+                Crystal-family numbers follow the published Sunny format; oscillator and
+                special-module outputs require Sunny review before ordering.
               </p>
             </div>
 
@@ -548,11 +547,11 @@ export default function PartNumberGenerator() {
               </Field>
 
               <div className="md:col-span-2 xl:col-span-3">
-                <Field label="Customer part number / RFQ reference" icon={<Search className="h-4 w-4" />}>
+                <Field label="Your part number / RFQ reference" icon={<Search className="h-4 w-4" />}>
                   <Input
                     value={state.customerPart}
                     onChange={(event) => updateField("customerPart", event.target.value)}
-                    placeholder="Optional customer part number"
+                    placeholder="Optional reference number"
                   />
                 </Field>
               </div>

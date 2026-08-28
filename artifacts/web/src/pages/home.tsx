@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
-import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, LogIn, Search, Upload, FileText, History, ClipboardCheck, Hash } from "lucide-react";
+import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, Search, Upload, FileText, ClipboardCheck, Hash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiSamsung, SiLg, SiGarmin } from "react-icons/si";
 import sunnyLogo from "@assets/image_1775118121182.png";
@@ -24,12 +24,6 @@ const quickActions = [
     text: "Prepare datasheets, RoHS, reliability, and QA requests.",
     href: "/quality",
     icon: <ClipboardCheck className="h-5 w-5" />,
-  },
-  {
-    title: "Sunny Portal Access (SPA)",
-    text: "Approved vendor access for RFQ, PO, stock, and quote history.",
-    href: "/request-access",
-    icon: <History className="h-5 w-5" />,
   },
 ];
 
@@ -57,12 +51,7 @@ export default function Home() {
             <Link href="/industries" className="hover:text-slate-950 transition-colors" data-testid="link-industries">Industries</Link>
             <Link href="/quality" className="hover:text-slate-950 transition-colors" data-testid="link-quality">Quality</Link>
             <QuoteOptionsMenu compact />
-            <Link href="/request-access">
-              <Button data-testid="button-partners-portal" className="h-10 gap-2 rounded-full px-5 shadow-sm">
-                <LogIn className="w-4 h-4" />
-                Sunny Portal Access (SPA) Log In
-              </Button>
-            </Link>
+            <Link href="/stock" className="hover:text-slate-950 transition-colors" data-testid="link-stock">Stock</Link>
           </div>
         </div>
       </nav>
@@ -143,7 +132,7 @@ export default function Home() {
       </section>
 
       <section className="-mt-24 relative z-20 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto grid gap-3 rounded-[28px] border border-white/70 bg-white/70 p-3 shadow-[0_28px_80px_rgba(15,23,42,0.12)] backdrop-blur-2xl md:grid-cols-2 lg:grid-cols-4">
+        <div className="max-w-7xl mx-auto grid gap-3 rounded-[28px] border border-white/70 bg-white/70 p-3 shadow-[0_28px_80px_rgba(15,23,42,0.12)] backdrop-blur-2xl md:grid-cols-3">
           {quickActions.map((action) => (
             <Link
               key={action.title}
@@ -260,13 +249,13 @@ export default function Home() {
               </div>
               <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">60 Years of Uncompromising Precision.</h2>
               <p className="text-lg text-muted-foreground mb-6">
-                Sunny Electronics is a Korea-based fabless manufacturer specializing in frequency control solutions, publicly listed on KOSPI (KRX: 004770). With 60 years of continuous innovation, we have built a strong reputation for precision, reliability, and long-term supply stability.
+                Sunny Electronics is a Korea-based frequency-control component manufacturer, publicly listed on KOSPI (KRX: 004770). Since 1966, we have focused on precision, reliability, and long-term supply stability.
               </p>
               <p className="text-lg text-muted-foreground mb-8">
                 Our foundation is built on over 50 years of collaboration with leading Korean companies, including Samsung, LG, and their affiliated partners. These long-standing relationships reflect our ability to consistently meet strict quality, performance, and delivery standards in high-demand industries.
               </p>
               <p className="text-lg text-muted-foreground mb-8">
-                Sunny Electronics operates on a proven fabless model, combining in-house design, strict quality control, and a fully managed global production network. Our accumulated engineering expertise and operational know-how enable us to deliver stable, high-performance components across a wide range of applications.
+                Sunny Electronics combines engineering, production control, and quality assurance to deliver stable frequency-control components across a wide range of applications.
               </p>
               <div className="grid grid-cols-3 gap-6">
                 <div className="p-4 bg-muted/50 rounded-xl text-center">
@@ -400,7 +389,7 @@ export default function Home() {
                   {product.specs}
                 </div>
                 <div className="block">
-                  <Link href="#" className="inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors">
+                  <Link href="/documents" className="inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors">
                     View Datasheets <ChevronRight className="ml-1 w-4 h-4" />
                   </Link>
                 </div>
@@ -472,8 +461,8 @@ export default function Home() {
                 </div>
                 <div className="p-6 bg-background rounded-xl border border-border shadow-sm -mt-8">
                   <Factory className="w-8 h-8 text-primary mb-4" />
-                  <h4 className="font-bold mb-2">Fabless Agility</h4>
-                  <p className="text-sm text-muted-foreground">R&D focused model partnering with top-tier foundries for manufacturing excellence.</p>
+                  <h4 className="font-bold mb-2">Engineering Support</h4>
+                  <p className="text-sm text-muted-foreground">Application-focused engineering support for frequency, package, and performance requirements.</p>
                 </div>
                 <div className="p-6 bg-background rounded-xl border border-border shadow-sm">
                   <Award className="w-8 h-8 text-primary mb-4" />
@@ -494,7 +483,7 @@ export default function Home() {
               </div>
               <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Uncompromising Quality Standards.</h2>
               <p className="text-lg text-muted-foreground mb-6">
-                At Sunny Electronics Corp., our fabless model allows us to focus entirely on what matters most: engineering excellence and rigorous quality control. Every component undergoes comprehensive testing before shipment.
+                At Sunny Electronics Corp., engineering discipline and quality control guide every product review. Components are tested against applicable specifications before shipment.
               </p>
               <p className="text-lg text-muted-foreground">
                 We maintain a fully controlled global supply chain, continuously auditing and optimizing our partner network to ensure consistent quality and reliability. Our zero-defect approach and long-term manufacturing discipline allow us to support approved vendors with stable supply, competitive pricing, and dependable performance.
@@ -538,7 +527,7 @@ export default function Home() {
             </div>
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Products, Quotes, and Documents in One Place.</h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              SunnyKR will become the place for approved vendors to search standard products, request pricing, upload RFQ lists, and later find datasheets and QA documents.
+                Use SunnyKR to review standard products and stock, build part numbers, submit RFQs, and open published datasheets and certificates.
             </p>
           </div>
 
@@ -560,7 +549,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-sm leading-6 text-slate-300">
-                Visitors can search by keyword, part number, frequency, package, or document type. Full search data will be added as we build the catalog.
+                Review product families, part-number formats, frequency ranges, packages, and published technical documents.
               </p>
             </motion.div>
 
@@ -594,15 +583,15 @@ export default function Home() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
-                  <History className="w-6 h-6 text-primary" />
+                   <FileText className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-display font-bold">Quote History</h3>
-                  <span className="text-sm text-slate-400">SPA access later</span>
+                   <h3 className="text-xl font-display font-bold">Technical Documents</h3>
+                   <span className="text-sm text-slate-400">Public datasheets and certificates</span>
                 </div>
               </div>
               <p className="text-sm leading-6 text-slate-300">
-                Instead of a shopping cart, SunnyKR will focus on quote history, RFQ status, PO status, and SPA-specific records.
+                 Open published Sunny datasheets and quality certificates, or request document support through the RFQ form.
               </p>
             </motion.div>
           </div>

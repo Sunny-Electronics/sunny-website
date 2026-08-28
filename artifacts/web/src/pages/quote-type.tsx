@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { getQuoteType, type QuoteFieldDef } from "@/data/quote-types";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
-const FALLBACK_SALES_EMAIL = "john@sunny.co.kr";
+const FALLBACK_SALES_EMAIL = "web@sunnykr.com";
 
 type SubmitState = "idle" | "sending" | "sent" | "error";
 

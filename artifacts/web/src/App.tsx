@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
-import AdminLogin from "@/pages/admin-login";
 import Documents from "@/pages/documents";
 import Home from "@/pages/home";
 import Industries from "@/pages/industries";
@@ -13,10 +12,7 @@ import Quality from "@/pages/quality";
 import PartNumberGenerator from "@/pages/part-number-generator";
 import Quote from "@/pages/quote";
 import QuoteType from "@/pages/quote-type";
-import RequestAccess from "@/pages/request-access";
 import Stock from "@/pages/stock";
-import OrderList from "@/pages/order-list";
-import SpaAdmin from "@/pages/spa-admin";
 import SunnyChatButton from "@/components/SunnyChatButton";
 
 const queryClient = new QueryClient();
@@ -25,8 +21,6 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/admin" component={AdminLogin} />
-      <Route path="/admin-login" component={AdminLogin} />
       <Route path="/documents" component={Documents} />
       <Route path="/industries" component={Industries} />
       <Route path="/legal" component={Legal} />
@@ -37,14 +31,10 @@ function Router() {
       <Route path="/quote/:typeId">
         {(params) => <QuoteType typeId={params.typeId} />}
       </Route>
-      <Route path="/request-access" component={RequestAccess} />
       <Route path="/request-quote">
         <Redirect to="/quote" replace />
       </Route>
       <Route path="/stock" component={Stock} />
-      <Route path="/order-list" component={OrderList} />
-      <Route path="/admin.sunny.j0hn" component={SpaAdmin} />
-      <Route path="/spa-admin" component={SpaAdmin} />
       <Route component={NotFound} />
     </Switch>
   );

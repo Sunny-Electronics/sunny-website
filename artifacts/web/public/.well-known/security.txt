@@ -1,0 +1,3 @@
+Contact: mailto:web@sunnykr.com
+Canonical: https://www.sunnykr.com/.well-known/security.txt
+Preferred-Languages: en, ko

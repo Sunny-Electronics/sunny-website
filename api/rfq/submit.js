@@ -2,8 +2,8 @@ const maxFiles = 3;
 const maxFileSizeBytes = 1 * 1024 * 1024;
 const maxTotalFileSizeBytes = 3 * 1024 * 1024;
 
-function getAssignedEmails() {
-  return (process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com,john@sunny.co.kr")
+function getRecipientEmails() {
+  return (process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com")
     .split(",")
     .map((email) => email.trim())
     .filter(Boolean);
@@ -92,44 +92,6 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-async function createAdminReviewTask(body, assignedEmails) {
-  if (!process.env.DATABASE_URL) {
-    return { stored: false, reason: "DATABASE_URL is not configured." };
-  }
-
-  const { db, adminReviewTasksTable } = await import("@workspace/db");
-  const contact = body.contact;
-  const firstLine = body.quoteLines[0] || {};
-  const lineCount = body.quoteLines.length;
-  const requester = contact.company || contact.email;
-
-  const [task] = await db
-    .insert(adminReviewTasksTable)
-    .values({
-      type: "rfq_quote",
-      status: "open",
-      title: `Website RFQ - ${requester}`,
-      summary: `${lineCount} quote line${lineCount === 1 ? "" : "s"} from ${contact.email}. First part: ${
-        firstLine.partNumber || "-"
-      }.`,
-      relatedRecordType: "website_rfq",
-      payload: {
-        source: "request-quote",
-        contact,
-        quoteLines: body.quoteLines,
-        attachments: (body.attachments || []).map((file) => ({
-          name: file.name,
-          size: file.size,
-          type: file.type,
-        })),
-      },
-      assignedTo: assignedEmails.join(", "),
-    })
-    .returning();
-
-  return { stored: true, id: task.id };
-}
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -145,7 +107,7 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RFQ_FROM_EMAIL || process.env.RESEND_FROM_EMAIL;
-  const assignedEmails = getAssignedEmails();
+  const recipientEmails = getRecipientEmails();
 
   if (!apiKey || !from) {
     res.status(503).json({
@@ -160,18 +122,6 @@ export default async function handler(req, res) {
     filename: file.name,
     content: file.content,
   }));
-  let adminRecord;
-
-  try {
-    adminRecord = await createAdminReviewTask(req.body, assignedEmails);
-  } catch (error) {
-    res.status(502).json({
-      error: "RFQ could not be added to the admin review queue.",
-      detail: error instanceof Error ? error.message : "Unknown admin queue error.",
-    });
-    return;
-  }
-
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -180,7 +130,7 @@ export default async function handler(req, res) {
     },
     body: JSON.stringify({
       from,
-      to: assignedEmails,
+      to: recipientEmails,
       reply_to: contact.email,
       subject,
       html: buildEmailHtml(req.body),
@@ -189,11 +139,11 @@ export default async function handler(req, res) {
   });
 
   if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    res.status(502).json({ error: "RFQ email could not be sent.", detail });
+    await response.text().catch(() => "");
+    res.status(502).json({ error: "RFQ email could not be sent." });
     return;
   }
 
   const result = await response.json().catch(() => ({}));
-  res.status(200).json({ ok: true, id: result.id, assignedEmails, adminRecord });
+  res.status(200).json({ ok: true, id: result.id });
 }

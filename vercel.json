@@ -30,6 +30,14 @@
       ]
     }
   ],
+  "redirects": [
+    { "source": "/admin", "destination": "/", "permanent": false },
+    { "source": "/admin-login", "destination": "/", "permanent": false },
+    { "source": "/admin.sunny.j0hn", "destination": "/", "permanent": false },
+    { "source": "/spa-admin", "destination": "/", "permanent": false },
+    { "source": "/order-list", "destination": "/", "permanent": false },
+    { "source": "/request-access", "destination": "/", "permanent": false }
+  ],
   "rewrites": [
     {
       "source": "/((?!api/).*)",

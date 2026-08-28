@@ -49,8 +49,8 @@ const industries = [
   {
     icon: <PackageCheck className="h-7 w-7" />,
     name: "EMS and Supply Chain",
-    headline: "Support for buyers managing BOMs, RFQs, and repeat orders.",
-    points: ["BOM review", "Stock visibility later", "Quote and order history later"],
+    headline: "Support for teams managing BOMs, RFQs, and production supply.",
+    points: ["BOM review", "Published stock quantities", "RFQ and document support"],
   },
 ];
 
@@ -94,7 +94,7 @@ export default function Industries() {
           </Link>
           <Link href="/products" className="text-slate-600 hover:text-primary">Products</Link>
           <Link href="/quality" className="text-slate-600 hover:text-primary">Quality</Link>
-          <Link href="/request-access" className="text-slate-600 hover:text-primary">Sunny Portal Access (SPA)</Link>
+          <Link href="/stock" className="text-slate-600 hover:text-primary">Stock</Link>
         </nav>
       </header>
 
@@ -103,10 +103,10 @@ export default function Industries() {
           <div className="mx-auto max-w-7xl px-5 py-12">
             <p className="mb-3 text-sm font-bold uppercase tracking-wide text-primary">Industry Support</p>
             <h1 className="mb-4 max-w-4xl font-display text-4xl font-bold tracking-tight md:text-5xl">
-              Frequency control support for SPA vendors who need reliability, documents, and long-term supply.
+              Frequency-control support for applications that need reliability, documents, and long-term supply.
             </h1>
             <p className="max-w-3xl text-base leading-7 text-slate-600">
-              SunnyKR should speak clearly to buyers, engineers, QA teams, and supply-chain teams.
+              SunnyKR provides clear product, stock, document, and RFQ information for engineering, QA, and supply-chain teams.
               This page frames Sunny by application so visitors can quickly understand fit before submitting an RFQ.
             </p>
           </div>

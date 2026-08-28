@@ -5,7 +5,6 @@ import {
   CheckCircle2,
   ClipboardCheck,
   FileCheck2,
-  Lock,
   Search,
   ShieldCheck,
   Truck,
@@ -18,22 +17,22 @@ const qualityBlocks = [
   {
     icon: <ShieldCheck className="h-6 w-6" />,
     title: "Quality System",
-    text: "SunnyKR will present quality controls, certifications, and SPA document support in one clear place.",
+    text: "Review published Sunny quality certificates and request product documents in one clear place.",
   },
   {
     icon: <FileCheck2 className="h-6 w-6" />,
     title: "Document Requests",
-    text: "SPA vendors will later request datasheets, RoHS/REACH, reliability, and project-specific QA files.",
+    text: "Request datasheets, RoHS/REACH, reliability, and project-specific QA files through the RFQ form.",
   },
   {
     icon: <ClipboardCheck className="h-6 w-6" />,
     title: "Review Workflow",
-    text: "Document release can be controlled by Sunny admin so confidential SPA files stay protected.",
+    text: "Only documents approved for public release appear in the public document library.",
   },
   {
     icon: <Truck className="h-6 w-6" />,
     title: "Supply Reliability",
-    text: "Long-term supply, order status, and ETD communication will connect into Sunny Portal Access (SPA) later.",
+    text: "Sunny reviews supply, delivery, and document requirements directly for each RFQ.",
   },
 ];
 
@@ -43,7 +42,7 @@ const documentRoadmap = [
   "IATF / ISO quality documents",
   "Reliability reports",
   "Material declarations",
-  "SPA-specific QA packages",
+  "Project-specific QA requests",
 ];
 
 export default function Quality() {
@@ -74,10 +73,10 @@ export default function Quality() {
             </Link>
           </div>
 
-          <Link href="/request-access">
+          <Link href="/documents">
             <Button className="h-12 gap-2">
-              <Lock className="h-4 w-4" />
-              Partner Access
+              <FileCheck2 className="h-4 w-4" />
+              Open Documents
             </Button>
           </Link>
         </div>
@@ -101,8 +100,8 @@ export default function Quality() {
               Make quality documents easy to find, request, and protect.
             </h1>
             <p className="max-w-3xl text-base leading-7 text-slate-600">
-              This page prepares SunnyKR for standard documents and SPA-only QA packages.
-              Public information can help marketing, while private documents stay inside secure access rules.
+              Open documents that Sunny has approved for public release, then use the RFQ form for
+              product-specific or project-specific document support.
             </p>
           </div>
         </section>
@@ -126,11 +125,11 @@ export default function Quality() {
             <div>
               <div className="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-primary">
                 <Award className="h-4 w-4" />
-                Document Roadmap
+                Document Support
               </div>
-              <h2 className="font-display text-3xl font-bold">Documents SPA vendors expect.</h2>
+              <h2 className="font-display text-3xl font-bold">Documents engineering and quality teams request.</h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                We can attach real files later. For now this creates the right structure and SPA vendor expectation.
+                Published files are available in the document library. Other files require Sunny review before release.
               </p>
             </div>
 
@@ -151,11 +150,11 @@ export default function Quality() {
               <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-white/60">
                 Security Rule
               </p>
-              <h2 className="font-display text-3xl font-bold">Public documents public. SPA files private.</h2>
+              <h2 className="font-display text-3xl font-bold">Only approved documents are published.</h2>
             </div>
-            <Link href="/request-access">
+            <Link href="/request-quote">
               <Button variant="outline" className="h-12 bg-white text-slate-950 hover:bg-slate-100">
-                Request Partner Access
+                Request Document Support
               </Button>
             </Link>
           </div>

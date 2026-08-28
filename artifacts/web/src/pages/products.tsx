@@ -3,19 +3,14 @@ import {
   ArrowLeft,
   ChevronRight,
   Cpu,
-  Download,
   FileCheck2,
-  Filter,
   Hash,
   RadioReceiver,
-  Search,
   ShieldCheck,
-  SlidersHorizontal,
   Timer,
   Waves,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
 const productFamilies = [
@@ -51,7 +46,7 @@ const documentTypes = [
   "Material declaration",
   "Reliability report",
   "IATF / ISO quality document",
-  "SPA-specific QA package",
+  "Published quality certificates",
 ];
 
 export default function Products() {
@@ -67,20 +62,9 @@ export default function Products() {
             </div>
           </Link>
 
-          <div className="flex min-w-0 flex-1 items-center border border-slate-300 bg-slate-50">
-            <Input
-              className="h-12 flex-1 border-0 bg-transparent focus-visible:ring-0"
-              placeholder="Search part number, frequency, package, datasheet, or QA document"
-              data-testid="input-products-search"
-            />
-            <button
-              type="button"
-              className="flex h-12 w-14 items-center justify-center bg-primary text-white"
-              aria-label="Search products"
-              data-testid="button-products-search"
-            >
-              <Search className="h-5 w-5" />
-            </button>
+          <div className="flex min-w-0 flex-1 items-center justify-end gap-5 text-sm font-semibold text-slate-600">
+            <Link href="/stock" className="hover:text-primary">Stock Check</Link>
+            <Link href="/documents" className="hover:text-primary">Documents</Link>
           </div>
 
           <Link href="/request-quote">
@@ -96,7 +80,6 @@ export default function Products() {
           <a href="#families" className="text-slate-600 hover:text-primary">Product Families</a>
           <Link href="/part-number-generator" className="text-slate-600 hover:text-primary">Part Number Generator</Link>
           <a href="#documents" className="text-slate-600 hover:text-primary">Documents</a>
-          <a href="#filters" className="text-slate-600 hover:text-primary">Search Filters</a>
         </nav>
       </header>
 
@@ -108,12 +91,11 @@ export default function Products() {
                 Product Center
               </p>
               <h1 className="mb-4 max-w-4xl font-display text-4xl font-bold tracking-tight md:text-5xl">
-                Search-ready product structure for Sunny timing components.
+                Frequency-control products for demanding electronic applications.
               </h1>
               <p className="max-w-3xl text-base leading-7 text-slate-600">
-                This page is the foundation for standard part search, datasheets, quality documents,
-                and SPA support files. Prices, lead times, and private SPA data will be
-                added later inside protected workflows.
+                Review Sunny product families, build a part number, check published stock quantities,
+                and submit an RFQ for confirmed commercial terms.
               </p>
             </div>
             <div className="grid grid-cols-2 border border-slate-200 bg-white shadow-sm">
@@ -170,40 +152,12 @@ export default function Products() {
           </div>
         </section>
 
-        <section id="filters" className="border-y border-slate-200 bg-white">
-          <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-[360px_1fr]">
-            <div>
-              <div className="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-primary">
-                <SlidersHorizontal className="h-4 w-4" />
-                Future Search Filters
-              </div>
-              <h2 className="font-display text-3xl font-bold">Search like a real component site.</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                These filters are placeholders now. Later we will connect them to Sunny's product guide,
-                stock file, standard documents, and SPA-specific portal rules.
-              </p>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-3">
-              {["Frequency", "Package Size", "Voltage", "Tolerance", "Temperature", "Application"].map((filter) => (
-                <div key={filter} className="border border-slate-200 bg-slate-50 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-sm font-semibold">
-                    <Filter className="h-4 w-4 text-primary" />
-                    {filter}
-                  </div>
-                  <Input className="h-10 bg-white" placeholder="Coming soon" disabled />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section id="documents" className="mx-auto max-w-7xl px-5 py-12">
           <div className="mb-6">
-            <h2 className="font-display text-3xl font-bold">Documents SPA Vendors Will Search</h2>
+            <h2 className="font-display text-3xl font-bold">Technical and Quality Documents</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-              This prepares SunnyKR for datasheets, QA documents, compliance files, and SPA-specific
-              document packages without exposing private files publicly.
+              Open Sunny documents that have been approved for public release. Contact Sunny through
+              the RFQ form when a project-specific document is required.
             </p>
           </div>
 
@@ -217,11 +171,10 @@ export default function Products() {
                   <h3 className="font-semibold">{documentType}</h3>
                 </div>
                 <p className="mb-4 text-sm leading-6 text-slate-600">
-                  Public availability and SPA-only access rules will be configured later.
+                  Check the public document library for the current approved file.
                 </p>
-                <Button variant="outline" className="h-10 gap-2 bg-white" disabled>
-                  <Download className="h-4 w-4" />
-                  Coming Soon
+                <Button variant="outline" className="h-10 gap-2 bg-white" asChild>
+                  <Link href="/documents">Open Documents</Link>
                 </Button>
               </div>
             ))}
@@ -255,13 +208,13 @@ export default function Products() {
             <div>
               <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-white/70">
                 <ShieldCheck className="h-4 w-4" />
-                SPA data stays protected
+                Commercial details are confirmed by quotation
               </div>
-              <h2 className="font-display text-3xl font-bold">Public product search first. Private pricing later.</h2>
+              <h2 className="font-display text-3xl font-bold">Send your part and quantity for an official RFQ.</h2>
             </div>
-            <Link href="/request-access">
+            <Link href="/request-quote">
               <Button variant="outline" className="h-12 bg-white text-slate-950 hover:bg-slate-100">
-                Sunny Portal Access (SPA) Log In
+                Request a Quote
               </Button>
             </Link>
           </div>

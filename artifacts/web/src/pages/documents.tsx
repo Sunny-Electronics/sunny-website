@@ -127,7 +127,7 @@ export default function Documents() {
             <ArrowLeft className="mr-1 inline h-4 w-4" />
             Home
           </Link>
-          <Link href="/request-access" className="text-slate-600 hover:text-primary">Sunny Portal Access (SPA)</Link>
+          <Link href="/request-quote" className="text-slate-600 hover:text-primary">Request Document Support</Link>
           <Link href="/products" className="text-slate-600 hover:text-primary">Products</Link>
           <Link href="/quality" className="text-slate-600 hover:text-primary">Quality</Link>
         </nav>
@@ -154,8 +154,8 @@ export default function Documents() {
                 Document Access
               </div>
               <p className="text-sm leading-6 text-slate-600">
-                Public standard documents are available here. SPA-only or project-specific QA packages
-                will be controlled through Sunny Portal Access later.
+                Only documents approved by Sunny for public release are available here. Use the RFQ form
+                to request product-specific or project-specific document support.
               </p>
             </div>
           </div>

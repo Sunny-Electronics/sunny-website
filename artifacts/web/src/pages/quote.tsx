@@ -53,7 +53,7 @@ export default function Quote() {
           </span>
           <span className="flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-primary" />
-            KOSPI-listed manufacturer since 1968
+            KOSPI-listed manufacturer since 1966
           </span>
         </div>
 

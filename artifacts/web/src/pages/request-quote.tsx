@@ -11,7 +11,6 @@ import {
   FileText,
   Gauge,
   HelpCircle,
-  History,
   Package,
   Plus,
   RadioReceiver,
@@ -656,10 +655,9 @@ export default function RequestQuote() {
             </button>
           </form>
 
-          <Link href="/request-access">
+          <Link href="/stock">
             <Button variant="outline" className="h-12 gap-2">
-              <History className="h-4 w-4" />
-              Quote History
+              Stock Check
             </Button>
           </Link>
         </div>

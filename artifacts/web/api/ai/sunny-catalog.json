@@ -107,13 +107,12 @@
       "title": "Documents and Certificates",
       "type": "document-support",
       "keywords": ["document", "datasheet", "spec sheet", "certificate", "iso", "iatf", "rohs", "reach", "reliability", "material declaration", "qa", "quality"],
-      "summary": "SunnyKR has a document library for certificates and spec sheets. Public documents can be opened from Documents; SPA-only project files require approved access.",
+      "summary": "SunnyKR has a public document library for approved certificates and spec sheets. Project-specific files require direct Sunny review.",
       "knownDocuments": ["ISO 14001 Certificate", "(Sunny Electronics) ISO 14001 Certificate_280908.pdf", "IATF 16949 Certificate", "(Sunny Electronics) IATF 16949 Certificate_270716.pdf", "SX-1 Spec Sheet", "SX-32 Spec Sheet", "ATS Series Spec Sheet"],
       "rfqFields": ["requested document type", "part number or series", "company", "customer purpose"],
       "routes": [
         { "label": "Documents", "href": "/documents" },
-        { "label": "Quality", "href": "/quality" },
-        { "label": "SPA Access", "href": "/request-access" }
+        { "label": "Quality", "href": "/quality" }
       ]
     },
     {
@@ -126,17 +125,6 @@
       "routes": [
         { "label": "Request Quote", "href": "/request-quote" },
         { "label": "Telegram", "href": "https://t.me/sunny_kr_bot" }
-      ]
-    },
-    {
-      "id": "spa-access",
-      "title": "Sunny Portal Access",
-      "type": "customer-access",
-      "keywords": ["spa", "portal", "login", "access", "account", "private document", "customer price", "order status", "계정", "접속"],
-      "summary": "Private customer-specific information, SPA files, pricing, stock, order status, and protected documents should stay behind approved Sunny Portal Access.",
-      "rfqFields": ["company", "business email", "role", "access purpose"],
-      "routes": [
-        { "label": "SPA Access", "href": "/request-access" }
       ]
     }
   ]

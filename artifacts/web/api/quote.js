@@ -1,4 +1,4 @@
-import { readJsonBody, sendJson } from "./_admin-auth.js";
+import { readJsonBody, sendJson } from "./_public-http.js";
 
 const maxShortField = 200;
 const maxLongField = 3000;
@@ -20,12 +20,11 @@ function escapeHtml(value) {
 }
 
 function getAssigneeEmails() {
-  const configured = process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com,john@sunny.co.kr";
+  const configured = process.env.RFQ_ASSIGNEE_EMAILS || "web@sunnykr.com";
   const normalized = configured
     .split(",")
     .map((email) => email.trim().toLowerCase())
-    .filter(Boolean)
-    .map((email) => (email === "sunny1@sunny.co.kr" ? "john@sunny.co.kr" : email));
+    .filter(Boolean);
 
   return [...new Set(normalized)];
 }

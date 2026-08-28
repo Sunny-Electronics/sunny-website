@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
-const lastUpdated = "May 6, 2026";
+const lastUpdated = "August 28, 2026";
 
 const sections = [
   {
@@ -19,9 +19,9 @@ const sections = [
     title: "Privacy Notice",
     icon: <LockKeyhole className="h-5 w-5" />,
     body: [
-      "SunnyKR.com collects business contact and RFQ information only when visitors submit it through forms, upload lists, request Sunny Portal Access, or contact Sunny Electronics Corp. directly.",
+      "SunnyKR.com collects business contact and RFQ information only when visitors submit it through forms, upload lists, or contact Sunny Electronics Corp. directly.",
       "Typical information may include name, company, role, business email, phone number, shipping or billing details, RFQ files, part numbers, target quantities, application notes, and document requests.",
-      "This information is used to respond to inquiries, prepare quotations, evaluate account or SPA access requests, support order and quality-document workflows, improve SunnyKR.com, and meet legal, accounting, export, security, and compliance obligations.",
+      "This information is used to respond to inquiries, prepare quotations, support order and quality-document workflows, improve SunnyKR.com, and meet legal, accounting, export, security, and compliance obligations.",
     ],
   },
   {
@@ -41,7 +41,7 @@ const sections = [
     body: [
       "Content on SunnyKR.com is provided for general product, document, RFQ, and vendor-support purposes. Product descriptions, images, specifications, availability, lead times, certifications, and pricing are informational until confirmed in an official Sunny quotation, purchase order acknowledgement, signed agreement, or other written confirmation.",
       "Visitors may use SunnyKR.com only for lawful business purposes. They may not interfere with site operation, attempt unauthorized access, upload malicious files, scrape non-public data, misrepresent company identity, or use Sunny documents outside the scope provided by Sunny.",
-      "Sunny may update, suspend, restrict, or remove website features, documents, catalog information, portal access, or submitted requests at any time to protect security, confidentiality, quality, legal compliance, or business operations.",
+      "Sunny may update, suspend, restrict, or remove website features, documents, catalog information, or submitted requests at any time to protect security, confidentiality, quality, legal compliance, or business operations.",
     ],
   },
   {
@@ -50,7 +50,7 @@ const sections = [
     icon: <FileText className="h-5 w-5" />,
     body: [
       "Datasheets, certificates, drawings, reliability reports, RoHS/REACH materials, and other documents may be revised over time. Visitors are responsible for confirming that the document version used for design, procurement, qualification, or production is the latest version supplied or approved by Sunny.",
-      "SPA-only materials, vendor-specific quality documents, customer documents, price lists, stock files, order lists, and private reports are confidential unless Sunny expressly marks them as public.",
+      "Customer documents, price lists, internal stock files, order lists, and private reports are confidential unless Sunny expressly marks them as public.",
       "No website content grants a license to Sunny trademarks, part-number systems, technical drawings, confidential information, or intellectual property except as needed to evaluate Sunny products for legitimate business procurement or engineering purposes.",
     ],
   },
@@ -59,7 +59,7 @@ const sections = [
     title: "Commercial Disclaimers",
     icon: <ClipboardCheck className="h-5 w-5" />,
     body: [
-      "To the extent permitted by applicable law, SunnyKR.com and its content are provided as available and without website-level warranties. Sunny does not guarantee that every catalog entry, upload workflow, document link, search result, or portal feature will be error-free or continuously available.",
+      "To the extent permitted by applicable law, SunnyKR.com and its content are provided as available and without website-level warranties. Sunny does not guarantee that every catalog entry, upload workflow, document link, or search result will be error-free or continuously available.",
       "Final product suitability, qualification, testing, and compliance decisions remain the responsibility of the buyer, distributor, integrator, or end customer unless a separate written agreement states otherwise.",
       "Nothing on this page changes signed contracts, official quotations, purchase terms, quality agreements, NDAs, export-control obligations, or written warranty commitments issued by Sunny Electronics Corp.",
     ],
@@ -70,8 +70,7 @@ const sections = [
     icon: <Mail className="h-5 w-5" />,
     body: [
       "Business contacts may request access, correction, deletion, restriction, or review of personal information submitted through SunnyKR.com, subject to identity verification, legal obligations, and business-record retention requirements.",
-      "For privacy, document-access, RFQ, or SPA questions, use the SunnyKR request forms or your established Sunny Electronics Corp. contact. Sunny may ask for additional information to verify the requester and locate the relevant record.",
-      "This page is a working website policy draft for SunnyKR.com and should be reviewed by qualified counsel before public launch, especially for Korea PIPA, cross-border transfers, CCPA/CPRA, GDPR, export-control, warranty, and distributor-contract alignment.",
+      "For privacy, document-access, or RFQ questions, use the SunnyKR request forms, email web@sunnykr.com, or contact your established Sunny Electronics Corp. representative. Sunny may ask for additional information to verify the requester and locate the relevant record.",
     ],
   },
 ];
@@ -115,17 +114,17 @@ export default function Legal() {
               </h1>
               <p className="max-w-3xl text-base leading-7 text-slate-600">
                 These terms summarize how SunnyKR.com handles business inquiries, RFQ uploads,
-                product documents, portal access requests, and website information.
+                product documents and website information.
               </p>
             </div>
             <aside className="border border-slate-200 bg-white p-5 shadow-sm">
               <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-primary">
                 <Scale className="h-4 w-4" />
-                Working Draft
+                Current Website Notice
               </div>
               <p className="text-sm leading-6 text-slate-600">
-                Last updated {lastUpdated}. This operational copy should be reviewed by Sunny counsel
-                before launch or contract use.
+                Last updated {lastUpdated}. Official quotations, contracts, and written Sunny confirmations
+                take priority over general website information.
               </p>
             </aside>
           </div>
