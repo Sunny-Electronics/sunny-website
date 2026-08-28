@@ -69,6 +69,14 @@ try {
   await ask("What is the capital of France?");
   assert.equal(calls, 0, "private and unrelated requests must be refused before the bridge");
 
+  const publicEmail = await ask("What email can I send my Sunny RFQ to?");
+  const publicPhone = await ask("What is Sunny Electronics' public phone number?");
+  const publicTicker = await ask("What is Sunny Electronics' stock ticker?");
+  assert.equal(calls, 0, "approved public company questions must use verified local facts, not the bridge");
+  assert.match(publicEmail.body.reply, /web@sunnykr\.com/i);
+  assert.match(publicPhone.body.reply, /\+82-43-853-1760/);
+  assert.match(publicTicker.body.reply, /004770/);
+
   process.env.SUNNY_AI_BRIDGE_URL = "https://bridge.sunnykr.com:8443/sunny/chat";
   await ask("Tell me about SCO-10");
   assert.equal(calls, 0, "a non-default production bridge port must be rejected before fetch");
@@ -90,6 +98,7 @@ try {
   assert.equal(capturedRequest.url, "https://bridge.sunnykr.com/sunny/chat");
   assert.equal(capturedRequest.options.headers["X-Sunny-Project"], "sunnykr");
   assert.equal(JSON.parse(capturedRequest.options.body).project, "sunnykr");
+  assert.match(JSON.parse(capturedRequest.options.body).catalogContext, /Korea Exchange code 004770/);
 
   globalThis.fetch = async () => ({
     ok: true,
@@ -186,6 +195,20 @@ try {
   });
   const emailReply = await ask("Tell me about SCO-10");
   assert.equal(emailReply.body.source, "sunny-public-catalog");
+
+  globalThis.fetch = async () => ({
+    ok: true,
+    async json() {
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply: "For Sunny SCO-10 product support, email web@sunnykr.com or submit an RFQ.",
+      };
+    },
+  });
+  const approvedPublicEmailReply = await ask("I need SCO-10 product support");
+  assert.equal(approvedPublicEmailReply.body.source, "sunny-ai-bridge");
+  assert.match(approvedPublicEmailReply.body.reply, /web@sunnykr\.com/i);
 
   globalThis.fetch = async () => ({
     ok: true,

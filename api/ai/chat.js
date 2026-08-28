@@ -10,12 +10,22 @@ const DEFAULT_TIMEOUT_MS = 18000;
 const TELEGRAM_URL = "https://t.me/sunny_kr_bot";
 const SUNNY_SUPPORT_EMAIL = "web@sunnykr.com";
 const PRODUCTION_BRIDGE_HOST = "bridge.sunnykr.com";
+const SUNNY_PUBLIC_COMPANY = Object.freeze({
+  name: "Sunny Electronics Corp.",
+  established: "1966",
+  address: "59, Mokhaengsandan 2-ro, Chungju-si, Chungcheongbuk-do, Republic of Korea",
+  phone: "+82-43-853-1760",
+  domesticPhone: "043-853-1760",
+  market: "KOSPI",
+  ticker: "004770",
+});
 
 let publicCatalogCache;
 
 export const config = { maxDuration: 30 };
 
 const links = {
+  home: { label: "About Sunny", href: "/#about" },
   products: { label: "Products", href: "/products" },
   partNumber: { label: "Part Number Generator", href: "/part-number-generator" },
   stock: { label: "Stock", href: "/stock" },
@@ -42,6 +52,8 @@ const transactionDetailReplyPattern =
 
 const emailAddressPattern = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i;
 const currencyPattern = /[$€£¥₩]|\b(?:usd|eur|krw|jpy|cny)\b/i;
+const privateContactTargetPattern =
+  /\b(?:customers?|buyers?|clients?)(?:['’]s|['’])?\s+(?:names?|emails?|phones?|telephone|addresses?|contacts?|accounts?|orders?|list)\b|\b(?:names?|emails?|phones?|telephone|addresses?|contacts?)\s+(?:of|for)\s+(?:a\s+)?(?:customer|buyer|client)\b/i;
 
 function isSensitiveText(value) {
   const text = String(value || "");
@@ -54,7 +66,13 @@ function isSensitiveText(value) {
 
 function isPrivateContext(value) {
   const text = String(value || "");
-  return isSensitiveText(text) || emailAddressPattern.test(text) || currencyPattern.test(text);
+  const privacyText = text.replace(/\bcustomer\s+(?:service|support)\b/gi, "public support");
+  return isSensitiveText(privacyText) || emailAddressPattern.test(text) || currencyPattern.test(text);
+}
+
+function hasUnapprovedEmailAddress(value) {
+  const emails = String(value || "").match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/gi) || [];
+  return emails.some((email) => email.toLowerCase() !== SUNNY_SUPPORT_EMAIL);
 }
 
 function isSensitiveReply(value) {
@@ -230,7 +248,50 @@ function catalogAnswer(message, modelMatches) {
 function isSunnyScope(message) {
   const text = normalize(message);
   if (/^(hi|hello|hey|안녕|안녕하세요|help|start|thanks|thank you)\b/.test(text)) return true;
-  return /sunny|catalog|catalogue|datasheet|document|certificate|quality|qa|r&d|engineering|rfq|quote|bom|lead time|stock|inventory|price|crystal|quartz|resonator|oscillator|frequency|mhz|khz|smd|sx-|ats-|sco|spxo|tcxo|vcxo|ocxo|load capacitance|\bcl\b|ppm|package|tolerance|stability|temperature|voltage|\bsupply voltage\b|\boutput (?:type|logic|level|signal|voltage|enable)\b|\bdimensions?\b|\besr\b|aging|jitter|phase noise|rohs|reach|iatf|iso|part number|p\/n|\bpn\b/.test(text);
+  return /sunny|catalog|catalogue|datasheet|document|certificate|quality|qa|r&d|engineering|rfq|quote|bom|lead time|stock|inventory|price|crystal|quartz|resonator|oscillator|frequency|mhz|khz|smd|sx-|ats-|sco|spxo|tcxo|vcxo|ocxo|load capacitance|\bcl\b|ppm|package|tolerance|stability|temperature|voltage|\bsupply voltage\b|\boutput (?:type|logic|level|signal|voltage|enable)\b|\bdimensions?\b|\besr\b|aging|jitter|phase noise|rohs|reach|iatf|iso|part number|p\/n|\bpn\b|contact|e-?mail|phone|telephone|address|headquarters|korea office|ticker|kospi|krx|listed company|public company|company information|founded|established/.test(text);
+}
+
+function publicCompanyAnswer(message) {
+  const raw = String(message || "");
+  const text = normalize(raw);
+  if (privateContactTargetPattern.test(raw) || hasUnapprovedEmailAddress(raw)) return null;
+
+  if (/e-?mail|email address|where.{0,30}(?:send|submit).{0,30}(?:request|rfq|inquiry)|send.{0,30}(?:request|rfq|inquiry)/.test(text)) {
+    return {
+      reply: `For Sunny product, document, or RFQ inquiries, email ${SUNNY_SUPPORT_EMAIL}. You can also use the Request Quote form so the product requirements are included clearly.`,
+      links: [links.quote, links.documents],
+    };
+  }
+
+  if (/phone|telephone|contact number|\btel\b|how.{0,20}(?:call|contact)/.test(text)) {
+    return {
+      reply: `Sunny Electronics' public main telephone number is ${SUNNY_PUBLIC_COMPANY.phone}. Within Korea, dial ${SUNNY_PUBLIC_COMPANY.domesticPhone}.`,
+      links: [links.home, links.quote],
+    };
+  }
+
+  if (/address|location|located|head\s*office|headquarters|korea office|factory address/.test(text)) {
+    return {
+      reply: `Sunny Electronics' public corporate address is ${SUNNY_PUBLIC_COMPANY.address}.`,
+      links: [links.home],
+    };
+  }
+
+  if (/stock ticker|stock code|share code|\bticker\b|kospi|\bkrx\b|publicly listed|listed company/.test(text)) {
+    return {
+      reply: `Sunny Electronics is listed on the Korea Exchange ${SUNNY_PUBLIC_COMPANY.market} market under stock code ${SUNNY_PUBLIC_COMPANY.ticker}. Market prices change, so confirm the current price with the Korea Exchange or your market-data provider.`,
+      links: [links.home],
+    };
+  }
+
+  if (/about sunny|company information|who is sunny|company history|when.{0,20}(?:founded|established)|founded|established/.test(text)) {
+    return {
+      reply: `${SUNNY_PUBLIC_COMPANY.name} is a Korea-based frequency-control component manufacturer established in ${SUNNY_PUBLIC_COMPANY.established}. Sunny produces crystal units, oscillators, resonators, filters, and related timing components, and is listed on KOSPI under stock code ${SUNNY_PUBLIC_COMPANY.ticker}.`,
+      links: [links.home, links.products],
+    };
+  }
+
+  return null;
 }
 
 function publicAnswer(message, modelMatches) {
@@ -281,13 +342,23 @@ function publicAnswer(message, modelMatches) {
 }
 
 function catalogContext(modelMatches) {
-  if (!modelMatches.length) return "";
-  return [
-    "Verified Sunny public catalog matches:",
-    ...modelMatches.map(
-      (model) => `- ${model.model}: ${model.family}; ${model.packageType}${model.dimensions ? `; ${model.dimensions}` : ""}`,
-    ),
-  ].join("\n").slice(0, MAX_CATALOG_CONTEXT_CHARS);
+  const lines = [
+    "Verified Sunny public company information:",
+    `- Company: ${SUNNY_PUBLIC_COMPANY.name}; established ${SUNNY_PUBLIC_COMPANY.established}`,
+    `- Public support email: ${SUNNY_SUPPORT_EMAIL}`,
+    `- Public main telephone: ${SUNNY_PUBLIC_COMPANY.phone} (${SUNNY_PUBLIC_COMPANY.domesticPhone} within Korea)`,
+    `- Public corporate address: ${SUNNY_PUBLIC_COMPANY.address}`,
+    `- Listing: ${SUNNY_PUBLIC_COMPANY.market}, Korea Exchange code ${SUNNY_PUBLIC_COMPANY.ticker}`,
+  ];
+  if (modelMatches.length) {
+    lines.push(
+      "Verified Sunny public catalog matches:",
+      ...modelMatches.map(
+        (model) => `- ${model.model}: ${model.family}; ${model.packageType}${model.dimensions ? `; ${model.dimensions}` : ""}`,
+      ),
+    );
+  }
+  return lines.join("\n").slice(0, MAX_CATALOG_CONTEXT_CHARS);
 }
 
 function getBridgeConfig() {
@@ -324,7 +395,7 @@ function safeBridgeReply(value) {
     isSunnyScope(reply) &&
     !unsafeReplyPattern.test(reply) &&
     !isSensitiveReply(reply) &&
-    !emailAddressPattern.test(reply) &&
+    !hasUnapprovedEmailAddress(reply) &&
     !currencyPattern.test(reply)
     ? reply
     : "";
@@ -355,6 +426,7 @@ async function callSunnyBridge({ message, pagePath, history, memory, modelMatche
         instructions: [
           "Act as an experienced Sunny frequency-control product specialist.",
           "Use only supplied Sunny public catalog context and public Sunny topics.",
+          "Use the supplied verified public company information for Sunny contact, address, telephone, listing, and general company questions.",
           "Answer directly and naturally, then ask one useful follow-up question.",
           "Never reveal infrastructure, private customer data, prices, costs, orders, accounts, tokens, or internal notes.",
           "Never invent specifications, stock, pricing, lead time, certification, or delivery.",
@@ -391,6 +463,11 @@ export default async function handler(req, res) {
 
   if (isPrivateContext(message) || !isSunnyScope(message)) {
     return res.status(200).json({ ...fallback, source: "sunny-public-catalog" });
+  }
+
+  const companyAnswer = publicCompanyAnswer(message);
+  if (companyAnswer) {
+    return res.status(200).json({ ...companyAnswer, source: "sunny-public-catalog" });
   }
 
   const bridgeReply = await callSunnyBridge({ message, pagePath, history, memory, modelMatches });

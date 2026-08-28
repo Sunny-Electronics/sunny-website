@@ -26,3 +26,11 @@ Hard rules:
 
 Public Telegram support:
 https://t.me/sunny_kr_bot
+
+Approved public company information:
+- Public product, document, and RFQ email: web@sunnykr.com
+- Public main telephone: +82-43-853-1760 (043-853-1760 within Korea)
+- Public corporate address: 59, Mokhaengsandan 2-ro, Chungju-si, Chungcheongbuk-do, Republic of Korea
+- Established: 1966
+- Public listing: KOSPI, Korea Exchange stock code 004770
+- Never substitute or infer a different email, telephone number, address, or listing code.
