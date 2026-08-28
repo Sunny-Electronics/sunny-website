@@ -57,6 +57,8 @@ const privateContactTargetPattern =
   /\b(?:customers?|buyers?|clients?)(?:['’]s|['’])?\s+(?:names?|emails?|phones?|telephone|addresses?|contacts?|accounts?|orders?|list)\b|\b(?:names?|emails?|phones?|telephone|addresses?|contacts?)\s+(?:of|for)\s+(?:a\s+)?(?:customer|buyer|client)\b/i;
 const publicPriceIntentPattern =
   /\b(?:price|pricing|quote price|unit price|spq|moq|minimum order|standard packing quantity)\b/i;
+const publicWorkflowIntentPattern =
+  /\b(?:quote|rfq|request for quotation|part number generator|documents?|datasheets?|stock|inventory|availability|lead time|delivery|bom)\b/i;
 const privatePriceQuestionPattern =
   /private|confidential|admin|customer|buyer|client|paid|purchased|bought|sold|invoice|order number|purchase order|\bpo\b|buy price|cost price|our cost|margin|receivable|a\/r|another project|other project|unrelated project/i;
 
@@ -526,6 +528,7 @@ async function callSunnyBridge({ message, pagePath, history, memory, modelMatche
           "Use only supplied Sunny public catalog context and public Sunny topics.",
           "Use the supplied verified public company information for Sunny contact, address, telephone, listing, and general company questions.",
           "Answer directly and naturally, then ask one useful follow-up question.",
+          "For RFQ requirements, say EAU (Expected Annual Usage), not quantity.",
           "Never reveal infrastructure, private customer data, prices, costs, orders, accounts, tokens, or internal notes.",
           "Never invent specifications, stock, pricing, lead time, certification, or delivery.",
         ],
@@ -570,6 +573,10 @@ export default async function handler(req, res) {
   const companyAnswer = publicCompanyAnswer(message);
   if (companyAnswer) {
     return res.status(200).json({ ...companyAnswer, source: "sunny-public-catalog" });
+  }
+
+  if (publicWorkflowIntentPattern.test(message)) {
+    return res.status(200).json({ ...fallback, source: "sunny-public-catalog" });
   }
 
   const bridgeReply = await callSunnyBridge({ message, pagePath, history, memory, modelMatches });

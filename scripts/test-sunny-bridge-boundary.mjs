@@ -84,6 +84,12 @@ try {
   assert.match(publicPrice.body.reply, /\$0\.260 USD\/unit/i);
   assert.doesNotMatch(submitPrice.body.reply, /\$\d/);
 
+  const rfqGuidance = await ask("I need an RFQ");
+  assert.equal(calls, 0, "RFQ workflow guidance must use verified local rules, not the bridge");
+  assert.equal(rfqGuidance.body.source, "sunny-public-catalog");
+  assert.match(rfqGuidance.body.reply, /EAU \(Expected Annual Usage\)/i);
+  assert.doesNotMatch(rfqGuidance.body.reply, /start with the frequency and quantity/i);
+
   process.env.SUNNY_AI_BRIDGE_URL = "https://bridge.sunnykr.com:8443/sunny/chat";
   await ask("Tell me about SCO-10");
   assert.equal(calls, 0, "a non-default production bridge port must be rejected before fetch");
