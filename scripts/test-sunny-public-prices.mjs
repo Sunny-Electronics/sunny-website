@@ -2,24 +2,37 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 
 const table = JSON.parse(
-  fs.readFileSync(new URL("../api/ai/sunny-public-prices.json", import.meta.url), "utf8"),
+  fs.readFileSync(
+    new URL("../api/ai/sunny-public-prices.json", import.meta.url),
+    "utf8",
+  ),
 );
 const quoteTypesSource = fs.readFileSync(
   new URL("../artifacts/web/src/data/quote-types.ts", import.meta.url),
   "utf8",
 );
 
-assert.equal(table.schemaVersion, 1);
+assert.equal(table.schemaVersion, 2);
 assert.equal(table.publishedDate, "2026-08-28");
 assert.equal(table.currency, "USD");
 assert.equal(table.unit, "per unit");
 assert.match(table.disclaimer, /EAU \(Expected Annual Usage\)/);
 assert.equal(table.entries.length, 27);
-assert.equal(new Set(table.entries.map((entry) => entry.id)).size, table.entries.length);
+assert.equal(table.eligibilityPolicy.failClosed, true);
+assert.equal(
+  table.eligibilityPolicy.catalogRangeAloneDoesNotProveStandardFrequency,
+  true,
+);
+assert.equal(
+  new Set(table.entries.map((entry) => entry.id)).size,
+  table.entries.length,
+);
 
 for (const entry of table.entries) {
   assert.deepEqual(
-    Object.keys(entry).filter((key) => /customer|buyer|cost|margin|order|invoice/i.test(key)),
+    Object.keys(entry).filter((key) =>
+      /customer|buyer|cost|margin|order|invoice/i.test(key),
+    ),
     [],
   );
   assert.equal(typeof entry.model, "string");
@@ -33,9 +46,22 @@ function entry(id) {
 }
 
 assert.deepEqual(
-  [entry("sx-3-low").unitPriceUsd, entry("sx-3-high").unitPriceUsd],
-  [0.095, 0.085],
+  [
+    entry("sx-3-low").unitPriceUsd,
+    entry("sx-3-high").unitPriceUsd,
+    entry("sx-3-low").loadCapacitance,
+  ],
+  [0.095, 0.085, "18 pF"],
 );
+assert.deepEqual(
+  [
+    entry("sx-3-low").frequencyMinInclusiveMHz,
+    entry("sx-3-high").frequencyMaxMHz,
+  ],
+  [3.2768, 60],
+);
+assert.equal(entry("sx-32-standard").loadCapacitance, "12 pF");
+assert.equal(entry("cs-3215").frequencyExactKHz, 32.768);
 assert.equal(entry("ats-49u-16mm-insulator-taping").unitPriceUsd, 0.09);
 assert.deepEqual(
   [entry("sco-32").unitPriceUsd, entry("sco-32").spq, entry("sco-32").moq],
@@ -65,11 +91,15 @@ function optionBlock(typeId) {
 for (const typeId of ["ats", "smd-crystal", "smd-oscillator", "tuning-fork"]) {
   const choices = optionBlock(typeId);
   const pricedModels = new Set(
-    table.entries.filter((candidate) => candidate.quoteType === typeId).map((candidate) => candidate.model),
+    table.entries
+      .filter((candidate) => candidate.quoteType === typeId)
+      .map((candidate) => candidate.model),
   );
   for (const model of pricedModels) {
     assert.ok(
-      choices.some((choice) => choice.toUpperCase().startsWith(model.toUpperCase())),
+      choices.some((choice) =>
+        choice.toUpperCase().startsWith(model.toUpperCase()),
+      ),
       `${model} has a public estimate but is not selectable under ${typeId}`,
     );
   }

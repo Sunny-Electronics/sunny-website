@@ -3,13 +3,18 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const repositoryRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+);
 const runtimeFiles = [
   ".env.example",
   "api/ai/chat.js",
   "artifacts/web/api/ai/chat.js",
   "api/ai/sunny-assistant.md",
   "artifacts/web/api/ai/sunny-assistant.md",
+  "api/ai/sunny-brain-public.json",
+  "artifacts/web/api/ai/sunny-brain-public.json",
 ];
 const forbidden = [
   /\bAI_BRIDGE_URL\b/,
@@ -21,16 +26,60 @@ const forbidden = [
 for (const relativePath of runtimeFiles) {
   const text = fs.readFileSync(path.join(repositoryRoot, relativePath), "utf8");
   for (const pattern of forbidden) {
-    assert.doesNotMatch(text, pattern, `${relativePath} contains a shared or cross-project bridge reference`);
+    assert.doesNotMatch(
+      text,
+      pattern,
+      `${relativePath} contains a shared or cross-project bridge reference`,
+    );
   }
 }
 
-const rootHandler = fs.readFileSync(path.join(repositoryRoot, "api/ai/chat.js"));
-const webHandler = fs.readFileSync(path.join(repositoryRoot, "artifacts/web/api/ai/chat.js"));
-assert.equal(rootHandler.equals(webHandler), true, "the two Vercel handler copies must match");
+const rootHandler = fs.readFileSync(
+  path.join(repositoryRoot, "api/ai/chat.js"),
+);
+const webHandler = fs.readFileSync(
+  path.join(repositoryRoot, "artifacts/web/api/ai/chat.js"),
+);
+assert.equal(
+  rootHandler.equals(webHandler),
+  true,
+  "the two Vercel handler copies must match",
+);
 
-const rootCatalog = fs.readFileSync(path.join(repositoryRoot, "api/ai/sunny-catalog.json"));
-const webCatalog = fs.readFileSync(path.join(repositoryRoot, "artifacts/web/api/ai/sunny-catalog.json"));
-assert.equal(rootCatalog.equals(webCatalog), true, "the two legacy catalog copies must match");
+const rootCatalog = fs.readFileSync(
+  path.join(repositoryRoot, "api/ai/sunny-catalog.json"),
+);
+const webCatalog = fs.readFileSync(
+  path.join(repositoryRoot, "artifacts/web/api/ai/sunny-catalog.json"),
+);
+assert.equal(
+  rootCatalog.equals(webCatalog),
+  true,
+  "the two legacy catalog copies must match",
+);
+
+const rootBrain = fs.readFileSync(
+  path.join(repositoryRoot, "api/ai/sunny-brain-public.json"),
+);
+const webBrain = fs.readFileSync(
+  path.join(repositoryRoot, "artifacts/web/api/ai/sunny-brain-public.json"),
+);
+assert.equal(
+  rootBrain.equals(webBrain),
+  true,
+  "the two SunnyBrain rule copies must match",
+);
+
+const rootKnowledge = fs.readFileSync(
+  path.join(repositoryRoot, "api/ai/sunny-public-knowledge.json"),
+);
+const webKnowledge = fs.readFileSync(
+  path.join(repositoryRoot, "artifacts/web/api/ai/sunny-public-knowledge.json"),
+);
+assert.equal(
+  rootKnowledge.equals(webKnowledge),
+  true,
+  "the two Sunny public knowledge copies must match",
+);
 
 console.log("Sunny project boundary verification passed.");

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "release": "2026-08-29",
+  "scope": "Sunny Electronics public product support only",
+  "assistantRuntime": {
+    "primaryProvider": "gemma",
+    "primaryStatus": "enabled-through-dedicated-sunny-bridge",
+    "fallbackProvider": "gpt-5.6-luna",
+    "fallbackStatus": "disabled",
+    "fallbackActivationRequiresJohnApproval": true
+  },
+  "authorityOrder": [
+    "approved deterministic Sunny rules",
+    "catalog-verified Sunny public knowledge",
+    "approved public price table",
+    "language model response"
+  ],
+  "pricingPolicy": {
+    "failClosed": true,
+    "rangeDoesNotProveStandardFrequency": true,
+    "missingOrUnmatchedResult": "submit-for-price",
+    "displayOnlyWhenFrequencyAndRequiredSpecificationsMatch": true,
+    "currency": "USD",
+    "requiresEau": true
+  },
+  "partNumberPolicy": {
+    "neverInventCodes": true,
+    "statuses": [
+      "catalog-verified",
+      "catalog-example-layout",
+      "rfq-candidate-needs-confirmation",
+      "needs-confirmation"
+    ],
+    "publicGeneratedResultStatus": "rfq-candidate-needs-confirmation"
+  },
+  "oscillatorVoltageRule": {
+    "scope": "all Sunny oscillator families",
+    "standardVoltages": [1.8, 2.5, 3.3, 5.0],
+    "nonStandardVoltages": [0.9, 1.2, 1.5],
+    "otherVoltages": "non-standard-unless-Sunny-confirms",
+    "nonStandardAction": "submit-for-price",
+    "sourceStatus": "John-approved-commercial-rule"
+  },
+  "compatibilityRules": [
+    {
+      "id": "ppm-tighter-can-support-looser",
+      "appliesTo": "frequency tolerance or stability",
+      "rule": "A lower absolute ppm limit may support a higher requested ppm limit only when every other important specification is equal or approved-compatible.",
+      "customerReplyStyle": "State support simply; do not volunteer internal design explanations.",
+      "stockBoundary": "Say in stock only for exact or approved-compatible finished stock; otherwise say Sunny can support the requirement.",
+      "sourceStatus": "John-approved-operating-rule"
+    }
+  ],
+  "learningPolicy": {
+    "automaticPublicLearning": false,
+    "uncertainDestination": "Sunny Review Flags or Inbox",
+    "humanApprovalRequired": true,
+    "sourceEvidenceRequired": true,
+    "regressionTestRequired": true
+  },
+  "privacy": {
+    "publicAllowed": [
+      "approved catalog facts",
+      "approved public price estimates",
+      "SPQ",
+      "MOQ",
+      "public stock number",
+      "Sunny part number",
+      "public stock quantity",
+      "public documents",
+      "public company contact information"
+    ],
+    "neverPublic": [
+      "customer or buyer identity",
+      "customer contact data",
+      "orders and invoices",
+      "accounts receivable",
+      "buy price and cost",
+      "margin and pricing formulas",
+      "credentials and private infrastructure",
+      "private vault notes"
+    ]
+  }
+}

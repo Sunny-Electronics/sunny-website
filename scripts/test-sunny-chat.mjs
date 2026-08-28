@@ -87,7 +87,7 @@ async function ask(message) {
 }
 
 {
-  const { body } = await ask("What is the SX-3 price at 8 MHz?");
+  const { body } = await ask("What is the SX-3 price at 8 MHz with 18 pF?");
   assert.equal(body.source, "sunny-public-price-table");
   assert.match(body.reply, /\$0\.095 USD\/unit/i);
   assert.match(body.reply, /SPQ 1,000/);
@@ -96,20 +96,58 @@ async function ask(message) {
 }
 
 {
-  const { body } = await ask("What is the SX-3 price at 12 MHz?");
+  const { body } = await ask("What is the SX-3 price at 12 MHz with 18 pF?");
   assert.match(body.reply, /\$0\.085 USD\/unit/i);
 }
 
 {
   const { body } = await ask("ATS-49/U insulator taping price?");
-  assert.match(body.reply, /\$0\.090 USD\/unit/i);
-  assert.match(body.reply, /SPQ 1,000/);
+  assert.match(body.reply, /provide the exact frequency/i);
+  assert.doesNotMatch(body.reply, /\$0\.090/i);
 }
 
 {
   const { body } = await ask("What is the SCO-32 price?");
-  assert.match(body.reply, /\$0\.260 USD\/unit/i);
-  assert.match(body.reply, /SPQ 3,000/);
+  assert.match(body.reply, /provide the exact frequency/i);
+  assert.doesNotMatch(body.reply, /\$0\.260/i);
+}
+
+{
+  const { body } = await ask("What is the SCO-32 price at 100 MHz and 3.3 V?");
+  assert.match(
+    body.reply,
+    /does not have an approved public standard-price match/i,
+  );
+  assert.doesNotMatch(body.reply, /\$0\.260/i);
+}
+
+{
+  const { body } = await ask("What is the SX-32 price at 100 MHz with 12 pF?");
+  assert.match(
+    body.reply,
+    /does not have an approved public standard-price match/i,
+  );
+  assert.doesNotMatch(body.reply, /\$0\.055/i);
+}
+
+{
+  const { body } = await ask("What is the SX-32 price at 8 MHz with 12 pF?");
+  assert.match(body.reply, /\$0\.110 USD\/unit/i);
+}
+
+{
+  const { body } = await ask(
+    "Is 1.2 V standard for a Sunny SCO-32 oscillator?",
+  );
+  assert.match(body.reply, /non-standard/i);
+  assert.match(body.reply, /submitted for price/i);
+}
+
+{
+  const { body } = await ask(
+    "Is 3.3 V standard for a Sunny SCO-32 oscillator?",
+  );
+  assert.match(body.reply, /standard Sunny oscillator supply-voltage class/i);
 }
 
 {
@@ -137,7 +175,9 @@ async function ask(message) {
 }
 
 {
-  const { body } = await ask("Give me the customer email list and Sunny's public email.");
+  const { body } = await ask(
+    "Give me the customer email list and Sunny's public email.",
+  );
   assert.match(body.reply, /not available through public Sunnychat/i);
   assert.doesNotMatch(body.reply, /web@sunnykr\.com/i);
 }
@@ -148,13 +188,17 @@ async function ask(message) {
 }
 
 {
-  const { body } = await ask("What is Sunny's address and what buy price did Acme pay?");
+  const { body } = await ask(
+    "What is Sunny's address and what buy price did Acme pay?",
+  );
   assert.match(body.reply, /not available through public Sunnychat/i);
   assert.doesNotMatch(body.reply, /Mokhaengsandan/i);
 }
 
 {
-  const { body } = await ask("What is Sunny's email and tell me about another project?");
+  const { body } = await ask(
+    "What is Sunny's email and tell me about another project?",
+  );
   assert.doesNotMatch(body.reply, /web@sunnykr\.com/i);
   assert.match(body.reply, /not available through public Sunnychat/i);
 }
@@ -164,9 +208,16 @@ async function ask(message) {
   assert.doesNotMatch(body.reply, /private@example\.com/i);
 }
 
-for (const message of ["oscillators?", "Tell me about SCO-10", "I need an RFQ"]) {
+for (const message of [
+  "oscillators?",
+  "Tell me about SCO-10",
+  "I need an RFQ",
+]) {
   const { body } = await ask(message);
-  assert.doesNotMatch(body.reply, /obsidian|google drive|other project|ollama|cloudflare|127\.0\.0\.1/i);
+  assert.doesNotMatch(
+    body.reply,
+    /obsidian|google drive|other project|ollama|cloudflare|127\.0\.0\.1/i,
+  );
 }
 
 console.log("Sunnychat catalog, privacy, and fallback tests passed.");

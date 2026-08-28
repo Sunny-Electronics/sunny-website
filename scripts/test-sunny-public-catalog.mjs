@@ -4,24 +4,37 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const repositoryRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+);
 const paths = [
   "api/ai/sunny-obsidian-public.json",
   "artifacts/web/api/ai/sunny-obsidian-public.json",
   "artifacts/web/src/data/sunny-obsidian-public.json",
 ];
-const files = paths.map((file) => fs.readFileSync(path.join(repositoryRoot, file), "utf8"));
-assert.equal(new Set(files).size, 1, "all public catalog copies must be byte-identical");
+const files = paths.map((file) =>
+  fs.readFileSync(path.join(repositoryRoot, file), "utf8"),
+);
+assert.equal(
+  new Set(files).size,
+  1,
+  "all public catalog copies must be byte-identical",
+);
 
 const catalog = JSON.parse(files[0]);
-assert.equal(catalog.version, 2);
+assert.equal(catalog.version, 3);
 assert.match(catalog.sourceSha256, /^[a-f0-9]{64}$/);
 assert.equal(catalog.models.length, 94);
-assert.equal(new Set(catalog.models.map((model) => model.id)).size, catalog.models.length);
+assert.equal(
+  new Set(catalog.models.map((model) => model.id)).size,
+  catalog.models.length,
+);
 
 const allowedKeys = [
   "dimensions",
   "family",
+  "frequencySummary",
   "id",
   "model",
   "packageType",
@@ -30,6 +43,7 @@ const allowedKeys = [
 ].sort();
 for (const model of catalog.models) {
   assert.deepEqual(Object.keys(model).sort(), allowedKeys);
+  assert.equal(typeof model.frequencySummary, "string");
 }
 
 const modelText = JSON.stringify(catalog.models);
@@ -39,4 +53,6 @@ assert.doesNotMatch(
 );
 
 const digest = crypto.createHash("sha256").update(files[0]).digest("hex");
-console.log(`Sunny public catalog tests passed: ${catalog.models.length} models, SHA-256 ${digest}`);
+console.log(
+  `Sunny public catalog tests passed: ${catalog.models.length} models, SHA-256 ${digest}`,
+);

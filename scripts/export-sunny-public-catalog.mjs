@@ -12,7 +12,8 @@ function readArgument(name) {
   return index >= 0 ? args[index + 1] : "";
 }
 
-const vaultPath = readArgument("--vault") || process.env.SUNNY_OBSIDIAN_VAULT_PATH || "";
+const vaultPath =
+  readArgument("--vault") || process.env.SUNNY_OBSIDIAN_VAULT_PATH || "";
 
 if (!vaultPath) {
   throw new Error(
@@ -38,7 +39,29 @@ const allowedFamilies = new Set([
 
 const sensitivePattern =
   /@|mailto:|https?:|customer|buyer|purchase order|accounts? receivable|\bA\/R\b|invoice|price|cost|margin|password|secret|token|api.?key|고객|매입|매출|단가|수금|미수/i;
-const phonePattern = /(?:\+?\d{1,3}[ .-]?)?(?:\(?\d{2,4}\)?[ .-]?)\d{3,4}[ .-]\d{4}\b/;
+const phonePattern =
+  /(?:\+?\d{1,3}[ .-]?)?(?:\(?\d{2,4}\)?[ .-]?)\d{3,4}[ .-]\d{4}\b/;
+
+function parseFrontmatter(source) {
+  const match = source.match(/^---\s*\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) return {};
+  const values = {};
+  for (const line of match[1].split(/\r?\n/)) {
+    const field = line.match(/^([a-z0-9_]+):\s*(.*)$/i);
+    if (field) values[field[1]] = field[2].trim().replace(/^['"]|['"]$/g, "");
+  }
+  return values;
+}
+
+function publicFrequencySummary(frontmatter) {
+  if (frontmatter.published_frequency_summary)
+    return frontmatter.published_frequency_summary;
+  const minimum = Number.parseFloat(frontmatter.frequency_min_mhz);
+  const maximum = Number.parseFloat(frontmatter.frequency_max_mhz);
+  if (Number.isFinite(minimum) && Number.isFinite(maximum))
+    return `${minimum}–${maximum} MHz`;
+  return "";
+}
 
 function slugify(value) {
   return value
@@ -63,7 +86,9 @@ function assertPublicRecord(record) {
   for (const [field, value] of Object.entries(record)) {
     const text = Array.isArray(value) ? value.join(" ") : String(value ?? "");
     if (sensitivePattern.test(text) || phonePattern.test(text)) {
-      throw new Error(`Sensitive text was blocked in public catalog field ${field}.`);
+      throw new Error(
+        `Sensitive text was blocked in public catalog field ${field}.`,
+      );
     }
   }
 }
@@ -82,12 +107,31 @@ for (const rawLine of source.split(/\r?\n/)) {
 
   if (!line.startsWith("- [[") || !allowedFamilies.has(currentFamily)) continue;
 
-  const modelMatch = line.match(/^- \[\[([^|\]]+)\|([^\]]+)\]\]\s+[—-]\s+([^;]+?)(?:;\s+(.+))?$/u);
+  const modelMatch = line.match(
+    /^- \[\[([^|\]]+)\|([^\]]+)\]\]\s+[—-]\s+([^;]+?)(?:;\s+(.+))?$/u,
+  );
   if (!modelMatch) continue;
 
   const [, noteTarget, model, packageType, dimensions = ""] = modelMatch;
   if (noteTarget.includes("..") || path.isAbsolute(noteTarget)) {
     throw new Error(`Unsafe Obsidian note target was blocked: ${noteTarget}`);
+  }
+
+  const modelNotePath = path.resolve(catalogRoot, `${noteTarget}.md`);
+  if (
+    !modelNotePath.startsWith(`${path.resolve(catalogRoot)}${path.sep}`) ||
+    !fs.existsSync(modelNotePath)
+  ) {
+    throw new Error(
+      `Linked Sunny model note was not found inside the catalog: ${model}`,
+    );
+  }
+  const modelNote = fs.readFileSync(modelNotePath, "utf8");
+  const frontmatter = parseFrontmatter(modelNote);
+  if (frontmatter.verification_status !== "catalog-verified") {
+    throw new Error(
+      `Unverified Sunny model was blocked from public export: ${model}`,
+    );
   }
 
   const record = {
@@ -96,6 +140,7 @@ for (const rawLine of source.split(/\r?\n/)) {
     family: currentFamily,
     packageType: packageType.trim(),
     dimensions: dimensions.trim(),
+    frequencySummary: publicFrequencySummary(frontmatter),
     verificationStatus: "catalog-verified",
     websiteFamilyIds: websiteFamilyIds(currentFamily, packageType),
   };
@@ -105,20 +150,28 @@ for (const rawLine of source.split(/\r?\n/)) {
 }
 
 if (models.length < 25) {
-  throw new Error(`Only ${models.length} public models were parsed; export stopped for review.`);
+  throw new Error(
+    `Only ${models.length} public models were parsed; export stopped for review.`,
+  );
 }
 
 const duplicateModels = models.filter(
-  (model, index) => models.findIndex((candidate) => candidate.id === model.id) !== index,
+  (model, index) =>
+    models.findIndex((candidate) => candidate.id === model.id) !== index,
 );
 if (duplicateModels.length) {
-  throw new Error(`Duplicate public model IDs were blocked: ${duplicateModels.map((item) => item.id).join(", ")}`);
+  throw new Error(
+    `Duplicate public model IDs were blocked: ${duplicateModels.map((item) => item.id).join(", ")}`,
+  );
 }
 
 const payload = {
-  version: 2,
+  version: 3,
   source: "Sunny approved public product catalog",
-  sourceSha256: crypto.createHash("sha256").update(source, "utf8").digest("hex"),
+  sourceSha256: crypto
+    .createHash("sha256")
+    .update(source, "utf8")
+    .digest("hex"),
   privacy: {
     status: "sanitized-public",
     exportedFields: [
@@ -126,6 +179,7 @@ const payload = {
       "family",
       "packageType",
       "dimensions",
+      "frequencySummary",
       "verificationStatus",
       "websiteFamilyIds",
     ],
@@ -144,8 +198,22 @@ const payload = {
 const serialized = `${JSON.stringify(payload, null, 2)}\n`;
 const outputPaths = [
   path.join(repositoryRoot, "api", "ai", "sunny-obsidian-public.json"),
-  path.join(repositoryRoot, "artifacts", "web", "api", "ai", "sunny-obsidian-public.json"),
-  path.join(repositoryRoot, "artifacts", "web", "src", "data", "sunny-obsidian-public.json"),
+  path.join(
+    repositoryRoot,
+    "artifacts",
+    "web",
+    "api",
+    "ai",
+    "sunny-obsidian-public.json",
+  ),
+  path.join(
+    repositoryRoot,
+    "artifacts",
+    "web",
+    "src",
+    "data",
+    "sunny-obsidian-public.json",
+  ),
 ];
 
 for (const outputPath of outputPaths) {

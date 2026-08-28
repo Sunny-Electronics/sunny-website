@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "source": "Sunny approved public product catalog",
   "sourceSha256": "604a6e921f03c7286df02b023e784ac27a43cdff3c8ebe642f7f28b9e1e649bf",
   "privacy": {
@@ -9,6 +9,7 @@
       "family",
       "packageType",
       "dimensions",
+      "frequencySummary",
       "verificationStatus",
       "websiteFamilyIds"
     ],
@@ -28,6 +29,7 @@
       "family": "Crystal Resonators",
       "packageType": "ATS Lead",
       "dimensions": "11.5 × 5.0 mm max; 2.50 mm max height",
+      "frequencySummary": "3.2768–60.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "through-hole-crystals"
@@ -39,6 +41,7 @@
       "family": "Crystal Resonators",
       "packageType": "ATS Lead",
       "dimensions": "11.5 × 5.0 mm max; 3.60 mm max height",
+      "frequencySummary": "3.2768–60.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "through-hole-crystals"
@@ -50,6 +53,7 @@
       "family": "Ceramic Resonators",
       "packageType": "Ceramic SMD",
       "dimensions": "3.2 × 1.3 mm",
+      "frequencySummary": "10.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "resonators"
@@ -61,6 +65,7 @@
       "family": "Crystal Resonators",
       "packageType": "Tuning Fork SMD",
       "dimensions": "7.0 × 1.5 mm max; 1.4 mm max height",
+      "frequencySummary": "32.768 kHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tuning-forks"
@@ -72,6 +77,7 @@
       "family": "Crystal Resonators",
       "packageType": "Tuning Fork SMD",
       "dimensions": "1.6 × 1.0 mm; 0.5 mm max height",
+      "frequencySummary": "32.768 kHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tuning-forks"
@@ -83,6 +89,7 @@
       "family": "Crystal Resonators",
       "packageType": "Tuning Fork SMD",
       "dimensions": "2.0 × 1.2 mm; 0.6 mm max height",
+      "frequencySummary": "32.768 kHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tuning-forks"
@@ -94,6 +101,7 @@
       "family": "Crystal Resonators",
       "packageType": "Tuning Fork SMD",
       "dimensions": "7.9 × 3.7 mm; 2.5 mm max height",
+      "frequencySummary": "32.768 kHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tuning-forks"
@@ -105,6 +113,7 @@
       "family": "Crystal Resonators",
       "packageType": "Tuning Fork SMD",
       "dimensions": "3.2 × 1.5 mm; 0.9 mm max height",
+      "frequencySummary": "32.768 kHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tuning-forks"
@@ -116,6 +125,7 @@
       "family": "Crystal Resonators",
       "packageType": "Tuning Fork SMD",
       "dimensions": "10.41 × 4.06 mm; 3.6 mm max height",
+      "frequencySummary": "32.768 kHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tuning-forks"
@@ -127,6 +137,7 @@
       "family": "Crystal Resonators",
       "packageType": "Tuning Fork SMD",
       "dimensions": "10.41 × 4.06 mm; 3.6 mm max height",
+      "frequencySummary": "32.768 kHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tuning-forks"
@@ -138,6 +149,7 @@
       "family": "Crystal Resonators",
       "packageType": "Tuning Fork SMD",
       "dimensions": "4.9 × 1.8 mm; 1.0 mm max height",
+      "frequencySummary": "32.768 kHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tuning-forks"
@@ -149,6 +161,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVDS XO",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -160,6 +173,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVDS XO",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -171,6 +185,7 @@
       "family": "VCXO",
       "packageType": "LVDS",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -182,6 +197,7 @@
       "family": "VCXO",
       "packageType": "LVDS",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -193,6 +209,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVPECL XO",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -204,6 +221,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVPECL XO",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -215,6 +233,7 @@
       "family": "VCXO",
       "packageType": "LVPECL",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -226,6 +245,7 @@
       "family": "VCXO",
       "packageType": "LVPECL",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -237,6 +257,7 @@
       "family": "Crystal Resonators",
       "packageType": "HC Lead",
       "dimensions": "12.8 × 5.0 × 4.4 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "through-hole-crystals"
@@ -248,6 +269,7 @@
       "family": "Crystal Filters",
       "packageType": "DCF",
       "dimensions": "70 × 30 mm; 22 mm max height",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "filters-modules"
@@ -259,6 +281,7 @@
       "family": "Crystal Filters",
       "packageType": "DCF",
       "dimensions": "30 × 12 mm; 14 mm max height",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "filters-modules"
@@ -270,6 +293,7 @@
       "family": "Crystal Filters",
       "packageType": "Ceramic SMD",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "filters-modules"
@@ -281,6 +305,7 @@
       "family": "Crystal Filters",
       "packageType": "Ceramic SMD",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "filters-modules"
@@ -292,6 +317,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Metal Lead CMOS XO",
       "dimensions": "20.7 × 13.06 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -303,6 +329,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Metal Lead CMOS XO",
       "dimensions": "12.7 × 12.7 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -314,6 +341,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Ceramic SMD CMOS XO",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "catalog product page plus 32.768 kHz and 18–20 kHz editions",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -325,6 +353,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Ceramic SMD CMOS XO",
       "dimensions": "2.0 × 1.6 mm",
+      "frequencySummary": "8–48 MHz; 32.768 kHz edition",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -336,6 +365,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Ceramic SMD CMOS XO",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "catalog product page plus 32.768 kHz and 18–20 kHz editions",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -347,6 +377,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Ceramic SMD CMOS XO",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "catalog product page plus 32.768 kHz and 18–20 kHz editions",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -358,6 +389,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Ceramic SMD CMOS XO",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "1.000–156.250 MHz; 32.768 kHz and 18–20 kHz editions",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -369,6 +401,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Automotive Ceramic SMD CMOS XO",
       "dimensions": "2.0 × 1.6 mm",
+      "frequencySummary": "2–50 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -380,6 +413,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Automotive Ceramic SMD CMOS XO",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "2–50 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -391,6 +425,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Automotive Ceramic SMD CMOS XO",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "2–50 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -402,6 +437,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Automotive Ceramic SMD CMOS XO",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "2–50 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -413,6 +449,7 @@
       "family": "Crystal Oscillators",
       "packageType": "Ceramic SMD CMOS XO",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -424,6 +461,7 @@
       "family": "Crystal Oscillators",
       "packageType": "HCSL XO",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -435,6 +473,7 @@
       "family": "Crystal Oscillators",
       "packageType": "HCSL XO",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -446,6 +485,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVDS XO",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -457,6 +497,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVDS XO",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -468,6 +509,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVDS XO",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -479,6 +521,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVDS XO",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -490,6 +533,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVDS XO",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -501,6 +545,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVDS XO",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -512,6 +557,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVDS XO",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -523,6 +569,7 @@
       "family": "VCXO",
       "packageType": "LVDS",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -534,6 +581,7 @@
       "family": "VCXO",
       "packageType": "LVDS",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -545,6 +593,7 @@
       "family": "VCXO",
       "packageType": "LVDS",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -556,6 +605,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVPECL XO",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -567,6 +617,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVPECL XO",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -578,6 +629,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVPECL XO",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -589,6 +641,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVPECL XO",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -600,6 +653,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVPECL XO",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -611,6 +665,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVPECL XO",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -622,6 +677,7 @@
       "family": "Crystal Oscillators",
       "packageType": "LVPECL XO",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-oscillators"
@@ -633,6 +689,7 @@
       "family": "VCXO",
       "packageType": "LVPECL",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -644,6 +701,7 @@
       "family": "VCXO",
       "packageType": "LVPECL",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -655,6 +713,7 @@
       "family": "VCXO",
       "packageType": "LVPECL",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -666,6 +725,7 @@
       "family": "VCXO",
       "packageType": "LVPECL",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -677,6 +737,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Metal Lead",
       "dimensions": "18.3 × 11.7 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -688,6 +749,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Metal SMD",
       "dimensions": "21.3 × 11.7 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -699,6 +761,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Metal Lead",
       "dimensions": "20.0 × 20.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -710,6 +773,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Metal Lead",
       "dimensions": "18.5 × 11.7 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -721,6 +785,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Metal SMD",
       "dimensions": "11.4 × 11.6 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -732,6 +797,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Metal SMD",
       "dimensions": "11.4 × 9.6 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -743,6 +809,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -754,6 +821,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -765,6 +833,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -776,6 +845,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -787,6 +857,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -798,6 +869,7 @@
       "family": "TCXO & VCTCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "2.0 × 1.6 mm",
+      "frequencySummary": "13–52 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -809,6 +881,7 @@
       "family": "VCXO",
       "packageType": "Metal Lead",
       "dimensions": "20.7 × 13.06 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -820,6 +893,7 @@
       "family": "VCXO",
       "packageType": "Metal Lead",
       "dimensions": "12.7 × 12.7 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -831,6 +905,7 @@
       "family": "VCXO",
       "packageType": "Metal SMD",
       "dimensions": "13.4 × 8.5 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -842,6 +917,7 @@
       "family": "VCXO",
       "packageType": "Metal SMD",
       "dimensions": "11.4 × 9.6 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -853,6 +929,7 @@
       "family": "VCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -864,6 +941,7 @@
       "family": "VCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -875,6 +953,7 @@
       "family": "VCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -886,6 +965,7 @@
       "family": "VCXO",
       "packageType": "Ceramic SMD",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "tcxo-vctcxo"
@@ -897,6 +977,7 @@
       "family": "Crystal Resonators",
       "packageType": "ATS SMD",
       "dimensions": "12.8 × 5.0 mm max; 4.40 mm max height",
+      "frequencySummary": "3.2768–60.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -908,6 +989,7 @@
       "family": "Crystal Resonators",
       "packageType": "Ceramic SMD",
       "dimensions": "1.6 × 1.2 mm",
+      "frequencySummary": "20.000–54.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -919,6 +1001,7 @@
       "family": "Crystal Resonators",
       "packageType": "Ceramic SMD",
       "dimensions": "2.0 × 1.6 mm",
+      "frequencySummary": "20.000–60.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -930,6 +1013,7 @@
       "family": "Crystal Resonators",
       "packageType": "Ceramic SMD",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "16.000–54.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -941,6 +1025,7 @@
       "family": "Crystal Resonators",
       "packageType": "ATS SMD",
       "dimensions": "12.8 × 5.0 mm max; 3.20 mm max height",
+      "frequencySummary": "3.2768–60.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -952,6 +1037,7 @@
       "family": "Crystal Resonators",
       "packageType": "Ceramic SMD",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "12–54 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -963,6 +1049,7 @@
       "family": "Crystal Resonators",
       "packageType": "Ceramic SMD",
       "dimensions": "7.0 × 5.0 mm",
+      "frequencySummary": "6–125 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -974,6 +1061,7 @@
       "family": "Crystal Resonators",
       "packageType": "Ceramic SMD",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "8.000–54.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -985,6 +1073,7 @@
       "family": "Crystal Resonators",
       "packageType": "Automotive Ceramic SMD",
       "dimensions": "2.0 × 1.6 mm",
+      "frequencySummary": "20.000–60.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -996,6 +1085,7 @@
       "family": "Crystal Resonators",
       "packageType": "Automotive Ceramic SMD",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "16.000–54.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -1007,6 +1097,7 @@
       "family": "Crystal Resonators",
       "packageType": "Automotive Ceramic SMD",
       "dimensions": "3.2 × 2.5 mm",
+      "frequencySummary": "12.000–54.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -1018,6 +1109,7 @@
       "family": "Crystal Resonators",
       "packageType": "Automotive Ceramic SMD",
       "dimensions": "5.0 × 3.2 mm",
+      "frequencySummary": "8.000–54.000 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -1029,6 +1121,7 @@
       "family": "Crystal Resonators",
       "packageType": "Thermistor Crystal",
       "dimensions": "1.6 × 1.2 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -1040,6 +1133,7 @@
       "family": "Crystal Resonators",
       "packageType": "Thermistor Crystal",
       "dimensions": "2.0 × 1.6 mm",
+      "frequencySummary": "",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"
@@ -1051,6 +1145,7 @@
       "family": "Crystal Resonators",
       "packageType": "Thermistor Crystal",
       "dimensions": "2.5 × 2.0 mm",
+      "frequencySummary": "19.200 / 26.000 / 38.400 MHz",
       "verificationStatus": "catalog-verified",
       "websiteFamilyIds": [
         "smd-crystals"

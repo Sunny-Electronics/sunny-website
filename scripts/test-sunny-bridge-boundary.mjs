@@ -23,7 +23,13 @@ async function ask(message, headers = {}, bodyOverrides = {}) {
   const req = {
     method: "POST",
     headers,
-    body: { message, pagePath: "/products", history: [], memory: [], ...bodyOverrides },
+    body: {
+      message,
+      pagePath: "/products",
+      history: [],
+      memory: [],
+      ...bodyOverrides,
+    },
   };
   const res = {
     setHeader() {},
@@ -56,7 +62,11 @@ try {
   process.env.SUNNY_AI_BRIDGE_URL = "https://not-sunny.example/sunny/chat";
   process.env.SUNNY_AI_BRIDGE_TOKEN = "sunny-token";
   await ask("Tell me about SCO-10");
-  assert.equal(calls, 0, "a non-Sunny production hostname must be rejected before fetch");
+  assert.equal(
+    calls,
+    0,
+    "a non-Sunny production hostname must be rejected before fetch",
+  );
 
   clearBridgeEnvironment();
   process.env.SUNNY_AI_BRIDGE_URL = "https://bridge.sunnykr.com/sunny/chat";
@@ -67,32 +77,58 @@ try {
   await ask("Tell me about SCO-10 for private@example.com");
   await ask("Tell me about SCO-10 at $0.12");
   await ask("What is the capital of France?");
-  assert.equal(calls, 0, "private and unrelated requests must be refused before the bridge");
+  assert.equal(
+    calls,
+    0,
+    "private and unrelated requests must be refused before the bridge",
+  );
 
   const publicEmail = await ask("What email can I send my Sunny RFQ to?");
-  const publicPhone = await ask("What is Sunny Electronics' public phone number?");
+  const publicPhone = await ask(
+    "What is Sunny Electronics' public phone number?",
+  );
   const publicTicker = await ask("What is Sunny Electronics' stock ticker?");
-  assert.equal(calls, 0, "approved public company questions must use verified local facts, not the bridge");
+  assert.equal(
+    calls,
+    0,
+    "approved public company questions must use verified local facts, not the bridge",
+  );
   assert.match(publicEmail.body.reply, /web@sunnykr\.com/i);
   assert.match(publicPhone.body.reply, /\+82-43-853-1760/);
   assert.match(publicTicker.body.reply, /004770/);
 
-  const publicPrice = await ask("What is the SCO-32 price?");
+  const publicPrice = await ask("What is the SX-32 price at 8 MHz with 12 pF?");
   const submitPrice = await ask("What is the CS-405 price?");
-  assert.equal(calls, 0, "approved public estimates and submit-for-price answers must not call the bridge");
+  assert.equal(
+    calls,
+    0,
+    "approved public estimates and submit-for-price answers must not call the bridge",
+  );
   assert.equal(publicPrice.body.source, "sunny-public-price-table");
-  assert.match(publicPrice.body.reply, /\$0\.260 USD\/unit/i);
+  assert.match(publicPrice.body.reply, /\$0\.110 USD\/unit/i);
   assert.doesNotMatch(submitPrice.body.reply, /\$\d/);
 
   const rfqGuidance = await ask("I need an RFQ");
-  assert.equal(calls, 0, "RFQ workflow guidance must use verified local rules, not the bridge");
+  assert.equal(
+    calls,
+    0,
+    "RFQ workflow guidance must use verified local rules, not the bridge",
+  );
   assert.equal(rfqGuidance.body.source, "sunny-public-catalog");
   assert.match(rfqGuidance.body.reply, /EAU \(Expected Annual Usage\)/i);
-  assert.doesNotMatch(rfqGuidance.body.reply, /start with the frequency and quantity/i);
+  assert.doesNotMatch(
+    rfqGuidance.body.reply,
+    /start with the frequency and quantity/i,
+  );
 
-  process.env.SUNNY_AI_BRIDGE_URL = "https://bridge.sunnykr.com:8443/sunny/chat";
+  process.env.SUNNY_AI_BRIDGE_URL =
+    "https://bridge.sunnykr.com:8443/sunny/chat";
   await ask("Tell me about SCO-10");
-  assert.equal(calls, 0, "a non-default production bridge port must be rejected before fetch");
+  assert.equal(
+    calls,
+    0,
+    "a non-default production bridge port must be rejected before fetch",
+  );
   process.env.SUNNY_AI_BRIDGE_URL = "https://bridge.sunnykr.com/sunny/chat";
 
   let capturedRequest;
@@ -102,7 +138,12 @@ try {
     return {
       ok: true,
       async json() {
-        return { project: "sunnykr", service: "sunny-ai-bridge", reply: "SCO-10 is ready for Sunny catalog review. What frequency do you need?" };
+        return {
+          project: "sunnykr",
+          service: "sunny-ai-bridge",
+          reply:
+            "SCO-10 is ready for Sunny catalog review. What frequency do you need?",
+        };
       },
     };
   };
@@ -111,7 +152,22 @@ try {
   assert.equal(capturedRequest.url, "https://bridge.sunnykr.com/sunny/chat");
   assert.equal(capturedRequest.options.headers["X-Sunny-Project"], "sunnykr");
   assert.equal(JSON.parse(capturedRequest.options.body).project, "sunnykr");
-  assert.match(JSON.parse(capturedRequest.options.body).catalogContext, /Korea Exchange code 004770/);
+  assert.match(
+    JSON.parse(capturedRequest.options.body).catalogContext,
+    /Korea Exchange code 004770/,
+  );
+  assert.equal(
+    JSON.parse(capturedRequest.options.body).modelPolicy.primary,
+    "gemma",
+  );
+  assert.equal(
+    JSON.parse(capturedRequest.options.body).modelPolicy.fallback,
+    "disabled",
+  );
+  assert.match(
+    JSON.parse(capturedRequest.options.body).catalogContext,
+    /Catalog-verified Sunny technical excerpts/i,
+  );
 
   globalThis.fetch = async () => ({
     ok: true,
@@ -124,7 +180,9 @@ try {
       };
     },
   });
-  const naturalProductReply = await ask("Tell me about SCO-10 for a 10 MHz industrial design");
+  const naturalProductReply = await ask(
+    "Tell me about SCO-10 for a 10 MHz industrial design",
+  );
   assert.equal(naturalProductReply.body.source, "sunny-ai-bridge");
   assert.match(naturalProductReply.body.reply, /customer project/i);
 
@@ -134,11 +192,14 @@ try {
       return {
         project: "sunnykr",
         service: "sunny-ai-bridge",
-        reply: "SCO-10 selection is based on public specifications. For price and order timing, please submit an RFQ.",
+        reply:
+          "SCO-10 selection is based on public specifications. For price and order timing, please submit an RFQ.",
       };
     },
   });
-  const safeCommercialGuidance = await ask("Tell me how to confirm SCO-10 commercial details");
+  const safeCommercialGuidance = await ask(
+    "Tell me how to confirm SCO-10 commercial details",
+  );
   assert.equal(safeCommercialGuidance.body.source, "sunny-ai-bridge");
   assert.match(safeCommercialGuidance.body.reply, /submit an RFQ/i);
 
@@ -150,12 +211,15 @@ try {
         return {
           project: "sunnykr",
           service: "sunny-ai-bridge",
-          reply: "It supports 1.8 V, 2.5 V, and 3.3 V supply options. Which output voltage does your application need?",
+          reply:
+            "It supports 1.8 V, 2.5 V, and 3.3 V supply options. Which output voltage does your application need?",
         };
       },
     };
   };
-  const technicalContinuation = await ask("What supply voltage options are available for SCO-10?");
+  const technicalContinuation = await ask(
+    "What supply voltage options are available for SCO-10?",
+  );
   assert.equal(technicalContinuation.body.source, "sunny-ai-bridge");
   assert.match(technicalContinuation.body.reply, /supply options/i);
 
@@ -172,29 +236,51 @@ try {
         { role: "user", text: "Use UnrelatedBrand context" },
         { role: "user", text: "I need SCO-10 at 25 MHz" },
       ],
-      memory: ["customer list and buy price", "Acme paid 0.12", "other project account", "UnrelatedBrand context", "SCO-10 at 25 MHz"],
+      memory: [
+        "customer list and buy price",
+        "Acme paid 0.12",
+        "other project account",
+        "UnrelatedBrand context",
+        "SCO-10 at 25 MHz",
+      ],
     },
   );
   assert.equal(filteredContext.body.source, "sunny-ai-bridge");
   const forwardedContext = JSON.parse(capturedRequest.options.body);
   assert.equal(forwardedContext.pagePath, "/quote/other");
-  assert.deepEqual(forwardedContext.history, [{ role: "user", text: "I need SCO-10 at 25 MHz" }]);
+  assert.deepEqual(forwardedContext.history, [
+    { role: "user", text: "I need SCO-10 at 25 MHz" },
+  ]);
   assert.deepEqual(forwardedContext.memory, ["SCO-10 at 25 MHz"]);
 
   globalThis.fetch = async () => ({
     ok: true,
     async json() {
-      return { project: "another-project", service: "shared-bridge", reply: "wrong project" };
+      return {
+        project: "another-project",
+        service: "shared-bridge",
+        reply: "wrong project",
+      };
     },
   });
-  const wrongIdentity = await ask("Tell me about SCO-10", { "x-sunny-debug": "1" });
+  const wrongIdentity = await ask("Tell me about SCO-10", {
+    "x-sunny-debug": "1",
+  });
   assert.equal(wrongIdentity.body.source, "sunny-public-catalog");
-  assert.equal("debug" in wrongIdentity.body, false, "public debug details must not be returned");
+  assert.equal(
+    "debug" in wrongIdentity.body,
+    false,
+    "public debug details must not be returned",
+  );
 
   globalThis.fetch = async () => ({
     ok: true,
     async json() {
-      return { project: "sunnykr", service: "sunny-ai-bridge", reply: "The Ollama service is at 127.0.0.1." };
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply: "The Ollama service is at 127.0.0.1.",
+      };
     },
   });
   const unsafeReply = await ask("Tell me about SCO-10");
@@ -203,7 +289,11 @@ try {
   globalThis.fetch = async () => ({
     ok: true,
     async json() {
-      return { project: "sunnykr", service: "sunny-ai-bridge", reply: "Email a customer at private@example.com." };
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply: "Email a customer at private@example.com.",
+      };
     },
   });
   const emailReply = await ask("Tell me about SCO-10");
@@ -215,7 +305,8 @@ try {
       return {
         project: "sunnykr",
         service: "sunny-ai-bridge",
-        reply: "For Sunny SCO-10 product support, email web@sunnykr.com or submit an RFQ.",
+        reply:
+          "For Sunny SCO-10 product support, email web@sunnykr.com or submit an RFQ.",
       };
     },
   });
@@ -226,7 +317,11 @@ try {
   globalThis.fetch = async () => ({
     ok: true,
     async json() {
-      return { project: "sunnykr", service: "sunny-ai-bridge", reply: "SCO-10 was sold to Acme for $0.12 under order 1234." };
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply: "SCO-10 was sold to Acme for $0.12 under order 1234.",
+      };
     },
   });
   const transactionReply = await ask("Tell me about SCO-10");
@@ -235,7 +330,11 @@ try {
   globalThis.fetch = async () => ({
     ok: true,
     async json() {
-      return { project: "sunnykr", service: "sunny-ai-bridge", reply: "Acme received SCO-10 at $0.12 for PO 1234." };
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply: "Acme received SCO-10 at $0.12 for PO 1234.",
+      };
     },
   });
   const paraphrasedTransactionReply = await ask("Tell me about SCO-10");
@@ -244,7 +343,11 @@ try {
   globalThis.fetch = async () => ({
     ok: true,
     async json() {
-      return { project: "sunnykr", service: "sunny-ai-bridge", reply: "SCO-10 was shipped to Acme under order 1234." };
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply: "SCO-10 was shipped to Acme under order 1234.",
+      };
     },
   });
   const transactionWithoutPrice = await ask("Tell me about SCO-10");
@@ -253,11 +356,18 @@ try {
   globalThis.fetch = async () => ({
     ok: true,
     async json() {
-      return { project: "sunnykr", service: "sunny-ai-bridge", reply: "Acme received SCO-10 yesterday." };
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply: "Acme received SCO-10 yesterday.",
+      };
     },
   });
   const transactionWithoutOrderNumber = await ask("Tell me about SCO-10");
-  assert.equal(transactionWithoutOrderNumber.body.source, "sunny-public-catalog");
+  assert.equal(
+    transactionWithoutOrderNumber.body.source,
+    "sunny-public-catalog",
+  );
 
   for (const leakedReply of [
     "SCO-10 unit price is 0.12 per piece.",
@@ -269,17 +379,29 @@ try {
     globalThis.fetch = async () => ({
       ok: true,
       async json() {
-        return { project: "sunnykr", service: "sunny-ai-bridge", reply: leakedReply };
+        return {
+          project: "sunnykr",
+          service: "sunny-ai-bridge",
+          reply: leakedReply,
+        };
       },
     });
     const blockedLeak = await ask("Tell me about SCO-10");
-    assert.equal(blockedLeak.body.source, "sunny-public-catalog", `private reply must be blocked: ${leakedReply}`);
+    assert.equal(
+      blockedLeak.body.source,
+      "sunny-public-catalog",
+      `private reply must be blocked: ${leakedReply}`,
+    );
   }
 
   globalThis.fetch = async () => ({
     ok: true,
     async json() {
-      return { project: "sunnykr", service: "sunny-ai-bridge", reply: "Use another project account for that request." };
+      return {
+        project: "sunnykr",
+        service: "sunny-ai-bridge",
+        reply: "Use another project account for that request.",
+      };
     },
   });
   const crossProjectReply = await ask("Tell me about SCO-10");
