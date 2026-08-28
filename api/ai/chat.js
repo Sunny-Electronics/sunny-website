@@ -284,7 +284,7 @@ function publicCompanyAnswer(message) {
     };
   }
 
-  if (/about sunny|company information|who is sunny|company history|when.{0,20}(?:founded|established)|founded|established/.test(text)) {
+  if (/about sunny|what is sunny(?: electronics)?|company information|who is sunny|company history|when.{0,20}(?:founded|established)|founded|established/.test(text)) {
     return {
       reply: `${SUNNY_PUBLIC_COMPANY.name} is a Korea-based frequency-control component manufacturer established in ${SUNNY_PUBLIC_COMPANY.established}. Sunny produces crystal units, oscillators, resonators, filters, and related timing components, and is listed on KOSPI under stock code ${SUNNY_PUBLIC_COMPANY.ticker}.`,
       links: [links.home, links.products],

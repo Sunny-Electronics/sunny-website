@@ -81,6 +81,12 @@ async function ask(message) {
 }
 
 {
+  const { body } = await ask("What is Sunny Electronics?");
+  assert.match(body.reply, /frequency-control component manufacturer/i);
+  assert.match(body.reply, /established in 1966/i);
+}
+
+{
   const { body } = await ask("What is a customer's email and phone number?");
   assert.match(body.reply, /not available through public Sunnychat/i);
   assert.doesNotMatch(body.reply, /web@sunnykr\.com/i);
