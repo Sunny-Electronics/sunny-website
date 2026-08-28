@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowLeft,
@@ -6,11 +7,13 @@ import {
   FileCheck2,
   Hash,
   RadioReceiver,
+  Search,
   ShieldCheck,
   Timer,
   Waves,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import sunnyPublicCatalog from "@/data/sunny-obsidian-public.json";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
 const productFamilies = [
@@ -50,6 +53,22 @@ const documentTypes = [
 ];
 
 export default function Products() {
+  const [catalogQuery, setCatalogQuery] = useState("");
+  const catalogMatches = useMemo(() => {
+    const query = catalogQuery.trim().toLowerCase();
+    if (!query) return [];
+
+    return sunnyPublicCatalog.models
+      .filter((model) =>
+        [model.model, model.family, model.packageType, model.dimensions]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase()
+          .includes(query),
+      )
+      .slice(0, 24);
+  }, [catalogQuery]);
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950 font-sans">
       <header className="border-b border-slate-200 bg-white">
@@ -116,6 +135,61 @@ export default function Products() {
                 <div className="text-xs font-semibold text-slate-500">Document support</div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="border-b border-slate-200 bg-white">
+          <div className="mx-auto max-w-7xl px-5 py-10">
+            <div className="mb-5">
+              <h2 className="font-display text-3xl font-bold">Verified Sunny Model Search</h2>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                Search the public Sunny catalog by model, family, package type, or dimensions. Customer names,
+                emails, pricing, orders, and private commercial information are not included.
+              </p>
+            </div>
+
+            <label className="flex max-w-3xl items-center gap-3 border border-slate-300 bg-slate-50 px-4 focus-within:border-primary">
+              <Search className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+              <span className="sr-only">Search the verified Sunny public model catalog</span>
+              <input
+                type="search"
+                value={catalogQuery}
+                onChange={(event) => setCatalogQuery(event.target.value)}
+                className="h-12 min-w-0 flex-1 bg-transparent text-sm outline-none"
+                placeholder="Try SCO-10, SX-32, 3.2 × 2.5 mm, or LVDS"
+                data-testid="input-sunny-model-search"
+              />
+            </label>
+
+            {catalogQuery.trim() ? (
+              <div className="mt-5">
+                <div className="mb-3 text-sm font-semibold text-slate-600">
+                  {catalogMatches.length} verified {catalogMatches.length === 1 ? "match" : "matches"}
+                </div>
+                {catalogMatches.length ? (
+                  <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                    {catalogMatches.map((model) => (
+                      <Link
+                        key={model.id}
+                        href={`/quote/other?partNumber=${encodeURIComponent(model.model)}`}
+                        className="border border-slate-200 bg-white p-4 shadow-sm transition hover:border-primary/50 hover:shadow-md"
+                      >
+                        <div className="font-mono text-base font-bold text-primary">{model.model}</div>
+                        <div className="mt-1 text-sm font-semibold text-slate-800">{model.packageType}</div>
+                        <div className="mt-1 text-xs text-slate-500">
+                          {model.family}{model.dimensions ? ` · ${model.dimensions}` : ""}
+                        </div>
+                        <div className="mt-3 text-xs font-semibold text-primary">Open RFQ review</div>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="border border-slate-200 bg-slate-50 p-5 text-sm text-slate-600">
+                    No verified model matched that search. Try a broader family or package term, or send the requirement through RFQ.
+                  </div>
+                )}
+              </div>
+            ) : null}
           </div>
         </section>
 

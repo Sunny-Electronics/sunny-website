@@ -5,6 +5,8 @@
   "scripts": {
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "sunny:sync": "node scripts/sync-sunny-public-artifacts.mjs",
+    "sunny:check": "pnpm sunny:sync && node scripts/test-sunny-public-catalog.mjs && node scripts/test-sunny-chat.mjs && node scripts/test-sunny-bridge-boundary.mjs && node scripts/verify-sunny-project-boundary.mjs && pnpm --filter @workspace/web typecheck",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },

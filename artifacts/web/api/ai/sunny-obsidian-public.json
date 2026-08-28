@@ -1,0 +1,1060 @@
+{
+  "version": 2,
+  "source": "Sunny approved public product catalog",
+  "sourceSha256": "604a6e921f03c7286df02b023e784ac27a43cdff3c8ebe642f7f28b9e1e649bf",
+  "privacy": {
+    "status": "sanitized-public",
+    "exportedFields": [
+      "model",
+      "family",
+      "packageType",
+      "dimensions",
+      "verificationStatus",
+      "websiteFamilyIds"
+    ],
+    "excluded": [
+      "customer names",
+      "email addresses",
+      "prices and costs",
+      "orders and invoices",
+      "accounts receivable",
+      "private commercial notes"
+    ]
+  },
+  "models": [
+    {
+      "id": "ats-25-u",
+      "model": "ATS-25/U",
+      "family": "Crystal Resonators",
+      "packageType": "ATS Lead",
+      "dimensions": "11.5 × 5.0 mm max; 2.50 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "through-hole-crystals"
+      ]
+    },
+    {
+      "id": "ats-49-u",
+      "model": "ATS-49/U",
+      "family": "Crystal Resonators",
+      "packageType": "ATS Lead",
+      "dimensions": "11.5 × 5.0 mm max; 3.60 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "through-hole-crystals"
+      ]
+    },
+    {
+      "id": "cr3213",
+      "model": "CR3213",
+      "family": "Ceramic Resonators",
+      "packageType": "Ceramic SMD",
+      "dimensions": "3.2 × 1.3 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "resonators"
+      ]
+    },
+    {
+      "id": "cs-146",
+      "model": "CS-146",
+      "family": "Crystal Resonators",
+      "packageType": "Tuning Fork SMD",
+      "dimensions": "7.0 × 1.5 mm max; 1.4 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tuning-forks"
+      ]
+    },
+    {
+      "id": "cs-1610",
+      "model": "CS-1610",
+      "family": "Crystal Resonators",
+      "packageType": "Tuning Fork SMD",
+      "dimensions": "1.6 × 1.0 mm; 0.5 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tuning-forks"
+      ]
+    },
+    {
+      "id": "cs-2012",
+      "model": "CS-2012",
+      "family": "Crystal Resonators",
+      "packageType": "Tuning Fork SMD",
+      "dimensions": "2.0 × 1.2 mm; 0.6 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tuning-forks"
+      ]
+    },
+    {
+      "id": "cs-306",
+      "model": "CS-306",
+      "family": "Crystal Resonators",
+      "packageType": "Tuning Fork SMD",
+      "dimensions": "7.9 × 3.7 mm; 2.5 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tuning-forks"
+      ]
+    },
+    {
+      "id": "cs-3215",
+      "model": "CS-3215",
+      "family": "Crystal Resonators",
+      "packageType": "Tuning Fork SMD",
+      "dimensions": "3.2 × 1.5 mm; 0.9 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tuning-forks"
+      ]
+    },
+    {
+      "id": "cs-405",
+      "model": "CS-405",
+      "family": "Crystal Resonators",
+      "packageType": "Tuning Fork SMD",
+      "dimensions": "10.41 × 4.06 mm; 3.6 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tuning-forks"
+      ]
+    },
+    {
+      "id": "cs-406",
+      "model": "CS-406",
+      "family": "Crystal Resonators",
+      "packageType": "Tuning Fork SMD",
+      "dimensions": "10.41 × 4.06 mm; 3.6 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tuning-forks"
+      ]
+    },
+    {
+      "id": "cs-519",
+      "model": "CS-519",
+      "family": "Crystal Resonators",
+      "packageType": "Tuning Fork SMD",
+      "dimensions": "4.9 × 1.8 mm; 1.0 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tuning-forks"
+      ]
+    },
+    {
+      "id": "dlo-10",
+      "model": "DLO-10",
+      "family": "Crystal Oscillators",
+      "packageType": "LVDS XO",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "dlo-53",
+      "model": "DLO-53",
+      "family": "Crystal Oscillators",
+      "packageType": "LVDS XO",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "dlv-10",
+      "model": "DLV-10",
+      "family": "VCXO",
+      "packageType": "LVDS",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "dlv-53",
+      "model": "DLV-53",
+      "family": "VCXO",
+      "packageType": "LVDS",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "dpo-10",
+      "model": "DPO-10",
+      "family": "Crystal Oscillators",
+      "packageType": "LVPECL XO",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "dpo-53",
+      "model": "DPO-53",
+      "family": "Crystal Oscillators",
+      "packageType": "LVPECL XO",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "dpv-10",
+      "model": "DPV-10",
+      "family": "VCXO",
+      "packageType": "LVPECL",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "dpv-53",
+      "model": "DPV-53",
+      "family": "VCXO",
+      "packageType": "LVPECL",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "hc-49-u",
+      "model": "HC-49/U",
+      "family": "Crystal Resonators",
+      "packageType": "HC Lead",
+      "dimensions": "12.8 × 5.0 × 4.4 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "through-hole-crystals"
+      ]
+    },
+    {
+      "id": "mt1",
+      "model": "MT1",
+      "family": "Crystal Filters",
+      "packageType": "DCF",
+      "dimensions": "70 × 30 mm; 22 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "filters-modules"
+      ]
+    },
+    {
+      "id": "mt2",
+      "model": "MT2",
+      "family": "Crystal Filters",
+      "packageType": "DCF",
+      "dimensions": "30 × 12 mm; 14 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "filters-modules"
+      ]
+    },
+    {
+      "id": "s-1",
+      "model": "S-1",
+      "family": "Crystal Filters",
+      "packageType": "Ceramic SMD",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "filters-modules"
+      ]
+    },
+    {
+      "id": "s-2",
+      "model": "S-2",
+      "family": "Crystal Filters",
+      "packageType": "Ceramic SMD",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "filters-modules"
+      ]
+    },
+    {
+      "id": "sco-02",
+      "model": "SCO-02",
+      "family": "Crystal Oscillators",
+      "packageType": "Metal Lead CMOS XO",
+      "dimensions": "20.7 × 13.06 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-06",
+      "model": "SCO-06",
+      "family": "Crystal Oscillators",
+      "packageType": "Metal Lead CMOS XO",
+      "dimensions": "12.7 × 12.7 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-10",
+      "model": "SCO-10",
+      "family": "Crystal Oscillators",
+      "packageType": "Ceramic SMD CMOS XO",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-21",
+      "model": "SCO-21",
+      "family": "Crystal Oscillators",
+      "packageType": "Ceramic SMD CMOS XO",
+      "dimensions": "2.0 × 1.6 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-22",
+      "model": "SCO-22",
+      "family": "Crystal Oscillators",
+      "packageType": "Ceramic SMD CMOS XO",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-32",
+      "model": "SCO-32",
+      "family": "Crystal Oscillators",
+      "packageType": "Ceramic SMD CMOS XO",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-53",
+      "model": "SCO-53",
+      "family": "Crystal Oscillators",
+      "packageType": "Ceramic SMD CMOS XO",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-a21",
+      "model": "SCO-A21",
+      "family": "Crystal Oscillators",
+      "packageType": "Automotive Ceramic SMD CMOS XO",
+      "dimensions": "2.0 × 1.6 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-a22",
+      "model": "SCO-A22",
+      "family": "Crystal Oscillators",
+      "packageType": "Automotive Ceramic SMD CMOS XO",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-a32",
+      "model": "SCO-A32",
+      "family": "Crystal Oscillators",
+      "packageType": "Automotive Ceramic SMD CMOS XO",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-a53",
+      "model": "SCO-A53",
+      "family": "Crystal Oscillators",
+      "packageType": "Automotive Ceramic SMD CMOS XO",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sco-l22",
+      "model": "SCO-L22",
+      "family": "Crystal Oscillators",
+      "packageType": "Ceramic SMD CMOS XO",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sho-10",
+      "model": "SHO-10",
+      "family": "Crystal Oscillators",
+      "packageType": "HCSL XO",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "sho-53",
+      "model": "SHO-53",
+      "family": "Crystal Oscillators",
+      "packageType": "HCSL XO",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "slo-10",
+      "model": "SLO-10",
+      "family": "Crystal Oscillators",
+      "packageType": "LVDS XO",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "slo-22",
+      "model": "SLO-22",
+      "family": "Crystal Oscillators",
+      "packageType": "LVDS XO",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "slo-32",
+      "model": "SLO-32",
+      "family": "Crystal Oscillators",
+      "packageType": "LVDS XO",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "slo-53",
+      "model": "SLO-53",
+      "family": "Crystal Oscillators",
+      "packageType": "LVDS XO",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "slo-g10",
+      "model": "SLO-G10",
+      "family": "Crystal Oscillators",
+      "packageType": "LVDS XO",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "slo-g32",
+      "model": "SLO-G32",
+      "family": "Crystal Oscillators",
+      "packageType": "LVDS XO",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "slo-g53",
+      "model": "SLO-G53",
+      "family": "Crystal Oscillators",
+      "packageType": "LVDS XO",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "slv-g10",
+      "model": "SLV-G10",
+      "family": "VCXO",
+      "packageType": "LVDS",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "slv-g32",
+      "model": "SLV-G32",
+      "family": "VCXO",
+      "packageType": "LVDS",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "slv-g53",
+      "model": "SLV-G53",
+      "family": "VCXO",
+      "packageType": "LVDS",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "spo-10",
+      "model": "SPO-10",
+      "family": "Crystal Oscillators",
+      "packageType": "LVPECL XO",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "spo-22",
+      "model": "SPO-22",
+      "family": "Crystal Oscillators",
+      "packageType": "LVPECL XO",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "spo-32",
+      "model": "SPO-32",
+      "family": "Crystal Oscillators",
+      "packageType": "LVPECL XO",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "spo-53",
+      "model": "SPO-53",
+      "family": "Crystal Oscillators",
+      "packageType": "LVPECL XO",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "spo-g10",
+      "model": "SPO-G10",
+      "family": "Crystal Oscillators",
+      "packageType": "LVPECL XO",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "spo-g32",
+      "model": "SPO-G32",
+      "family": "Crystal Oscillators",
+      "packageType": "LVPECL XO",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "spo-g53",
+      "model": "SPO-G53",
+      "family": "Crystal Oscillators",
+      "packageType": "LVPECL XO",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-oscillators"
+      ]
+    },
+    {
+      "id": "spv-g10",
+      "model": "SPV-G10",
+      "family": "VCXO",
+      "packageType": "LVPECL",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "spv-g32",
+      "model": "SPV-G32",
+      "family": "VCXO",
+      "packageType": "LVPECL",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "spv-g53",
+      "model": "SPV-G53",
+      "family": "VCXO",
+      "packageType": "LVPECL",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "spv-m10",
+      "model": "SPV-M10",
+      "family": "VCXO",
+      "packageType": "LVPECL",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "sta",
+      "model": "STA",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Metal Lead",
+      "dimensions": "18.3 × 11.7 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "stb",
+      "model": "STB",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Metal SMD",
+      "dimensions": "21.3 × 11.7 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "stc",
+      "model": "STC",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Metal Lead",
+      "dimensions": "20.0 × 20.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "std",
+      "model": "STD",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Metal Lead",
+      "dimensions": "18.5 × 11.7 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "ste",
+      "model": "STE",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Metal SMD",
+      "dimensions": "11.4 × 11.6 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "stf",
+      "model": "STF",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Metal SMD",
+      "dimensions": "11.4 × 9.6 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "stg",
+      "model": "STG",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "sth",
+      "model": "STH",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "sti",
+      "model": "STI",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "stj",
+      "model": "STJ",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "stj-t",
+      "model": "STJ-T",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "stk",
+      "model": "STK",
+      "family": "TCXO & VCTCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "2.0 × 1.6 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "sva-f",
+      "model": "SVA(F)",
+      "family": "VCXO",
+      "packageType": "Metal Lead",
+      "dimensions": "20.7 × 13.06 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "sva-h",
+      "model": "SVA(H)",
+      "family": "VCXO",
+      "packageType": "Metal Lead",
+      "dimensions": "12.7 × 12.7 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "sve",
+      "model": "SVE",
+      "family": "VCXO",
+      "packageType": "Metal SMD",
+      "dimensions": "13.4 × 8.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "svf",
+      "model": "SVF",
+      "family": "VCXO",
+      "packageType": "Metal SMD",
+      "dimensions": "11.4 × 9.6 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "svh",
+      "model": "SVH",
+      "family": "VCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "svi",
+      "model": "SVI",
+      "family": "VCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "svj",
+      "model": "SVJ",
+      "family": "VCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "svk",
+      "model": "SVK",
+      "family": "VCXO",
+      "packageType": "Ceramic SMD",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "tcxo-vctcxo"
+      ]
+    },
+    {
+      "id": "sx-1",
+      "model": "SX-1",
+      "family": "Crystal Resonators",
+      "packageType": "ATS SMD",
+      "dimensions": "12.8 × 5.0 mm max; 4.40 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-16",
+      "model": "SX-16",
+      "family": "Crystal Resonators",
+      "packageType": "Ceramic SMD",
+      "dimensions": "1.6 × 1.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-21",
+      "model": "SX-21",
+      "family": "Crystal Resonators",
+      "packageType": "Ceramic SMD",
+      "dimensions": "2.0 × 1.6 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-22",
+      "model": "SX-22",
+      "family": "Crystal Resonators",
+      "packageType": "Ceramic SMD",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-3",
+      "model": "SX-3",
+      "family": "Crystal Resonators",
+      "packageType": "ATS SMD",
+      "dimensions": "12.8 × 5.0 mm max; 3.20 mm max height",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-32",
+      "model": "SX-32",
+      "family": "Crystal Resonators",
+      "packageType": "Ceramic SMD",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-7",
+      "model": "SX-7",
+      "family": "Crystal Resonators",
+      "packageType": "Ceramic SMD",
+      "dimensions": "7.0 × 5.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-8",
+      "model": "SX-8",
+      "family": "Crystal Resonators",
+      "packageType": "Ceramic SMD",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-a21",
+      "model": "SX-A21",
+      "family": "Crystal Resonators",
+      "packageType": "Automotive Ceramic SMD",
+      "dimensions": "2.0 × 1.6 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-a22",
+      "model": "SX-A22",
+      "family": "Crystal Resonators",
+      "packageType": "Automotive Ceramic SMD",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-a32",
+      "model": "SX-A32",
+      "family": "Crystal Resonators",
+      "packageType": "Automotive Ceramic SMD",
+      "dimensions": "3.2 × 2.5 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-a8",
+      "model": "SX-A8",
+      "family": "Crystal Resonators",
+      "packageType": "Automotive Ceramic SMD",
+      "dimensions": "5.0 × 3.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-t16",
+      "model": "SX-T16",
+      "family": "Crystal Resonators",
+      "packageType": "Thermistor Crystal",
+      "dimensions": "1.6 × 1.2 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-t21",
+      "model": "SX-T21",
+      "family": "Crystal Resonators",
+      "packageType": "Thermistor Crystal",
+      "dimensions": "2.0 × 1.6 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    },
+    {
+      "id": "sx-t22",
+      "model": "SX-T22",
+      "family": "Crystal Resonators",
+      "packageType": "Thermistor Crystal",
+      "dimensions": "2.5 × 2.0 mm",
+      "verificationStatus": "catalog-verified",
+      "websiteFamilyIds": [
+        "smd-crystals"
+      ]
+    }
+  ]
+}

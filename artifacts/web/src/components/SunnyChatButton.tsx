@@ -230,6 +230,13 @@ export default function SunnyChatButton() {
             rows={2}
             placeholder="Ask Sunny about RFQ, part number, lead time..."
             onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                event.preventDefault();
+                event.currentTarget.form?.requestSubmit();
+              }
+            }}
+            aria-label="Message Sunnychat. Press Enter to send or Shift plus Enter for a new line."
           />
           <button
             type="submit"

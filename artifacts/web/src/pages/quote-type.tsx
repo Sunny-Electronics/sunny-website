@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getQuoteType, type QuoteFieldDef } from "@/data/quote-types";
+import sunnyPublicCatalog from "@/data/sunny-obsidian-public.json";
 import sunnyLogo from "@assets/image_1775118121182.png";
 
 const FALLBACK_SALES_EMAIL = "web@sunnykr.com";
@@ -40,13 +41,27 @@ function FieldLabel({ field }: { field: QuoteFieldDef }) {
 
 export default function QuoteType({ typeId }: { typeId: string }) {
   const quoteType = getQuoteType(typeId);
+  const publicCatalogPart = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    const candidate = (new URLSearchParams(window.location.search).get("partNumber") || "")
+      .replace(/[^a-z0-9._/+\-]/gi, "")
+      .slice(0, 80);
+    return sunnyPublicCatalog.models.some((model) => model.model === candidate) ? candidate : "";
+  }, []);
 
-  const [specValues, setSpecValues] = useState<Record<string, string>>(() =>
-    quoteType ? buildInitialValues(quoteType.fields) : {},
-  );
+  const [specValues, setSpecValues] = useState<Record<string, string>>(() => {
+    if (!quoteType) return {};
+    const values = buildInitialValues(quoteType.fields);
+    if (publicCatalogPart && quoteType.id === "other") {
+      values.description = `Sunny public catalog model ${publicCatalogPart}. Please confirm the required frequency, package, specifications, and quantity.`;
+    }
+    return values;
+  });
   const [quantity, setQuantity] = useState("");
   const [targetDate, setTargetDate] = useState("");
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState(
+    publicCatalogPart ? `Selected from Sunny's verified public catalog: ${publicCatalogPart}` : "",
+  );
   const [contactName, setContactName] = useState("");
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");

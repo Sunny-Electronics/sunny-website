@@ -91,18 +91,6 @@
       ]
     },
     {
-      "id": "standard-lead-time",
-      "title": "General Lead-Time Guidance",
-      "type": "operations",
-      "keywords": ["lead time", "lt", "etd", "delivery", "ship date", "납기", "delivery date"],
-      "summary": "General internal guidance says standard parts are often around 8 weeks, while SCO-10 and SCO-53 are often around 9 weeks. Treat this only as preliminary guidance and require official Sunny confirmation.",
-      "rfqFields": ["part number", "quantity", "target date", "customer required date"],
-      "routes": [
-        { "label": "Request Quote", "href": "/request-quote" },
-        { "label": "Telegram", "href": "https://t.me/sunny_kr_bot" }
-      ]
-    },
-    {
       "id": "documents-certificates",
       "title": "Documents and Certificates",
       "type": "document-support",
