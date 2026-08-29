@@ -112,7 +112,7 @@ export default function SunnyAnnouncements() {
 
   return (
     <section
-      className="fixed inset-0 z-[200] overflow-y-auto bg-slate-950/60 px-3 py-4 backdrop-blur-sm sm:px-5 sm:py-6"
+      className="fixed inset-0 z-[200] overflow-y-auto bg-slate-950/10 px-3 py-4 sm:px-5 sm:py-6"
       role="dialog"
       aria-modal="true"
       aria-labelledby="sunny-announcements-heading"

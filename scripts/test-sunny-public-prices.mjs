@@ -83,7 +83,7 @@ function optionBlock(typeId) {
   assert.notEqual(start, -1, `Missing quote type: ${typeId}`);
   const next = quoteTypesSource.indexOf("\n  {\n    id:", start + 1);
   const section = quoteTypesSource.slice(start, next === -1 ? undefined : next);
-  const match = section.match(/options:\s*\[([\s\S]*?)\]/);
+  const match = section.match(/options:\s*(?:uniqueOptions\()?\[([\s\S]*?)\]\)?/);
   assert.ok(match, `Missing primary options for quote type: ${typeId}`);
   return [...match[1].matchAll(/"([^"]+)"/g)].map((value) => value[1]);
 }

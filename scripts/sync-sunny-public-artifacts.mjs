@@ -16,6 +16,14 @@ const copies = [
   ],
   ["api/ai/sunny-catalog.json", "artifacts/web/api/ai/sunny-catalog.json"],
   [
+    "api/ai/sunny-official-products.json",
+    "artifacts/web/api/ai/sunny-official-products.json",
+  ],
+  [
+    "api/ai/sunny-official-products.json",
+    "artifacts/web/src/data/sunny-official-products.json",
+  ],
+  [
     "api/ai/sunny-obsidian-public.json",
     "artifacts/web/api/ai/sunny-obsidian-public.json",
   ],

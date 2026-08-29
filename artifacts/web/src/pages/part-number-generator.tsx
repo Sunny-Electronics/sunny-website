@@ -28,7 +28,6 @@ type ProductGroup = "crystal" | "oscillator" | "khz" | "special";
 type TypeOption = {
   group: ProductGroup;
   type: string;
-  prefix: string;
   catalogCode: string;
   label: string;
   helper: string;
@@ -37,11 +36,8 @@ type TypeOption = {
 type GeneratorState = {
   group: ProductGroup;
   type: string;
-  prefix: string;
   frequency: string;
   electrical: string;
-  optionClass: string;
-  serial: string;
   customerPart: string;
   toleranceCode: string;
   stabilityCode: string;
@@ -51,24 +47,24 @@ type GeneratorState = {
 };
 
 const typeOptions: TypeOption[] = [
-  { group: "crystal", type: "SX-32", prefix: "AR", catalogCode: "P", label: "SX-32 / AR / P", helper: "Compact SMD crystal family for frequency-control applications." },
-  { group: "crystal", type: "ATS-49/U", prefix: "AD", catalogCode: "D", label: "ATS-49/U / AD / D", helper: "Through-hole crystal package family." },
-  { group: "crystal", type: "SX-1", prefix: "AK", catalogCode: "J", label: "SX-1 / AK / J", helper: "Crystal family for established electronic applications." },
-  { group: "crystal", type: "SX-8", prefix: "AP", catalogCode: "O", label: "SX-8 / AP / O", helper: "Small crystal family with frequent 10-20 pF load options." },
-  { group: "crystal", type: "SX-7", prefix: "AO", catalogCode: "M", label: "SX-7 / AO / M", helper: "Crystal package family with 8-30 pF load options." },
-  { group: "crystal", type: "SX-22", prefix: "AS", catalogCode: "Q", label: "SX-22 / AS / Q", helper: "Compact crystal family for 24-32 MHz examples." },
-  { group: "crystal", type: "SX-21", prefix: "AT", catalogCode: "R", label: "SX-21 / AT / R", helper: "Compact crystal family with low CL options." },
-  { group: "crystal", type: "HC-49/U", prefix: "AA", catalogCode: "D", label: "HC-49/U / AA / D", helper: "Legacy through-hole crystal package family; confirm catalog code before final quote." },
-  { group: "oscillator", type: "SCO-10", prefix: "BF", catalogCode: "", label: "SCO-10 / BF", helper: "Oscillator family. Final suffix should be reviewed against official Sunny code rules." },
-  { group: "oscillator", type: "SCO-32", prefix: "BN", catalogCode: "", label: "SCO-32 / BN", helper: "Oscillator family with voltage/output suffix variations." },
-  { group: "oscillator", type: "SCO-06", prefix: "BD", catalogCode: "", label: "SCO-06 / BD", helper: "Oscillator family with Sunny-specific suffix patterns." },
-  { group: "oscillator", type: "SCO-22", prefix: "BO", catalogCode: "", label: "SCO-22 / BO", helper: "Oscillator family for compact programs." },
-  { group: "oscillator", type: "SCO-53", prefix: "BM", catalogCode: "", label: "SCO-53 / BM", helper: "Oscillator family, often voltage-specific." },
-  { group: "khz", type: "CS-306", prefix: "TC", catalogCode: "", label: "CS-306 / TC", helper: "32.768 kHz crystal family." },
-  { group: "khz", type: "CS-405", prefix: "TF", catalogCode: "", label: "CS-405 / TF", helper: "32.768 kHz crystal family." },
-  { group: "khz", type: "CS-146", prefix: "TK", catalogCode: "", label: "CS-146 / TK", helper: "32.768 kHz crystal family." },
-  { group: "special", type: "SVH", prefix: "FH", catalogCode: "", label: "SVH / FH", helper: "Special oscillator or module family; requires Sunny review." },
-  { group: "special", type: "SLO-10", prefix: "BL", catalogCode: "", label: "SLO-10 / BL", helper: "Special oscillator family with multiple prefix variants." },
+  { group: "crystal", type: "SX-32", catalogCode: "P", label: "SX-32 / P", helper: "Compact SMD crystal family for frequency-control applications." },
+  { group: "crystal", type: "ATS-49/U", catalogCode: "D", label: "ATS-49/U / D", helper: "Through-hole crystal package family." },
+  { group: "crystal", type: "SX-1", catalogCode: "J", label: "SX-1 / J", helper: "Crystal family for established electronic applications." },
+  { group: "crystal", type: "SX-8", catalogCode: "O", label: "SX-8 / O", helper: "Small crystal family with frequent 10-20 pF load options." },
+  { group: "crystal", type: "SX-7", catalogCode: "M", label: "SX-7 / M", helper: "Crystal package family with 8-30 pF load options." },
+  { group: "crystal", type: "SX-22", catalogCode: "Q", label: "SX-22 / Q", helper: "Compact crystal family for 24-32 MHz examples." },
+  { group: "crystal", type: "SX-21", catalogCode: "R", label: "SX-21 / R", helper: "Compact crystal family with low CL options." },
+  { group: "crystal", type: "HC-49/U", catalogCode: "D", label: "HC-49/U / D", helper: "Legacy through-hole crystal package family; confirm catalog code before final quote." },
+  { group: "oscillator", type: "SCO-10", catalogCode: "", label: "SCO-10", helper: "Oscillator family. Final suffix should be reviewed against official Sunny code rules." },
+  { group: "oscillator", type: "SCO-32", catalogCode: "", label: "SCO-32", helper: "Oscillator family with voltage/output suffix variations." },
+  { group: "oscillator", type: "SCO-06", catalogCode: "", label: "SCO-06", helper: "Oscillator family with Sunny-specific suffix patterns." },
+  { group: "oscillator", type: "SCO-22", catalogCode: "", label: "SCO-22", helper: "Oscillator family for compact programs." },
+  { group: "oscillator", type: "SCO-53", catalogCode: "", label: "SCO-53", helper: "Oscillator family, often voltage-specific." },
+  { group: "khz", type: "CS-306", catalogCode: "", label: "CS-306", helper: "32.768 kHz crystal family." },
+  { group: "khz", type: "CS-405", catalogCode: "", label: "CS-405", helper: "32.768 kHz crystal family." },
+  { group: "khz", type: "CS-146", catalogCode: "", label: "CS-146", helper: "32.768 kHz crystal family." },
+  { group: "special", type: "SVH", catalogCode: "", label: "SVH", helper: "Special oscillator or module family; requires Sunny review." },
+  { group: "special", type: "SLO-10", catalogCode: "", label: "SLO-10", helper: "Special oscillator family with multiple variants." },
 ];
 
 const groupLabels = {
@@ -90,11 +86,8 @@ const initialType = typeOptions[0];
 const initialState: GeneratorState = {
   group: initialType.group,
   type: initialType.type,
-  prefix: initialType.prefix,
   frequency: "25.000",
   electrical: "20",
-  optionClass: "1",
-  serial: "07",
   customerPart: "",
   toleranceCode: "20",
   stabilityCode: "6",
@@ -110,23 +103,6 @@ const electricalOptions = {
   special: ["25V", "33V", "50V"],
 };
 
-const formatFrequencyCode = (value: string, group: ProductGroup) => {
-  const parsed = Number(value.replace(/[^\d.]/g, ""));
-
-  if (group === "khz" || (Number.isFinite(parsed) && parsed > 0 && parsed < 1)) {
-    return "327";
-  }
-
-  const [whole = "", decimal = ""] = value.replace(/[^\d.]/g, "").split(".");
-  const digits = `${whole}${decimal}`.replace(/[^\d]/g, "");
-
-  if (!digits) {
-    return "000";
-  }
-
-  return digits.padEnd(3, "0").slice(0, 3);
-};
-
 const normalizeElectricalCode = (value: string, group: ProductGroup) => {
   if (group === "oscillator" || group === "special") {
     return value.replace(/[^\d]/g, "").padStart(2, "0").slice(0, 2);
@@ -134,15 +110,6 @@ const normalizeElectricalCode = (value: string, group: ProductGroup) => {
 
   const numeric = value.replace(/[^\d]/g, "");
   return numeric.padStart(2, "0").slice(0, 2);
-};
-
-const buildMpn = (state: GeneratorState) => {
-  const frequency = formatFrequencyCode(state.frequency, state.group);
-  const electrical = normalizeElectricalCode(state.electrical, state.group);
-  const optionClass = state.optionClass.replace(/[^A-Z0-9]/gi, "").toUpperCase().slice(0, 2) || "1";
-  const serial = state.serial.replace(/[^A-Z0-9]/gi, "").toUpperCase().padStart(2, "0").slice(0, 2);
-
-  return `${state.prefix}${frequency}${optionClass}${electrical}${serial}`;
 };
 
 const formatFrequencyForOrder = (value: string) => {
@@ -193,13 +160,6 @@ const stabilityOptions = [
   { value: "10", label: "10: +/-200ppm" },
 ];
 
-const examples = [
-  { type: "SX-32", sunnyMpn: "AR16011208", meaning: "AR = SX-32, 160 = 16 MHz start, 12 = 12 pF, 08 = serial" },
-  { type: "SX-1", sunnyMpn: "AK04911812", meaning: "SX-1, 4.9152 MHz, 18 pF, spec 20/30 -20~70/18" },
-  { type: "SX-32", sunnyMpn: "AR25012007", meaning: "AR + 25.0 MHz + class 1 + 20 pF + serial 07" },
-  { type: "ATS-49/U", sunnyMpn: "AD08011829", meaning: "AD + 8.0 MHz + class 1 + 18 pF + serial 29" },
-];
-
 const catalogFormatReferences = [
   {
     family: "Tuning Fork",
@@ -226,16 +186,6 @@ const catalogFormatReferences = [
     pattern: "[Package][Frequency]-[CL]-[Temp]-[Tolerance]-[Stability][Packing]",
     example: "SX-T2126000-07-B-10-12TR",
   },
-  {
-    family: "Ceramic Resonator",
-    pattern: "CR3213-[Frequency]-[Cap]-[Temp]-[Accuracy]-[Shift][Packing]",
-    example: "CR3213-10000-33-A-05-03TR",
-  },
-  {
-    family: "Crystal Filter",
-    pattern: "M-[PassBandwidth][Pole][Package]-[Frequency][Packing]",
-    example: "M-15.0AS-21.4TR",
-  },
 ];
 
 export default function PartNumberGenerator() {
@@ -243,13 +193,20 @@ export default function PartNumberGenerator() {
   const [copied, setCopied] = useState(false);
 
   const activeType = useMemo(
-    () => typeOptions.find((option) => option.type === state.type && option.prefix === state.prefix) ?? initialType,
-    [state.prefix, state.type],
+    () => typeOptions.find((option) => option.type === state.type) ?? initialType,
+    [state.type],
   );
   const ActiveIcon = groupIcons[state.group];
-  const sunnyMpn = useMemo(() => buildMpn(state), [state]);
   const catalogPartNumber = useMemo(() => buildCatalogPartNumber(state, activeType), [activeType, state]);
   const needsReview = state.group === "oscillator" || state.group === "special";
+  const showsTolerance = state.group === "crystal" || state.group === "khz";
+  const stabilityLabel =
+    stabilityOptions.find((option) => option.value === state.stabilityCode)?.label.split("+/-")[1] ??
+    "stability";
+  const electricalLabel =
+    state.group === "oscillator" || state.group === "special"
+      ? state.electrical.replace(/^(\d)(\d)V$/, "$1.$2 V")
+      : `${state.electrical} pF`;
 
   const updateField = <K extends keyof GeneratorState>(field: K, value: GeneratorState[K]) => {
     setState((current) => ({ ...current, [field]: value }));
@@ -261,22 +218,21 @@ export default function PartNumberGenerator() {
       ...current,
       group: option.group,
       type: option.type,
-      prefix: option.prefix,
       electrical: electricalOptions[option.group][0],
       frequency: option.group === "khz" ? "0.032768" : current.frequency,
     }));
     setCopied(false);
   };
 
-  const copyMpn = async () => {
-    await navigator.clipboard.writeText(sunnyMpn);
+  const copyPartNumber = async () => {
+    await navigator.clipboard.writeText(catalogPartNumber);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1600);
   };
 
   const addToRfq = () => {
     const params = new URLSearchParams({
-      sunnyMpn,
+      partNumber: catalogPartNumber,
       type: state.type,
       frequency: state.frequency,
       clv: state.electrical,
@@ -292,23 +248,23 @@ export default function PartNumberGenerator() {
             <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-12 w-auto" />
             <div className="leading-tight">
               <div className="font-display text-xl font-bold">Sunny Electronics Corp.</div>
-              <div className="text-xs font-medium text-slate-500">SunnyKR MPN Generator</div>
+              <div className="text-xs font-medium text-slate-500">SunnyKR Part Number Builder</div>
             </div>
           </Link>
 
           <div className="flex min-w-0 flex-1 items-center border border-slate-300 bg-slate-50">
             <Input
               className="h-12 flex-1 border-0 bg-transparent font-mono text-sm focus-visible:ring-0"
-              value={sunnyMpn}
+              value={catalogPartNumber}
               readOnly
-              aria-label="Generated Sunny MPN"
-              data-testid="input-generated-sunny-mpn-header"
+              aria-label="Generated Sunny part number"
+              data-testid="input-generated-part-number-header"
             />
             <button
               type="button"
-              onClick={copyMpn}
+              onClick={copyPartNumber}
               className="flex h-12 w-14 items-center justify-center bg-primary text-white"
-              aria-label="Copy generated Sunny MPN"
+              aria-label="Copy generated Sunny part number"
               data-testid="button-copy-header"
             >
               {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
@@ -328,7 +284,7 @@ export default function PartNumberGenerator() {
           </Link>
           <Link href="/products" className="text-slate-600 hover:text-primary">Products</Link>
           <a href="#generator" className="text-slate-600 hover:text-primary">Generator</a>
-          <a href="#structure" className="text-slate-600 hover:text-primary">Structure</a>
+          <a href="#catalog-formats" className="text-slate-600 hover:text-primary">Formats</a>
           <Link href="/request-quote" className="text-slate-600 hover:text-primary">Request Quote</Link>
         </nav>
       </header>
@@ -339,35 +295,31 @@ export default function PartNumberGenerator() {
             <div>
               <p className="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-primary">
                 <Hash className="h-4 w-4" />
-                SunnyKR MPN Builder
+                SunnyKR Part Number Builder
               </p>
               <h1 className="mb-4 max-w-4xl font-display text-4xl font-bold tracking-tight md:text-5xl">
-                Generate Sunny MPN drafts from real SunnyKR package families.
+                Build Sunny part-number drafts from verified SunnyKR package families.
               </h1>
               <p className="max-w-3xl text-base leading-7 text-slate-600">
-                This tool uses Sunny package and prefix patterns to create an RFQ reference.
-                Crystal-family numbers follow the published Sunny format; oscillator and
-                special-module outputs require Sunny review before ordering.
+                Crystal-family numbers follow the published Sunny format. Oscillator and
+                special-module configurations require Sunny review before ordering.
               </p>
             </div>
 
             <div className="border border-slate-200 bg-white p-5 shadow-sm">
               <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
                 <ActiveIcon className="h-4 w-4 text-primary" />
-                Current Sunny MPN draft
+                Current part-number draft
               </div>
-              <div className="break-all border border-slate-200 bg-slate-50 p-4 font-mono text-2xl font-bold text-primary">
-                {sunnyMpn}
-              </div>
-              <div className="mt-3 break-all border border-slate-200 bg-white p-3 font-mono text-lg font-semibold text-slate-950">
+              <div className="break-all border border-slate-200 bg-white p-4 font-mono text-2xl font-bold text-primary">
                 {catalogPartNumber}
               </div>
               <div className="mt-3 text-sm text-slate-600">
-                {state.type} / {state.frequency} MHz / {state.toleranceCode}/{stabilityOptions.find((option) => option.value === state.stabilityCode)?.label.split("+/-")[1] ?? "stability"} / {tempOptions.find((option) => option.value === state.tempCode)?.label.replace(`${state.tempCode}: `, "")} / {state.electrical}pF
+                {state.type} / {state.frequency} MHz / {showsTolerance ? `${state.toleranceCode}/` : ""}{stabilityLabel} / {tempOptions.find((option) => option.value === state.tempCode)?.label.replace(`${state.tempCode}: `, "")} / {electricalLabel}
                 {needsReview ? " / Sunny review required" : ""}
               </div>
               <div className="mt-4 flex gap-3">
-                <Button className="h-10 gap-2" onClick={copyMpn}>
+                <Button className="h-10 gap-2" onClick={copyPartNumber}>
                   {copied ? <Check className="h-4 w-4" /> : <Clipboard className="h-4 w-4" />}
                   {copied ? "Copied" : "Copy"}
                 </Button>
@@ -392,10 +344,10 @@ export default function PartNumberGenerator() {
                   </div>
                   <div className="space-y-2">
                     {typeOptions.filter((option) => option.group === group).map((option) => {
-                      const selected = state.type === option.type && state.prefix === option.prefix;
+                      const selected = state.type === option.type;
                       return (
                         <button
-                          key={`${option.type}-${option.prefix}`}
+                          key={option.type}
                           type="button"
                           onClick={() => selectType(option)}
                           className={`w-full border p-4 text-left transition-colors ${
@@ -428,10 +380,7 @@ export default function PartNumberGenerator() {
                   </div>
                   <h2 className="font-display text-2xl font-bold">Configuration</h2>
                 </div>
-                <div className="grid gap-2">
-                  <div className="break-all bg-slate-950 px-4 py-3 font-mono text-sm font-semibold text-white">
-                    {sunnyMpn}
-                  </div>
+                <div>
                   <div className="break-all bg-white px-4 py-3 font-mono text-sm font-semibold text-slate-950 ring-1 ring-slate-200">
                     {catalogPartNumber}
                   </div>
@@ -441,17 +390,13 @@ export default function PartNumberGenerator() {
 
             {needsReview && (
               <div className="border-b border-amber-200 bg-amber-50 px-5 py-3 text-sm font-medium text-amber-900">
-                Oscillator and special-module suffixes vary by program. Use this as an RFQ draft, then confirm the final Sunny MPN internally.
+                Oscillator and special-module configurations vary by program and require Sunny review before ordering.
               </div>
             )}
 
             <div className="grid gap-5 p-5 md:grid-cols-2 xl:grid-cols-3">
               <Field label="Package type" icon={<Package className="h-4 w-4" />}>
                 <Input value={state.type} readOnly className="bg-slate-50 font-semibold" />
-              </Field>
-
-              <Field label="Sunny prefix" icon={<Hash className="h-4 w-4" />}>
-                <Input value={state.prefix} onChange={(event) => updateField("prefix", event.target.value.toUpperCase())} />
               </Field>
 
               <Field label={state.group === "khz" ? "Frequency (MHz)" : "Frequency (MHz)"} icon={<Gauge className="h-4 w-4" />}>
@@ -475,25 +420,19 @@ export default function PartNumberGenerator() {
                 </select>
               </Field>
 
-              <Field label="Option class" icon={<FileText className="h-4 w-4" />}>
-                <Input maxLength={2} value={state.optionClass} onChange={(event) => updateField("optionClass", event.target.value.toUpperCase())} />
-              </Field>
-
-              <Field label="Serial / variant" icon={<Hash className="h-4 w-4" />}>
-                <Input maxLength={2} value={state.serial} onChange={(event) => updateField("serial", event.target.value.toUpperCase())} />
-              </Field>
-
-              <Field label="Tolerance at 25C" icon={<ShieldCheck className="h-4 w-4" />}>
-                <select
-                  value={state.toleranceCode}
-                  onChange={(event) => updateField("toleranceCode", event.target.value)}
-                  className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
-                >
-                  {["10", "15", "20", "30", "50"].map((option) => (
-                    <option key={option} value={option}>+/-{option}ppm</option>
-                  ))}
-                </select>
-              </Field>
+              {showsTolerance && (
+                <Field label="Tolerance at 25C" icon={<ShieldCheck className="h-4 w-4" />}>
+                  <select
+                    value={state.toleranceCode}
+                    onChange={(event) => updateField("toleranceCode", event.target.value)}
+                    className="h-10 w-full border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                  >
+                    {["10", "15", "20", "30", "50"].map((option) => (
+                      <option key={option} value={option}>+/-{option}ppm</option>
+                    ))}
+                  </select>
+                </Field>
+              )}
 
               <Field label="Stability over temp" icon={<Gauge className="h-4 w-4" />}>
                 <select
@@ -560,11 +499,11 @@ export default function PartNumberGenerator() {
             <div className="border-t border-slate-200 bg-slate-50 p-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="text-sm text-slate-600">
-                  Customer format: {catalogPartNumber} / Internal reference: {sunnyMpn}
+                  Part number: {catalogPartNumber}
                 </div>
                 <div className="flex gap-3">
                   <Button variant="outline" className="h-10 gap-2 bg-white" asChild>
-                    <Link href={`/products?sunnyMpn=${encodeURIComponent(sunnyMpn)}`}>
+                    <Link href="/products">
                       <Search className="h-4 w-4" />
                       Search Products
                     </Link>
@@ -579,64 +518,7 @@ export default function PartNumberGenerator() {
           </div>
         </section>
 
-        <section id="structure" className="border-y border-slate-200 bg-white">
-          <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 lg:grid-cols-[360px_1fr]">
-            <div>
-              <h2 className="font-display text-3xl font-bold">Observed Sunny MPN Structure</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                The structure below is derived from the SunnyKR project files. It is suitable
-                for RFQ drafts and internal lookup, but final part-number authority should
-                remain with Sunny's official part-number guide.
-              </p>
-            </div>
-
-            <div className="overflow-x-auto border border-slate-200">
-              <table className="min-w-[760px] w-full border-collapse text-left text-sm">
-                <thead className="bg-slate-200 text-xs uppercase text-slate-700">
-                  <tr>
-                    <th className="border-r border-slate-300 px-4 py-3">Segment</th>
-                    <th className="border-r border-slate-300 px-4 py-3">Meaning</th>
-                    <th className="px-4 py-3">Example</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    ["Prefix", "Sunny package family code from package type", "AR = SX-32, AD = ATS-49/U"],
-                    ["Frequency", "First three digits from the frequency value", "16 MHz or 16.035 MHz -> 160"],
-                    ["Option class", "Observed class/series digit in many crystal MPNs", "1"],
-                    ["CL / voltage", "Load capacitance for crystals or voltage code for oscillators", "20 pF -> 20"],
-                    ["Serial", "Two-character variant or project suffix", "07"],
-                    ["Customer order code", "S + package + CL + mode + tolerance + temp/stability + frequency", "SR12130J6-32.0000"],
-                  ].map(([segment, meaning, example]) => (
-                    <tr key={segment} className="border-t border-slate-200">
-                      <td className="border-r border-slate-200 px-4 py-3 font-mono font-semibold">{segment}</td>
-                      <td className="border-r border-slate-200 px-4 py-3 text-slate-600">{meaning}</td>
-                      <td className="px-4 py-3 font-mono text-primary">{example}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-5 py-10">
-          <div className="mb-5 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-primary">
-            <Clipboard className="h-4 w-4" />
-            Pattern Examples
-          </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {examples.map((example) => (
-              <div key={example.sunnyMpn} className="border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="mb-2 text-sm font-semibold text-slate-500">{example.type}</div>
-                <div className="break-all font-mono text-lg font-bold text-slate-950">{example.sunnyMpn}</div>
-                <p className="mt-3 text-xs leading-5 text-slate-600">{example.meaning}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="border-t border-slate-200 bg-white">
+        <section id="catalog-formats" className="border-t border-slate-200 bg-white">
           <div className="mx-auto max-w-7xl px-5 py-10">
             <div className="mb-5">
               <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-primary">
@@ -646,8 +528,8 @@ export default function PartNumberGenerator() {
               <h2 className="font-display text-3xl font-bold">Other Sunny part-number builders to add next</h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
                 The E-CATALOG defines separate formats for tuning fork, XO, VCXO, TCXO,
-                thermistor crystal, ceramic resonator, and filter families. These are
-                listed here as public-safe build patterns for the next generator modes.
+                and thermistor-crystal families. These are listed here as public-safe
+                build patterns for the next generator modes.
               </p>
             </div>
 

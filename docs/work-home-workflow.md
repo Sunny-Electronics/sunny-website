@@ -22,7 +22,8 @@ If the dedicated bridge is unavailable or fails identity verification, the websi
 ## Source-of-truth rules
 
 - Private catalog source: SunnyKR Obsidian vault in the SunnyKR Google Drive folder.
-- Public catalog source: `api/ai/sunny-obsidian-public.json` in GitHub.
+- Official public product list: `api/ai/sunny-official-products.json` in GitHub. It contains the 96 approved models, four public product sections, official datasheet links, and public product images sourced from `sunny.co.kr`.
+- Supplemental public catalog knowledge: `api/ai/sunny-obsidian-public.json` in GitHub. It adds reviewed package, dimensions, frequency, and verification information without exposing the private vault.
 - Website code source: this GitHub repository.
 - Production website: the Vercel project connected to GitHub `main`.
 - Production AI origin: one dedicated Sunny bridge behind `bridge.sunnykr.com`.
@@ -61,7 +62,7 @@ Do not put a Git worktree inside Google Drive. GitHub synchronizes code; Google 
 6. Run `pnpm sunny:check`.
 7. Compare the current commit with the approved production commit before deployment.
 
-## Updating the public catalog
+## Updating supplemental Obsidian knowledge
 
 1. Mount the SunnyKR Google Drive folder.
 2. Run:
@@ -73,6 +74,17 @@ Do not put a Git worktree inside Google Drive. GitHub synchronizes code; Google 
 3. Review the Git diff. The export may contain only model, family, package type, dimensions, verification status, and website family IDs.
 4. Run `pnpm sunny:check`.
 5. Commit the reviewed JSON. Other computers pull the same committed artifact; they do not regenerate it automatically.
+
+## Updating the official product list
+
+The public Products page and Sunnychat use `api/ai/sunny-official-products.json` as the approved model list. The current scope is Crystal Units, Crystal Oscillators, VCXO, and TCXO & VCTCXO. MEMS oscillators and filters are excluded.
+
+1. Review the original public `sunny.co.kr` product pages and each model's attached datasheet link.
+2. Update the official JSON, keeping only public product information.
+3. Store website-safe product images under `artifacts/web/public/catalog/products/`.
+4. Run `pnpm sunny:sync` to copy the approved data into the web application.
+5. Run `pnpm sunny:check`. The check must confirm 96 unique models, the four approved section counts, and one official PDF link per model.
+6. Review the Git diff before committing. Never add email, customer, order, A/R, private pricing, or other private vault data.
 
 ## Production environment variables
 

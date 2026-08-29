@@ -1,0 +1,1898 @@
+{
+  "version": 1,
+  "source": "Sunny Electronics official public product pages",
+  "sourceUrl": "http://sunny.co.kr/en/html/product01.html",
+  "scrapedAt": "2026-08-29T02:47:50.84Z",
+  "privacy": "public-product-data-only",
+  "exclusions": [
+    "Silicon MEMS oscillators",
+    "Filters",
+    "Material data sheet cards",
+    "Product List summary cards"
+  ],
+  "sectionCounts": {
+    "Crystal Units": 23,
+    "Crystal Oscillators": 41,
+    "VCXO": 22,
+    "TCXO & VCTCXO": 10
+  },
+  "products": [
+    {
+      "id": "sx-a21",
+      "model": "SX-A21",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "2.0*1.6mm",
+      "datasheetName": "SX-A21 R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=155&download=1",
+      "imagePath": "/catalog/products/sx-a21.jpg",
+      "features": [
+        "AEC-Q200 Compliant",
+        "Seam Sealed Package",
+        "Fundamental Crystal Design",
+        "Excellent Vibration Resistance",
+        "\"& Shock Resistance\"",
+        "High Frequency Stability",
+        "TS-16949 Certified",
+        "Pb-free and RoHS Compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTE1NSZzdGFydFBhZ2U9JnBhcnRfaWR4PTE=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-16",
+      "model": "SX-16",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "1.6*1.2mm",
+      "datasheetName": "SX-16 R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=154&download=1",
+      "imagePath": "/catalog/products/sx-16.jpg",
+      "features": [
+        "Four Pad Ceramic SMD Package",
+        "Fundamental Crystal Design",
+        "Tight Tolerance/Stability",
+        "Using Highly Reliable Seam Weld Method",
+        "Taping and Reel Available, Automatic Mountable",
+        "Pb-free and RoHS Compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTE1NCZzdGFydFBhZ2U9JnBhcnRfaWR4PTE=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-a32",
+      "model": "SX-A32",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "3.2*2.5mm",
+      "datasheetName": "SX-A32.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=77&download=1",
+      "imagePath": "/catalog/products/sx-a32.jpg",
+      "features": [
+        "Seam Seal",
+        "Excellent Solderability",
+        "Excellent Vibration Resistance &",
+        "Shock Resistance",
+        "High Frequency Stability",
+        "Excellent Thermal Hysteresis",
+        "TS-16949 Certified",
+        "Pb-free and RoHS compliance",
+        "AEC-Q200 Qualified"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTc3JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-a8",
+      "model": "SX-A8",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "5.0*3.2mm",
+      "datasheetName": "SX-A8.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=83&download=1",
+      "imagePath": "/catalog/products/sx-a8.jpg",
+      "features": [
+        "Seam Seal",
+        "Excellent Solderability",
+        "Excellent Vibration Resistance &",
+        "Shock Resistance",
+        "High Frequency Stability",
+        "Excellent Thermal Hysteresis",
+        "TS-16949 Certified",
+        "Pb-free and RoHS compliance",
+        "AEC-Q200 Qualified"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTgzJnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-21",
+      "model": "SX-21",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "2.0*1.6mm",
+      "datasheetName": "SX-21.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=91&download=1",
+      "imagePath": "/catalog/products/sx-21.jpg",
+      "features": [
+        "Four Pad Ceramic SMD Package",
+        "AT-Cut",
+        "Tight Tolerance/Stability",
+        "Using Highly Reliable Seam Weld Method",
+        "Taping and Reel Available, Automatic Mountable",
+        "Pb-free and RoHS Compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTkxJnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-22",
+      "model": "SX-22",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "2.5*2.0mm",
+      "datasheetName": "SX-22.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=20&download=1",
+      "imagePath": "/catalog/products/sx-22.jpg",
+      "features": [
+        "Four pad ceramic surface mount package",
+        "AT cut",
+        "Tight tolerance/stability",
+        "Using highly reliable seam weld method",
+        "Taping and reel available, automatic mountable",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTIwJnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-32",
+      "model": "SX-32",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "3.2*2.5mm",
+      "datasheetName": "SX-32.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=21&download=1",
+      "imagePath": "/catalog/products/sx-32.jpg",
+      "features": [
+        "Four pad ceramic surface mount package",
+        "AT cut",
+        "Tight tolerance/stability",
+        "Using highly reliable seam weld method",
+        "Taping and reel available, automatic mountable",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTIxJnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-8",
+      "model": "SX-8",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "5.0*3.2mm",
+      "datasheetName": "SX-8.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=19&download=1",
+      "imagePath": "/catalog/products/sx-8.jpg",
+      "features": [
+        "Four pad ceramic surface mount package",
+        "AT cut",
+        "Tight tolerance/stability",
+        "Using highly reliable seam weld method",
+        "Taping and reel available, automatic mountable",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTE5JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-6",
+      "model": "SX-6",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "6.0*3.5mm",
+      "datasheetName": "SX-6.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=17&download=1",
+      "imagePath": "/catalog/products/sx-6.jpg",
+      "features": [
+        "Four pad ceramic surface mount package",
+        "AT cut",
+        "Tight tolerance/stability",
+        "Using highly reliable seam weld method",
+        "Taping and reel available, automatic mountable",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTE3JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-7",
+      "model": "SX-7",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "7.0*5.0mm",
+      "datasheetName": "SX-7.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=18&download=1",
+      "imagePath": "/catalog/products/sx-7.jpg",
+      "features": [
+        "Four pad ceramic surface mount package",
+        "AT cut",
+        "Tight tolerance/stability",
+        "Using highly reliable seam weld method",
+        "Taping and reel available, automatic mountable",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTE4JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-1",
+      "model": "SX-1",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "12.8*5.0mm",
+      "datasheetName": "SX-1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=14&download=1",
+      "imagePath": "/catalog/products/sx-1.jpg",
+      "features": [
+        "ATS SMD type package",
+        "AT or BT cut available",
+        "Resistance weld seal",
+        "Tape and reel available",
+        "Tight tolerance / stability",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTE0JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-3",
+      "model": "SX-3",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "12.8*5.0mm",
+      "datasheetName": "SX-3.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=15&download=1",
+      "imagePath": "/catalog/products/sx-3.jpg",
+      "features": [
+        "ATS SMD type package",
+        "AT or BT cut available",
+        "Resistance weld seal",
+        "Tape and reel available",
+        "Tight tolerance / stability",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTE1JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sx-5",
+      "model": "SX-5",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "13.0*4.7mm",
+      "datasheetName": "SX-5.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=16&download=1",
+      "imagePath": "/catalog/products/sx-5.jpg",
+      "features": [
+        "ATS SMD type package",
+        "AT or BT cut available",
+        "Resistance weld seal",
+        "Tape and reel available",
+        "Tight tolerance / stability",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTE2JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "ats-series",
+      "model": "ATS SERIES",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "2 pin through hole",
+      "datasheetName": "ATS Series.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=131&download=1",
+      "imagePath": "/catalog/products/ats-series.jpg",
+      "features": [
+        "ATS Holder Type Package",
+        "AT-Cut or BT-Cut Available",
+        "Resistance Weld Seal",
+        "Tape and Reel, Insulator Tab, Three Leads and",
+        "Custom Lead Length Options Available",
+        "Tight Tolerance / Stability",
+        "Pb-free and RoHS Compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTEzMSZzdGFydFBhZ2U9JnBhcnRfaWR4PTE=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "um-1",
+      "model": "UM-1",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "2 pin through hole",
+      "datasheetName": "UM-1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=22&download=1",
+      "imagePath": "/catalog/products/um-1.jpg",
+      "features": [
+        "UM type package",
+        "AT cut available",
+        "Tight tolerance / stability",
+        "Wide temperature range",
+        "Frequencies to 200.000 MHz available",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTIyJnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "um-5",
+      "model": "UM-5",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "2 pin through hole",
+      "datasheetName": "UM-5.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=23&download=1",
+      "imagePath": "/catalog/products/um-5.jpg",
+      "features": [
+        "UM type package",
+        "AT cut available",
+        "Tight tolerance / stability",
+        "Wide temperature range",
+        "Frequencies to 200.000 MHz available",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTIzJnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "hc-49u",
+      "model": "HC-49U",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "2 pin through hole",
+      "datasheetName": "HC-49.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=136&download=1",
+      "imagePath": "/catalog/products/hc-49u.jpg",
+      "features": [
+        "HC-49/U Type Package",
+        "AT-Cut Crystal Design",
+        "Resistance Weld Seal",
+        "Tape and Reel, Insulator Tab, Three Leads and",
+        "Custom Lead Length Options Available",
+        "Pb-free and RoHS Compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTEzNiZzdGFydFBhZ2U9JnBhcnRfaWR4PTE=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "hc-49-t",
+      "model": "HC-49/T",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "2 pin through hole",
+      "datasheetName": "HC-49T.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=12&download=1",
+      "imagePath": "/catalog/products/hc-49-t.jpg",
+      "features": [
+        "HC-49/T",
+        "AT cut available",
+        "Resistance weld seal",
+        "Tape and reel, insulator tab, 3rd lead, and",
+        "custom lead length options available",
+        "Pb-free and RoHS compliance"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTEyJnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "cs-3215",
+      "model": "CS-3215",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "3.2*1.5mm",
+      "datasheetName": "CS-3215.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=135&download=1",
+      "imagePath": "/catalog/products/cs-3215.jpg",
+      "features": [
+        "Tuning Fork Crystal with Ceramic Packaged Type",
+        "High-density SMD Type",
+        "Ultra-light Weight with Ultra-miniature Packaging",
+        "High_stability Assured with Tight Vacuum Sealing",
+        "Most Appropriate for Portable Devices and",
+        "Mobile Telecommunications Devices"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTEzNSZzdGFydFBhZ2U9JnBhcnRfaWR4PTE=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "cs-146",
+      "model": "CS-146",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "7.0*1.5mm",
+      "datasheetName": "CS-146.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=25&download=1",
+      "imagePath": "/catalog/products/cs-146.jpg",
+      "features": [
+        "Photolithography finished allows",
+        "uniform stable performance",
+        "Excellent shock resistance and",
+        "environmental capability",
+        "Low power consumption",
+        "Suitable for time-keeping of clock and",
+        "micro computer"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTI1JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "cs-306",
+      "model": "CS-306",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "7.9*3.7mm",
+      "datasheetName": "CS-306.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=26&download=1",
+      "imagePath": "/catalog/products/cs-306.jpg",
+      "features": [
+        "Photolithography finished allows",
+        "uniform stable performance",
+        "Excellent shock resistance and",
+        "environmental capability",
+        "Low power consumption",
+        "Suitable for time-keeping of clock and",
+        "micro computer"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTI2JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "cs-519",
+      "model": "CS-519",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "4.9*1.8mm",
+      "datasheetName": "CS-519.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=27&download=1",
+      "imagePath": "/catalog/products/cs-519.jpg",
+      "features": [
+        "Photolithography finished allows",
+        "uniform stable performance",
+        "Excellent shock resistance and",
+        "environmental capability",
+        "Low power consumption",
+        "Suitable for time-keeping of clock and",
+        "micro computer"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTI3JnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "ch-206",
+      "model": "CH-206",
+      "section": "Crystal Units",
+      "deviceType": "Crystal Unit",
+      "packageType": "2 pin through hole",
+      "datasheetName": "CH-206.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=11&download=1",
+      "imagePath": "/catalog/products/ch-206.gif",
+      "features": [
+        "Photolithography finished allows",
+        "uniform stable performance",
+        "Excellent shock resistance and",
+        "environmental capability",
+        "Low power consumption",
+        "Suitable for time-keeping of clock and",
+        "micro computer"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=1&goods_data=aWR4PTExJnN0YXJ0UGFnZT0mcGFydF9pZHg9MQ==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slo-g32",
+      "model": "SLO-G32",
+      "section": "Crystal Oscillators",
+      "deviceType": "XO(Differential Output)",
+      "packageType": "LVDS",
+      "datasheetName": "SLO-G32 R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=165&download=1",
+      "imagePath": "/catalog/products/slo-g32.jpg",
+      "features": [
+        "Ultra-compact with Dimensions of 3.2×2.5 mm",
+        "0.6 ps typical, Low RMS Phase Jitter",
+        "Advanced PLL Design w/ Low",
+        "Fundamental Crystal",
+        "2.5V, 3.3 V Supply Voltage",
+        "LVDS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE2NSZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spo-g32",
+      "model": "SPO-G32",
+      "section": "Crystal Oscillators",
+      "deviceType": "XO(Differential Output)",
+      "packageType": "LVPECL",
+      "datasheetName": "SPO-G32 R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=167&download=1",
+      "imagePath": "/catalog/products/spo-g32.jpg",
+      "features": [
+        "Ultra-compact with Dimensions of 3.2×2.5 mm",
+        "0.6 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "Advanced PLL Design w/ Low",
+        "Fundamental Crystal",
+        "2.5V, 3.3 V Supply Voltage",
+        "LVPECL Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE2NyZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "dco-22",
+      "model": "DCO-22",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "DCO-22(2520 Dual output 32.768kHz+MHz).pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=156&download=1",
+      "imagePath": "/catalog/products/dco-22.jpg",
+      "features": [
+        "Dual Output (32.768kHz + MHz output)",
+        "\"▶ Mode Function Available :\"",
+        "Sleep Mode (32.768kHz) or",
+        "Active Mode(32.768kHz+MHz) selectable",
+        "\"▶ Low Current Consumption :\"",
+        "20㎂ Typical(32.768 kHz Sleep Mode)",
+        "Wide Voltage Operation Range",
+        "(VDD = +1.62 to +3.63 V)",
+        "CMOS Output"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE1NiZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spv-g32",
+      "model": "SPV-G32",
+      "section": "VCXO",
+      "deviceType": "VCXO(Differential Output)",
+      "packageType": "LVPECL",
+      "datasheetName": "SPV-G32 R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=168&download=1",
+      "imagePath": "/catalog/products/spv-g32.jpg",
+      "features": [
+        "3×2.5 mm Miniature Package",
+        "1 ps typical, Low RMS Phase Jitter",
+        "Advanced PLL Design w/ Low",
+        "Fundamental Crystal",
+        "2.5 V, 3.3 V Supply Voltage",
+        "LVPECL Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE2OCZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slv-g32",
+      "model": "SLV-G32",
+      "section": "VCXO",
+      "deviceType": "VCXO(Differential Output)",
+      "packageType": "LVDS",
+      "datasheetName": "SLV-G32 R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=166&download=1",
+      "imagePath": "/catalog/products/slv-g32.jpg",
+      "features": [
+        "3×2.5 mm Miniature Package",
+        "1 ps typical, Low RMS Phase Jitter",
+        "Advanced PLL Design w/ Low",
+        "Fundamental Crystal",
+        "2.5 V, 3.3 V Supply Voltage",
+        "LVDS Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE2NiZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-a22",
+      "model": "SCO-A22",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-A22 R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=164&download=1",
+      "imagePath": "/catalog/products/sco-a22.jpg",
+      "features": [
+        "AEC-Q200 Compliant",
+        "\"▶ External Dimensions : 2.5 × 2.0 mm\"",
+        "Wide Temperature Range from –40 to +125 ℃",
+        "Low Power Consumption",
+        "CMOS Output",
+        "Pb-free and RoHS Compliance",
+        "TS-16949 Certified"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE2NCZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-21-32-768khz",
+      "model": "SCO-21(32.768KHz)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-21(32.768kHz) R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=163&download=1",
+      "imagePath": "/catalog/products/sco-21-32-768khz.jpg",
+      "features": [
+        "High Stability with AT-Cut crystal",
+        "\"▶ External Dimensions : 2.05 × 1.65 mm\"",
+        "1.8 V to 3.3 V Operating Supply Voltage Range",
+        "CMOS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE2MyZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-22-32-768khz-low-current",
+      "model": "SCO-22(32.768KHz-Low current)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-22(32.768kHz-Low current).pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=162&download=1",
+      "imagePath": "/catalog/products/sco-22-32-768khz-low-current.jpg",
+      "features": [
+        "Ultra Low Current consumption 10 ㎂ typical",
+        "High Stability with AT-Cut crystal",
+        "\"▶ External Dimensions : 2.5 × 2.0 mm\"",
+        "1.8 V to 3.3 V Operating Supply Voltage Range",
+        "CMOS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE2MiZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-32-32-768khz-low-current",
+      "model": "SCO-32(32.768KHz-Low current)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-32(32.768kHz-Low current).pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=161&download=1",
+      "imagePath": "/catalog/products/sco-32-32-768khz-low-current.jpg",
+      "features": [
+        "Ultra Low Current consumption 10 ㎂ typical",
+        "High Stability with AT-Cut crystal",
+        "\"▶ External Dimensions : 3.2 × 2.5 mm\"",
+        "1.5 V to 3.3 V Operating Supply Voltage Range",
+        "CMOS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE2MSZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-53-32-768khz-low-current",
+      "model": "SCO-53(32.768KHz-Low current)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-53(32.768kHz-Low current).pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=160&download=1",
+      "imagePath": "/catalog/products/sco-53-32-768khz-low-current.jpg",
+      "features": [
+        "Ultra Low Current consumption 10 ㎂ typical",
+        "High Stability with AT-Cut crystal",
+        "\"▶ External Dimensions : 5.0 × 3.2 mm\"",
+        "1.8 V to 3.3 V Operating Supply Voltage Range",
+        "CMOS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE2MCZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-10-32-768khz-low-current",
+      "model": "SCO-10(32.768KHz-Low current)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-10(32.768KHz-Low current).pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=159&download=1",
+      "imagePath": "/catalog/products/sco-10-32-768khz-low-current.jpg",
+      "features": [
+        "Ultra Low Current consumption 10 ㎂ typical",
+        "High Stability with AT-Cut crystal",
+        "\"▶ External Dimensions : 7.0 × 5.0 mm\"",
+        "1.8 V to 3.3 V Operating Supply Voltage Range",
+        "CMOS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE1OSZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "dco-32",
+      "model": "DCO-32",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "DCO-32(3225 Dual output 32.768kHz+MHz).pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=157&download=1",
+      "imagePath": "/catalog/products/dco-32.jpg",
+      "features": [
+        "Dual Output (32.768kHz + MHz output)",
+        "\"▶ Mode Function Available :\"",
+        "Sleep Mode (32.768kHz) or",
+        "Active Mode(32.768kHz+MHz) selectable",
+        "\"▶ Low Current Consumption :\"",
+        "20㎂ Typical(32.768 kHz Sleep Mode)",
+        "Wide Voltage Operation Range",
+        "(VDD = +1.62 to +3.63 V)",
+        "CMOS Output"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTE1NyZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-a32",
+      "model": "SCO-A32",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-A32 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=79&download=1",
+      "imagePath": "/catalog/products/sco-a32.jpg",
+      "features": [
+        "Seam Seal",
+        "Excellent Solderability",
+        "Tri-State",
+        "Low Power Consumption",
+        "Pb-free and RoHS compliance",
+        "TS-16949 Certified",
+        "AEC-Q200 Qualified"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTc5JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-a53",
+      "model": "SCO-A53",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-A53 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=78&download=1",
+      "imagePath": "/catalog/products/sco-a53.jpg",
+      "features": [
+        "Seam Seal",
+        "Excellent Solderability",
+        "Tri-State",
+        "Low Power Consumption",
+        "Pb-free and RoHS compliance",
+        "TS-16949 Certified",
+        "AEC-Q200 Qualified"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTc4JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-21",
+      "model": "SCO-21",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-21 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=126&download=1",
+      "imagePath": "/catalog/products/sco-21.jpg",
+      "features": [
+        "Seam Seal",
+        "\"▶ External Dimensions : 2.0 × 1.6 mm\"",
+        "2.5 V, 3.3 V Operating Supply Voltage Range",
+        "High Stability with AT-Cut crystal",
+        "CMOS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTEyNiZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-22-series",
+      "model": "SCO-22 Series",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-22 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=47&download=1",
+      "imagePath": "/catalog/products/sco-22-series.jpg",
+      "features": [
+        "Ceramic SMD package",
+        "1.8 / 2.5 / 3.3 supply voltage",
+        "HCMOS output",
+        "Stability to 20ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTQ3JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-22-32-768khz",
+      "model": "SCO-22(32.768KHz)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-22 32.768kHz R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=96&download=1",
+      "imagePath": "/catalog/products/sco-22-32-768khz.jpg",
+      "features": [
+        "High stability with AT-cut crystal",
+        "\"▶ External dimensions : 2.5 × 2.0\"",
+        "1.5 to 3.3 operating supply voltage range",
+        "Taped units enable automatic mounting",
+        "CMOS Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTk2JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-22-20khz",
+      "model": "SCO-22(20KHz)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-22 20kHz R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=95&download=1",
+      "imagePath": "/catalog/products/sco-22-20khz.jpg",
+      "features": [
+        "18.000 kHz to 20.000 kHz in 0.1 kHz steps",
+        "High stability with AT-cut crystal",
+        "\"▶ External dimensions : 2.5 × 2.0\"",
+        "1.8 to 3.3 operating supply voltage range",
+        "CMOS Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTk1JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-32-series",
+      "model": "SCO-32 Series",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-32 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=49&download=1",
+      "imagePath": "/catalog/products/sco-32-series.jpg",
+      "features": [
+        "Ceramic SMD package",
+        "0.9 / 1.2 / 1.5 / 1.8 / 2.5 / 3.3 supply voltage",
+        "HCMOS output",
+        "Stability to 20ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTQ5JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-32-32-768-khz",
+      "model": "SCO-32(32.768 kHz)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-32 32.768kHz R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=127&download=1",
+      "imagePath": "/catalog/products/sco-32-32-768-khz.jpg",
+      "features": [
+        "High Stability with AT-Cut crystal",
+        "\"▶ External Dimensions : 3.2 × 2.5 mm\"",
+        "1.5 V to 3.3 V Operating Supply Voltage Range",
+        "CMOS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTEyNyZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-32-20khz",
+      "model": "SCO-32(20KHz)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-32 20kHz R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=97&download=1",
+      "imagePath": "/catalog/products/sco-32-20khz.jpg",
+      "features": [
+        "18.000 kHz to 20.000 kHz in 0.1 kHz steps",
+        "High stability with AT-cut crystal",
+        "\"▶ External dimensions : 3.2 × 2.5\"",
+        "1.8 to 3.3 operating supply voltage range",
+        "CMOS Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTk3JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spo-32",
+      "model": "SPO-32",
+      "section": "Crystal Oscillators",
+      "deviceType": "LVPECL",
+      "packageType": "LVPECL",
+      "datasheetName": "SPO-32 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=119&download=1",
+      "imagePath": "/catalog/products/spo-32.jpg",
+      "features": [
+        "Ultra-compact with Dimensions of 3.2×2.5 mm",
+        "0.5 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "2.5 V, 3.3 V Supply Voltage",
+        "LVPECL Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTExOSZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slo-32",
+      "model": "SLO-32",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "LVDS",
+      "datasheetName": "SLO-32 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=118&download=1",
+      "imagePath": "/catalog/products/slo-32.jpg",
+      "features": [
+        "Ultra-compact with Dimensions of 3.2×2.5 mm",
+        "0.5 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "2.5 V, 3.3 V Supply Voltage",
+        "LVDS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTExOCZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-53-series",
+      "model": "SCO-53 Series",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-53 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=50&download=1",
+      "imagePath": "/catalog/products/sco-53-series.jpg",
+      "features": [
+        "Ceramic SMD package",
+        "1.8 / 2.5 / 3.3 supply voltage",
+        "HCMOS output",
+        "Stability to 20ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTUwJnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-53-32-768-khz",
+      "model": "SCO-53(32.768 kHz)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-53 32.768kHz R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=128&download=1",
+      "imagePath": "/catalog/products/sco-53-32-768-khz.jpg",
+      "features": [
+        "High Stability with AT-Cut crystal",
+        "\"▶ External Dimensions : 5.0 × 3.2 mm\"",
+        "1.5 V to 3.3 V Operating Supply Voltage Range",
+        "CMOS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTEyOCZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-53-20khz",
+      "model": "SCO-53(20KHz)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-53 20kHz R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=98&download=1",
+      "imagePath": "/catalog/products/sco-53-20khz.jpg",
+      "features": [
+        "18.000 kHz to 20.000 kHz in 0.1 kHz steps",
+        "High stability with AT-cut crystal",
+        "\"▶ External dimensions : 5.0 × 3.2\"",
+        "1.8 to 3.3 operating supply voltage range",
+        "CMOS Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTk4JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spo-53",
+      "model": "SPO-53",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "LVPECL",
+      "datasheetName": "SPO-53 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=58&download=1",
+      "imagePath": "/catalog/products/spo-53.jpg",
+      "features": [
+        "Ceramic SMD Package",
+        "3.3 or 2.5V supply voltage",
+        "Differential LVPECL",
+        "Non-multiplied",
+        "Stability to 20ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTU4JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spo-g53",
+      "model": "SPO-G53",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "LVPECL",
+      "datasheetName": "SPO-G53 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=105&download=1",
+      "imagePath": "/catalog/products/spo-g53.jpg",
+      "features": [
+        "5×3.2 mm miniature package",
+        "0.5 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "3.3 V, 2.5 V supply voltage",
+        "LVPECL Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTEwNSZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slo-53",
+      "model": "SLO-53",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "LVDS",
+      "datasheetName": "SLO-53 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=55&download=1",
+      "imagePath": "/catalog/products/slo-53.jpg",
+      "features": [
+        "Ceramic SMD Package",
+        "3.3 or 2.5V supply voltage",
+        "Differential LVDS output",
+        "Non-multiplied",
+        "Stability to 20ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTU1JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slo-g53",
+      "model": "SLO-G53",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "LVDS",
+      "datasheetName": "SLO-G53 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=100&download=1",
+      "imagePath": "/catalog/products/slo-g53.jpg",
+      "features": [
+        "5×3.2 mm miniature package",
+        "0.5 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "3.3 V, 2.5 V supply voltage",
+        "LVDS Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTEwMCZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sho-53",
+      "model": "SHO-53",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "HCSL",
+      "datasheetName": "SHO-53 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=52&download=1",
+      "imagePath": "/catalog/products/sho-53.jpg",
+      "features": [
+        "Ceramic SMD package",
+        "3rd overtone crystal used",
+        "HCSL(High-speed Current Steering Logic) output",
+        "Stabillity up to ±25ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTUyJnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-10-series",
+      "model": "SCO-10 Series",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=45&download=1",
+      "imagePath": "/catalog/products/sco-10-series.jpg",
+      "features": [
+        "Ceramic SMD package",
+        "1.8 / 2.5 / 3.3 / 5.0V supply voltage",
+        "HCMOS / TTL output",
+        "Stability to 20ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTQ1JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-10-32-768-khz",
+      "model": "SCO-10(32.768 kHz)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-10 32.768K R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=125&download=1",
+      "imagePath": "/catalog/products/sco-10-32-768-khz.jpg",
+      "features": [
+        "High Stability with AT-Cut crystal",
+        "\"▶ External Dimensions : 7.0 × 5.0 mm\"",
+        "1.5 V to 3.3 V Operating Supply Voltage Range",
+        "CMOS Output",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTEyNSZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-10-20khz",
+      "model": "SCO-10(20KHz)",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-10 20kHz R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=94&download=1",
+      "imagePath": "/catalog/products/sco-10-20khz.jpg",
+      "features": [
+        "18.000 kHz to 20.000 kHz in 0.1 kHz steps",
+        "High stability with AT-cut crystal",
+        "\"▶ External dimensions : 7.0 × 5.0\"",
+        "1.8 to 3.3 operating supply voltage range",
+        "CMOS Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTk0JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spo-10",
+      "model": "SPO-10",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "LVPECL",
+      "datasheetName": "SPO-10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=57&download=1",
+      "imagePath": "/catalog/products/spo-10.jpg",
+      "features": [
+        "7×5 mm Industrial standard package",
+        "Low RMS phase jitter(12 kHz to 20 MHz)",
+        "2.5 V, 3.3 V supply voltage",
+        "LVPECL Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTU3JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spo-g10",
+      "model": "SPO-G10",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "LVPECL",
+      "datasheetName": "SPO-G10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=104&download=1",
+      "imagePath": "/catalog/products/spo-g10.jpg",
+      "features": [
+        "7×5 mm Industrial standard package",
+        "0.5 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "3.3 V, 2.5 V supply voltage",
+        "LVPECL Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTEwNCZzdGFydFBhZ2U9JnBhcnRfaWR4PTI=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slo-10",
+      "model": "SLO-10",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "LVDS",
+      "datasheetName": "SLO-10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=54&download=1",
+      "imagePath": "/catalog/products/slo-10.jpg",
+      "features": [
+        "Ceramic SMD Package",
+        "3.3 or 2.5V supply voltage",
+        "Differential LVDS output",
+        "Non-multiplied",
+        "Stability to 20ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTU0JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slo-g10",
+      "model": "SLO-G10",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal oscillator",
+      "packageType": "LVDS",
+      "datasheetName": "SLO-G10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=99&download=1",
+      "imagePath": "/catalog/products/slo-g10.jpg",
+      "features": [
+        "7×5 mm Industrial standard package",
+        "0.5 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "3.3 V, 2.5 V supply voltage",
+        "LVDS Output",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTk5JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sho-10",
+      "model": "SHO-10",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "HCSL",
+      "datasheetName": "SHO-10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=51&download=1",
+      "imagePath": "/catalog/products/sho-10.jpg",
+      "features": [
+        "Ceramic SMD Package",
+        "100MHz 3rd Overtone Crystal Used",
+        "HCSL(High-speed Current Steering Logic) output",
+        "Stability upto ±25ppm",
+        "Tri-state function available",
+        "Ultra lov jitter"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTUxJnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-02",
+      "model": "SCO-02",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-02 R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=43&download=1",
+      "imagePath": "/catalog/products/sco-02.jpg",
+      "features": [
+        "CMOS Output",
+        "3.3 V, 5.0 V Operating Supply Voltage Range",
+        "14 pin DIP Package",
+        "Custom lead length options available",
+        "Wide frequency",
+        "All-metal welded package"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTQzJnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sco-06",
+      "model": "SCO-06",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "CMOS",
+      "datasheetName": "SCO-06 R1.2.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=44&download=1",
+      "imagePath": "/catalog/products/sco-06.jpg",
+      "features": [
+        "CMOS Output",
+        "3.3 V, 5.0 V Operating Supply Voltage Range",
+        "8 pin DIP Package",
+        "Custom Lead Length Options Available",
+        "Wide Frequency",
+        "All-metal Welded Package"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTQ0JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spo-02",
+      "model": "SPO-02",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "LVPECL",
+      "datasheetName": "SPO-02 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=56&download=1",
+      "imagePath": "/catalog/products/spo-02.jpg",
+      "features": [
+        "Metal Package",
+        "3.3 or 2.5V supply voltage",
+        "LVPECL output",
+        "Non-multiplied",
+        "Stability to 20ppm",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTU2JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slo-02",
+      "model": "SLO-02",
+      "section": "Crystal Oscillators",
+      "deviceType": "Crystal Oscillator",
+      "packageType": "LVDS",
+      "datasheetName": "SLO-02 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=53&download=1",
+      "imagePath": "/catalog/products/slo-02.jpg",
+      "features": [
+        "Metal Package",
+        "3.3 or 2.5V supply voltage",
+        "LVDS output",
+        "Non-multiplied",
+        "Stability to 20ppm",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=2&goods_data=aWR4PTUzJnN0YXJ0UGFnZT0mcGFydF9pZHg9Mg==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "svk",
+      "model": "SVK",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVK R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=111&download=1",
+      "imagePath": "/catalog/products/svk.jpg",
+      "features": [
+        "Voltage Controlled Crystal Oscillator",
+        "\"▶ External Dimensions : 2.5×2.0\"",
+        "3.3V Operating Supply Voltage Range",
+        "High Stability with AT-Cut crystal",
+        "CMOS Output",
+        "Wide Pull Range"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTExMSZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "svj",
+      "model": "SVJ",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVJ R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=76&download=1",
+      "imagePath": "/catalog/products/svj.jpg",
+      "features": [
+        "Ceramic SMD package",
+        "Voltage Controlled Crystal Oscillator",
+        "3.3 / 2.5 supply voltage",
+        "HCMOS / TTL output",
+        "Stability to 20ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel",
+        "Fund(no multi) or Multi available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTc2JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mw==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "svi",
+      "model": "SVI",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVI R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=75&download=1",
+      "imagePath": "/catalog/products/svi.jpg",
+      "features": [
+        "Ceramic SMD package",
+        "Voltage Controlled Crystal Oscillator",
+        "5.0 / 3.3 / 2.5 supply voltage",
+        "HCMOS / TTL output",
+        "Stability to 20ppm",
+        "Tri-state function available",
+        "Reflow soldering is possible",
+        "Available on tape and reel",
+        "Fund(no multi) or Multi available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTc1JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mw==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spv-g53",
+      "model": "SPV-G53",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVPECL",
+      "datasheetName": "SPV-G53 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=113&download=1",
+      "imagePath": "/catalog/products/spv-g53.jpg",
+      "features": [
+        "5×3.2 mm miniature package",
+        "0.5 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "3.3 V, 2.5 V supply voltage",
+        "LVDS Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTExMyZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slv-g53",
+      "model": "SLV-G53",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVDS",
+      "datasheetName": "SLV-G53 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=116&download=1",
+      "imagePath": "/catalog/products/slv-g53.jpg",
+      "features": [
+        "5×3.2 mm miniature package",
+        "0.5 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "3.3 V, 2.5 V supply voltage",
+        "LVDS Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTExNiZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "svh-f",
+      "model": "SVH F",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVH F R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=129&download=1",
+      "imagePath": "/catalog/products/svh-f.jpg",
+      "features": [
+        "Voltage Controlled Crystal Oscillator",
+        "7×5 mm Industrial Standard Package",
+        "2.5 V, 3.3 V, 5.0 V Supply Voltage",
+        "CMOS Output",
+        "Wide Pull Range",
+        "NON-Multiplied",
+        "1 ps Maximum, RMS phase jitter",
+        "(12 kHz to 20 MHz)"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTEyOSZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "svh-m",
+      "model": "SVH M",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVH M R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=130&download=1",
+      "imagePath": "/catalog/products/svh-m.jpg",
+      "features": [
+        "Voltage Controlled Crystal Oscillator",
+        "7×5 mm Industrial Standard Package",
+        "3.3 V Supply Voltage",
+        "CMOS Output",
+        "Wide Pull Range",
+        "Multiplied",
+        "6 ps Maximum, RMS phase jitter",
+        "(12 kHz to 20 MHz)"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTEzMCZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spv-10-f",
+      "model": "SPV-10 F",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVPECL",
+      "datasheetName": "SPV-10 F R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=122&download=1",
+      "imagePath": "/catalog/products/spv-10-f.jpg",
+      "features": [
+        "7×5 mm Industrial Standard Package",
+        "NON-Multiplied",
+        "Low RMS phase jitter(12 kHz to 20 MHz)",
+        "2.5 V, 3.3 V Supply Voltage",
+        "LVPECL Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTEyMiZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spv-10-m",
+      "model": "SPV-10 M",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVPECL",
+      "datasheetName": "SPV-10 M R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=123&download=1",
+      "imagePath": "/catalog/products/spv-10-m.jpg",
+      "features": [
+        "7×5 mm Industrial Standard Package",
+        "Multiplied",
+        "Low RMS phase jitter(12 kHz to 20 MHz)",
+        "2.5 V, 3.3 V Supply Voltage",
+        "LVPECL Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTEyMyZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spv-m10",
+      "model": "SPV-M10",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVPECL",
+      "datasheetName": "SPV-M10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=114&download=1",
+      "imagePath": "/catalog/products/spv-m10.jpg",
+      "features": [
+        "7×5 mm Industrial standard package",
+        "NON-Multiplide",
+        "0.2 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "3.3 V supply voltage",
+        "LVPECL Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTExNCZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "spv-g10",
+      "model": "SPV-G10",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVPECL",
+      "datasheetName": "SPV-G10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=112&download=1",
+      "imagePath": "/catalog/products/spv-g10.jpg",
+      "features": [
+        "7×5 mm Industrial standard package",
+        "0.5 ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "3.3 V, 2.5 V supply voltage",
+        "LVDS Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTExMiZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slv-10-f",
+      "model": "SLV-10 F",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVDS",
+      "datasheetName": "SLV-10 F R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=120&download=1",
+      "imagePath": "/catalog/products/slv-10-f.jpg",
+      "features": [
+        "7×5 mm Industrial Standard Package",
+        "NON-Multiplied",
+        "Low RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "2.5 V, 3.3 V Supply Voltage",
+        "LVDS Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTEyMCZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slv-10-m",
+      "model": "SLV-10 M",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVDS",
+      "datasheetName": "SLV-10 M R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=121&download=1",
+      "imagePath": "/catalog/products/slv-10-m.jpg",
+      "features": [
+        "7×5 mm Industrial Standard Package",
+        "Multiplied",
+        "Low RMS phase jitter(12 kHz to 20 MHz)",
+        "3.3 V Supply Voltage",
+        "LVDS Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state Function Available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTEyMSZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slv-m10",
+      "model": "SLV-M10",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVDS",
+      "datasheetName": "SLV-M10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=117&download=1",
+      "imagePath": "/catalog/products/slv-m10.jpg",
+      "features": [
+        "7×5 mm Industrial standard package",
+        "NON-Multiplide",
+        "0.2ps typical, RMS phase jitter",
+        "(12 kHz to 20 MHz)",
+        "3.3 V supply voltage",
+        "LVDS Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTExNyZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "slv-g10",
+      "model": "SLV-G10",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "LVDS",
+      "datasheetName": "SLV-G10 R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=115&download=1",
+      "imagePath": "/catalog/products/slv-g10.jpg",
+      "features": [
+        "7×5 mm Industrial standard package",
+        "0.5ps typical, RMS phase jitter",
+        "(12kHz to 20MHz)",
+        "3.3 V, 2.5 V supply voltage",
+        "LVDS Output",
+        "Voltage Controlled Crystal Oscillator",
+        "Tri-state function available"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTExNSZzdGFydFBhZ2U9JnBhcnRfaWR4PTM=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "svf",
+      "model": "SVF",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVF R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=73&download=1",
+      "imagePath": "/catalog/products/svf.jpg",
+      "features": [
+        "Voltage Controlled Crystal Oscillator",
+        "HCMOS / TTL output",
+        "3.3 / 5.0 supply voltage",
+        "Wide frequency and pull range",
+        "Surface mount package",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTczJnN0YXJ0UGFnZT0mcGFydF9pZHg9Mw==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sve",
+      "model": "SVE",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVE R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=72&download=1",
+      "imagePath": "/catalog/products/sve.jpg",
+      "features": [
+        "Voltage Controlled Crystal Oscillator",
+        "HCMOS / TTL output",
+        "3.3 / 5.0 supply voltage",
+        "Wide frequency and pull range",
+        "Surface mount package",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTcyJnN0YXJ0UGFnZT0mcGFydF9pZHg9Mw==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "svd",
+      "model": "SVD",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVD R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=71&download=1",
+      "imagePath": "/catalog/products/svd.jpg",
+      "features": [
+        "Voltage Controlled Crystal Oscillator",
+        "HCMOS / TTL output",
+        "3.3 / 5.0 supply voltage",
+        "Wide frequency and pull range",
+        "Surface mount package",
+        "Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTcxJnN0YXJ0UGFnZT0mcGFydF9pZHg9Mw==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sva-full",
+      "model": "SVA(FULL)",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVA(F) R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=67&download=1",
+      "imagePath": "/catalog/products/sva-full.jpg",
+      "features": [
+        "Voltage Controlled Crystal Oscillator",
+        "HCMOS / TTL output",
+        "3.3 / 5.0 supply voltage",
+        "14 pin DIP package",
+        "Custom lead length options available",
+        "Wide frequency and pull range"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTY3JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mw==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sva-half",
+      "model": "SVA(HALF)",
+      "section": "VCXO",
+      "deviceType": "VCXO",
+      "packageType": "CMOS",
+      "datasheetName": "SVA(H) R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=68&download=1",
+      "imagePath": "/catalog/products/sva-half.jpg",
+      "features": [
+        "Voltage Controlled Crystal Oscillator",
+        "HCMOS / TTL output",
+        "3.3 / 5.0 supply voltage",
+        "8 pin DIP package",
+        "Custom lead length options available",
+        "Wide frequency and pull range"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=3&goods_data=aWR4PTY4JnN0YXJ0UGFnZT0mcGFydF9pZHg9Mw==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "stj",
+      "model": "STJ",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave",
+      "datasheetName": "STJ R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=110&download=1",
+      "imagePath": "/catalog/products/stj.jpg",
+      "features": [
+        "\"▶ Temperature Stability : ±0.5ppm ~±2.0ppm\"",
+        "2.5×2.0mm Typ. Ceramic SMD Package",
+        "Fundamental AT-cut Crystal used",
+        "Clipped Sinewave Output",
+        "Application for Cellular phone",
+        "(WIMAX, CDMA, WCDMA)",
+        "Application for GPS Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTExMCZzdGFydFBhZ2U9JnBhcnRfaWR4PTQ=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sti",
+      "model": "STI",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave / CMOS",
+      "datasheetName": "STI R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=109&download=1",
+      "imagePath": "/catalog/products/sti.jpg",
+      "features": [
+        "Temperature Stability of ±2.0ppm",
+        "3.2×2.5×0.9t(mm) Typ.",
+        "Ceramic SMD Package",
+        "Fundamental AT-cut Crystal used",
+        "Clipped Sinewave Output / CMOS Output",
+        "Application for Cellular phone",
+        "(WIMAX, CDMA, WCDMA)",
+        "Application for GPS Available on tape and reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTEwOSZzdGFydFBhZ2U9JnBhcnRfaWR4PTQ=||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sth",
+      "model": "STH",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave / CMOS",
+      "datasheetName": "STH R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=39&download=1",
+      "imagePath": "/catalog/products/sth.jpg",
+      "features": [
+        "Temperature Compensated",
+        "Crystal Oscillator",
+        "External Dimensions:5.0×3.2 mm",
+        "Fundamental AT-cut Crystal used",
+        "Clipped Sinewave Output/CMOS Output",
+        "Application for Cellular phone",
+        "(WIMAX, CDMA, WCDMA)",
+        "Application for GPS Available on",
+        "Tape and Reel"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTM5JnN0YXJ0UGFnZT0mcGFydF9pZHg9NA==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "stg",
+      "model": "STG",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave",
+      "datasheetName": "STG R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=38&download=1",
+      "imagePath": "/catalog/products/stg.jpg",
+      "features": [
+        "Temperature Compensated",
+        "Crystal Oscillator",
+        "\"▶ External Dimensions : 7.0×5.0 mm\"",
+        "Fundamental AT-cut Crystal used",
+        "Clipped Sinewave Output"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTM4JnN0YXJ0UGFnZT0mcGFydF9pZHg9NA==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "stf",
+      "model": "STF",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave / CMOS",
+      "datasheetName": "STF R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=37&download=1",
+      "imagePath": "/catalog/products/stf.jpg",
+      "features": [
+        "Temperature Compensated Crystal Oscillator",
+        "Clipped Sinewave Output",
+        "3.3 / 5.0 supply voltage",
+        "Surface Mount Package"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTM3JnN0YXJ0UGFnZT0mcGFydF9pZHg9NA==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "ste",
+      "model": "STE",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave / CMOS",
+      "datasheetName": "STE R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=36&download=1",
+      "imagePath": "/catalog/products/ste.jpg",
+      "features": [
+        "Temperature Compensated",
+        "Crystal Oscillator",
+        "CMOS / TTL Output",
+        "Clipped Sinewave Output",
+        "3.3 V, 5.0 V Supply Voltage",
+        "Surface Mount Package"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTM2JnN0YXJ0UGFnZT0mcGFydF9pZHg9NA==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "stb",
+      "model": "STB",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave / CMOS",
+      "datasheetName": "STB R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=33&download=1",
+      "imagePath": "/catalog/products/stb.jpg",
+      "features": [
+        "Temperature Compensated Crystal Oscillator",
+        "HCMOS / TTL output",
+        "Clipped Sinewave Output",
+        "3.3 / 5.0 supply voltage"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTMzJnN0YXJ0UGFnZT0mcGFydF9pZHg9NA==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "sta",
+      "model": "STA",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave / CMOS",
+      "datasheetName": "STA R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=32&download=1",
+      "imagePath": "/catalog/products/sta.jpg",
+      "features": [
+        "Temperature Compensated Crystal Oscillator",
+        "HCMOS / TTL output",
+        "Clipped Sinewave Output",
+        "3.3 / 5.0 supply voltage"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTMyJnN0YXJ0UGFnZT0mcGFydF9pZHg9NA==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "stc",
+      "model": "STC",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave / CMOS",
+      "datasheetName": "STC R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=34&download=1",
+      "imagePath": "/catalog/products/stc.jpg",
+      "features": [
+        "Temperature Compensated Crystal Oscillator",
+        "HCMOS / TTL output",
+        "Clipped Sinewave Output",
+        "3.3 / 5.0 supply voltage"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTM0JnN0YXJ0UGFnZT0mcGFydF9pZHg9NA==||&sub_position=0&part1_code="
+    },
+    {
+      "id": "std",
+      "model": "STD",
+      "section": "TCXO & VCTCXO",
+      "deviceType": "TCXO & VCTCXO",
+      "packageType": "Clipped Sinewave / CMOS",
+      "datasheetName": "STD R1.1.pdf",
+      "datasheetUrl": "http://sunny.co.kr/html/goods_download.php?idx=35&download=1",
+      "imagePath": "/catalog/products/std.jpg",
+      "features": [
+        "Temperature Compensated Crystal Oscillator",
+        "HCMOS / TTL output",
+        "Clipped Sinewave Output",
+        "3.3 / 5.0 supply voltage"
+      ],
+      "sourceDetailUrl": "http://sunny.co.kr/en/html/product01_2.html?part_idx=4&goods_data=aWR4PTM1JnN0YXJ0UGFnZT0mcGFydF9pZHg9NA==||&sub_position=0&part1_code="
+    }
+  ]
+}

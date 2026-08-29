@@ -162,10 +162,51 @@ function cleanMemory(value) {
 function loadPublicCatalog() {
   if (publicCatalogCache) return publicCatalogCache;
   try {
-    const catalogUrl = new URL("./sunny-obsidian-public.json", import.meta.url);
-    publicCatalogCache = JSON.parse(fs.readFileSync(catalogUrl, "utf8"));
+    const catalogUrl = new URL("./sunny-official-products.json", import.meta.url);
+    const officialCatalog = JSON.parse(fs.readFileSync(catalogUrl, "utf8"));
+    const supplementalUrl = new URL(
+      "./sunny-obsidian-public.json",
+      import.meta.url,
+    );
+    const supplementalCatalog = JSON.parse(
+      fs.readFileSync(supplementalUrl, "utf8"),
+    );
+    const supplementalByModel = new Map(
+      (supplementalCatalog.models || []).map((model) => [model.model, model]),
+    );
+    publicCatalogCache = {
+      models: (officialCatalog.products || []).map((product) => {
+        const baseModel = product.model
+          .replace(/\s+Series$/i, "")
+          .replace(/\([^)]*\)$/i, "")
+          .trim();
+        const supplemental =
+          supplementalByModel.get(product.model) ||
+          supplementalByModel.get(baseModel);
+        return {
+          id: product.id,
+          model: product.model,
+          family: product.section,
+          packageType:
+            supplemental?.packageType || product.deviceType || product.section,
+          dimensions: supplemental?.dimensions || "",
+          outputType: product.packageType || "",
+          frequencySummary: supplemental?.frequencySummary || "",
+          verificationStatus: "official-site-verified",
+          datasheetName: product.datasheetName,
+        };
+      }),
+    };
   } catch {
-    publicCatalogCache = { models: [] };
+    try {
+      const fallbackUrl = new URL(
+        "./sunny-obsidian-public.json",
+        import.meta.url,
+      );
+      publicCatalogCache = JSON.parse(fs.readFileSync(fallbackUrl, "utf8"));
+    } catch {
+      publicCatalogCache = { models: [] };
+    }
   }
   return publicCatalogCache;
 }
@@ -215,13 +256,16 @@ function normalize(value) {
 }
 
 function modelIsMentioned(message, modelName) {
-  const escaped = String(modelName || "").replace(
-    /[.*+?^${}()|[\]\\]/g,
-    "\\$&",
-  );
-  return escaped
-    ? new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, "i").test(message)
-    : false;
+  const names = [
+    String(modelName || ""),
+    String(modelName || "").replace(/\s+Series$/i, ""),
+  ].filter(Boolean);
+  return names.some((name) => {
+    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, "i").test(
+      message,
+    );
+  });
 }
 
 function findModelMatches(message, pagePath = "/") {
@@ -230,7 +274,14 @@ function findModelMatches(message, pagePath = "/") {
   return (loadPublicCatalog().models || [])
     .map((model) => {
       const searchable = normalize(
-        [model.model, model.family, model.packageType, model.dimensions]
+        [
+          model.model,
+          model.family,
+          model.packageType,
+          model.dimensions,
+          model.outputType,
+          model.datasheetName,
+        ]
           .filter(Boolean)
           .join(" "),
       );
@@ -459,12 +510,15 @@ function catalogAnswer(message, modelMatches) {
   );
 
   if (exact) {
-    const size = exact.dimensions ? ` in a ${exact.dimensions} package` : "";
+    const detail = exact.dimensions ? ` with ${exact.dimensions}` : "";
+    const output = exact.outputType
+      ? ` Its published package/output field is ${exact.outputType}.`
+      : "";
     const frequency = exact.frequencySummary
       ? ` Its published frequency information is ${exact.frequencySummary}.`
       : "";
     return {
-      reply: `${exact.model} is listed in Sunny's verified catalog as ${exact.packageType}${size}.${frequency} ${followUpFor(exact)}`,
+      reply: `${exact.model} is listed in Sunny's verified catalog as ${exact.packageType}${detail}.${frequency}${output} ${followUpFor(exact)}`,
       links: [links.products, links.partNumber, links.quote],
     };
   }
@@ -476,7 +530,13 @@ function catalogAnswer(message, modelMatches) {
     const types = models.map((model) =>
       model.packageType.replace(/\s+XO$/i, ""),
     );
-    const preferred = ["SCO-10", "SCO-53", "SHO-53", "SLO-53", "SPO-53"];
+    const preferred = [
+      "SCO-10 Series",
+      "SCO-53 Series",
+      "SHO-53",
+      "SLO-53",
+      "SPO-53",
+    ];
     const available = new Set(models.map((model) => model.model));
     return {
       reply: `Yes—Sunny's catalog includes ${humanList(types)} oscillator families. Common starting points include ${humanList(preferred.filter((model) => available.has(model)))}. What frequency and output type do you need?`,
@@ -499,7 +559,10 @@ function catalogAnswer(message, modelMatches) {
 
   if (/tuning fork|32\.768|clock crystal/i.test(text)) {
     const examples = allModels
-      .filter((model) => /tuning fork/i.test(model.packageType))
+      .filter(
+        (model) =>
+          model.family === "Crystal Units" && /^CS-/i.test(model.model),
+      )
       .slice(0, 6)
       .map((model) => model.model);
     return {

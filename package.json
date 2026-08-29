@@ -7,7 +7,7 @@
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "sunny:sync": "node scripts/sync-sunny-public-artifacts.mjs",
     "sunny:export": "node scripts/export-sunnybrain.mjs",
-    "sunny:check": "pnpm sunny:sync && node scripts/test-sunny-public-catalog.mjs && node scripts/test-sunny-public-knowledge.mjs && node scripts/test-sunny-public-prices.mjs && node scripts/test-sunny-chat.mjs && node scripts/test-sunny-bridge-boundary.mjs && node scripts/test-rfq-recipients.mjs && node scripts/verify-sunny-project-boundary.mjs && pnpm --filter @workspace/web typecheck",
+    "sunny:check": "pnpm sunny:sync && node scripts/test-sunny-official-products.mjs && node scripts/test-sunny-public-catalog.mjs && node scripts/test-sunny-public-knowledge.mjs && node scripts/test-sunny-public-prices.mjs && node scripts/test-sunny-chat.mjs && node scripts/test-sunny-bridge-boundary.mjs && node scripts/test-rfq-recipients.mjs && node scripts/verify-sunny-project-boundary.mjs && pnpm --filter @workspace/web typecheck",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },

@@ -8,6 +8,7 @@ import {
   Waves,
   type LucideIcon,
 } from "lucide-react";
+import { productsForSection } from "@/data/official-products";
 
 export type QuoteFieldDef = {
   name: string;
@@ -63,6 +64,23 @@ const toleranceOptions = [
 
 const supplyVoltageOptions = ["1.8 V", "2.5 V", "3.3 V", "5.0 V"];
 
+const uniqueOptions = (...groups: string[][]) => [
+  ...new Set(groups.flat().filter(Boolean)),
+];
+
+const officialCrystalModels = productsForSection("Crystal Units").map(
+  (product) => product.model,
+);
+const officialOscillatorModels = productsForSection("Crystal Oscillators").map(
+  (product) => product.model,
+);
+const officialVcxoModels = productsForSection("VCXO").map(
+  (product) => product.model,
+);
+const officialTcxoModels = productsForSection("TCXO & VCTCXO").map(
+  (product) => product.model,
+);
+
 export const quoteTypes: QuoteTypeDef[] = [
   {
     id: "ats",
@@ -82,6 +100,9 @@ export const quoteTypes: QuoteTypeDef[] = [
           "ATS-49/U — 16 mm Insulator-Taping T&R",
           "ATS-25/U",
           "HC-49/U",
+          ...officialCrystalModels.filter((model) =>
+            /^(ATS|HC-|UM-|CH-)/i.test(model),
+          ),
           "Not sure",
         ],
       },
@@ -126,7 +147,7 @@ export const quoteTypes: QuoteTypeDef[] = [
         name: "package",
         label: "Package / size",
         type: "select",
-        options: [
+        options: uniqueOptions([
           "SX-16 (1.6 x 1.2 mm)",
           "SX-21 (2.0 x 1.6 mm)",
           "SX-22 (2.5 x 2.0 mm)",
@@ -140,8 +161,9 @@ export const quoteTypes: QuoteTypeDef[] = [
           "SX-A22 automotive (2.5 x 2.0 mm)",
           "SX-A32 automotive (3.2 x 2.5 mm)",
           "SX-A8 automotive (5.0 x 3.2 mm)",
+          ...officialCrystalModels.filter((model) => /^SX-/i.test(model)),
           "Not sure",
-        ],
+        ]),
         defaultValue: "SX-32 (3.2 x 2.5 mm)",
       },
       {
@@ -192,7 +214,7 @@ export const quoteTypes: QuoteTypeDef[] = [
         name: "series",
         label: "Series",
         type: "select",
-        options: [
+        options: uniqueOptions([
           "SCO-02",
           "SCO-06",
           "SCO-10",
@@ -200,8 +222,9 @@ export const quoteTypes: QuoteTypeDef[] = [
           "SCO-22",
           "SCO-32",
           "SCO-53",
+          ...officialOscillatorModels,
           "Not sure",
-        ],
+        ]),
         defaultValue: "SCO-32",
       },
       {
@@ -241,6 +264,13 @@ export const quoteTypes: QuoteTypeDef[] = [
     examples: "SVH series",
     icon: Waves,
     fields: [
+      {
+        name: "series",
+        label: "Series / package",
+        type: "select",
+        options: [...officialVcxoModels, "Not sure"],
+        defaultValue: officialVcxoModels[0],
+      },
       {
         name: "frequency",
         label: "Frequency (MHz)",
@@ -292,6 +322,13 @@ export const quoteTypes: QuoteTypeDef[] = [
     examples: "TCXO and VCTCXO formats",
     icon: ThermometerSun,
     fields: [
+      {
+        name: "series",
+        label: "Series / package",
+        type: "select",
+        options: [...officialTcxoModels, "Not sure"],
+        defaultValue: officialTcxoModels[0],
+      },
       {
         name: "frequency",
         label: "Frequency (MHz)",
@@ -347,7 +384,7 @@ export const quoteTypes: QuoteTypeDef[] = [
         name: "package",
         label: "Package",
         type: "select",
-        options: [
+        options: uniqueOptions([
           "CS-1610 (1.6 x 1.0 mm SMD)",
           "CS-2012 (2.0 x 1.2 mm SMD)",
           "CS-3215 (3.2 x 1.5 mm SMD)",
@@ -356,8 +393,9 @@ export const quoteTypes: QuoteTypeDef[] = [
           "CS-406 (cylinder SMD)",
           "CS-519",
           "CS-146",
+          ...officialCrystalModels.filter((model) => /^CS-/i.test(model)),
           "Not sure",
-        ],
+        ]),
         defaultValue: "CS-3215 (3.2 x 1.5 mm SMD)",
       },
       {

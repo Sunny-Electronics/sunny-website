@@ -296,7 +296,7 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="relative rounded-2xl overflow-hidden bg-white shadow-lg"
             >
-              <img src={productsPhoto} alt="Sunny Electronics Corp. Product Portfolio - Crystal Oscillators, Resonators, and Filters" className="w-full h-auto" />
+              <img src={productsPhoto} alt="Sunny Electronics Corp. crystal units and crystal oscillator portfolio" className="w-full h-auto" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -309,7 +309,7 @@ export default function Home() {
               </div>
               <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">Comprehensive Frequency Control Solutions</h2>
               <p className="text-lg text-muted-foreground mb-6">
-                From ultra-miniature SMD crystals to high-stability oven-controlled oscillators, our product range covers the full spectrum of frequency control needs. Each component is engineered to deliver consistent performance across the most demanding operating conditions.
+                From ultra-miniature SMD crystals to temperature-compensated and voltage-controlled oscillators, Sunny supports demanding frequency-control applications with verified public product families.
               </p>
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start gap-3">
@@ -318,15 +318,15 @@ export default function Home() {
                 </li>
                 <li className="flex items-start gap-3">
                   <ChevronRight className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>SPXO, TCXO, VCXO, OCXO Oscillators</span>
+                  <span>Crystal Oscillators (CMOS, LVDS, LVPECL, and HCSL)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <ChevronRight className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>SAW Filters and RTC Modules</span>
+                  <span>VCXO Families</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <ChevronRight className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Custom Frequency Solutions and Engineering Support</span>
+                  <span>TCXO &amp; VCTCXO Families</span>
                 </li>
               </ul>
             </motion.div>
@@ -349,25 +349,31 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 icon: <Cpu className="w-8 h-8 text-primary" />,
-                title: "Crystal Oscillators",
-                desc: "High-precision SPXO, TCXO, VCXO, and OCXO modules providing unmatched frequency stability across extreme temperature ranges, engineered to meet the stringent requirements of Tier-1 global manufacturers.",
-                specs: "Frequency Range: 1MHz - 200MHz"
+                title: "Crystal Units",
+                desc: "MHz and kHz crystal units including SMD, through-hole, automotive, and tuning-fork families.",
+                specs: "23 verified public models"
               },
               {
                 icon: <RadioReceiver className="w-8 h-8 text-primary" />,
-                title: "Quartz Resonators",
-                desc: "Miniaturized SMD quartz crystals offering tight frequency tolerances and low ESR, designed for modern compact electronics and IoT applications.",
-                specs: "Package Sizes: 1.2x1.0mm to 7.0x5.0mm"
+                title: "Crystal Oscillators",
+                desc: "Crystal oscillators with CMOS and differential-output options for clock and timing designs.",
+                specs: "41 verified public models"
               },
               {
                 icon: <Activity className="w-8 h-8 text-primary" />,
-                title: "Filters & Timing Modules",
-                desc: "Advanced SAW filters and RTC modules designed for superior signal clarity and precise timing synchronization in telecommunications and industrial systems.",
-                specs: "Temperature Range: -40C to +125C"
+                title: "VCXO",
+                desc: "Voltage-controlled crystal oscillators with CMOS, LVDS, and LVPECL output choices.",
+                specs: "22 verified public models"
+              },
+              {
+                icon: <ShieldCheck className="w-8 h-8 text-primary" />,
+                title: "TCXO & VCTCXO",
+                desc: "Temperature-compensated oscillators with clipped-sinewave and CMOS output options.",
+                specs: "10 verified public models"
               }
             ].map((product, i) => (
               <motion.div
