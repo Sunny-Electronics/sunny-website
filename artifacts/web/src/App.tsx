@@ -14,6 +14,7 @@ import Quote from "@/pages/quote";
 import QuoteType from "@/pages/quote-type";
 import Stock from "@/pages/stock";
 import SunnyChatButton from "@/components/SunnyChatButton";
+import SunnyAnnouncements from "@/components/SunnyAnnouncements";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ function App() {
           <Router />
         </WouterRouter>
         <Toaster />
+        <SunnyAnnouncements />
         <SunnyChatButton />
       </TooltipProvider>
     </QueryClientProvider>
