@@ -528,6 +528,21 @@ function publicBrainRuleAnswer(message) {
   );
   const oscillatorQuestion =
     /oscillator|\bxo\b|sco-|spxo|tcxo|vctcxo|vcxo|ocxo/.test(text);
+  const standardVoltageListQuestion =
+    /(?:which|what|list|show|tell me).*(?:standard).*(?:voltage|supply)|(?:standard).*(?:voltage|supply).*(?:which|what|list|show)|(?:voltage|supply).*(?:are|is).*(?:standard)/.test(
+      text,
+    );
+  if (
+    oscillatorQuestion &&
+    standardVoltageListQuestion &&
+    !Number.isFinite(voltage)
+  ) {
+    return {
+      reply:
+        "Sunny's standard oscillator supply-voltage classes are 1.8 V, 2.5 V, 3.3 V, and 5.0 V. 0.9 V, 1.2 V, 1.5 V, and other voltages are non-standard and should be submitted for price.",
+      links: [links.partNumber, links.quote],
+    };
+  }
   if (oscillatorQuestion && Number.isFinite(voltage)) {
     const rule = brain.oscillatorVoltageRule || {};
     if ((rule.standardVoltages || []).includes(voltage)) {
@@ -854,6 +869,12 @@ export default async function handler(req, res) {
     return res
       .status(200)
       .json({ ...priceAnswer, source: "sunny-public-price-table" });
+  }
+  const brainRuleAnswer = publicBrainRuleAnswer(message);
+  if (brainRuleAnswer) {
+    return res
+      .status(200)
+      .json({ ...brainRuleAnswer, source: "sunny-public-brain" });
   }
   const fallback = publicAnswer(message, modelMatches);
 

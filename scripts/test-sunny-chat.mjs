@@ -151,6 +151,15 @@ async function ask(message) {
 }
 
 {
+  const { body } = await ask(
+    "For SCO-32, which supply voltages are standard?",
+  );
+  assert.match(body.reply, /1\.8 V, 2\.5 V, 3\.3 V, and 5\.0 V/i);
+  assert.match(body.reply, /0\.9 V, 1\.2 V, 1\.5 V.*non-standard/i);
+  assert.equal(body.source, "sunny-public-brain");
+}
+
+{
   const { body } = await ask("What is the CS-405 price?");
   assert.match(body.reply, /Submit for price/i);
   assert.doesNotMatch(body.reply, /\$\d/);
