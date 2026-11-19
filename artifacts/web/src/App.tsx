@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import SunnyChatButton from "@/components/SunnyChatButton";
-import SunnyAnnouncements from "@/components/SunnyAnnouncements";
 
 const Documents = lazy(() => import("@/pages/documents"));
 const Industries = lazy(() => import("@/pages/industries"));
@@ -53,7 +52,6 @@ function App() {
           </Suspense>
         </WouterRouter>
         <Toaster />
-        <SunnyAnnouncements />
         <SunnyChatButton />
       </TooltipProvider>
     </QueryClientProvider>

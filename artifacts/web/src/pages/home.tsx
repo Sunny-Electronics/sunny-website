@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
 import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, Search, Upload, FileText, ClipboardCheck, Hash } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SiSamsung, SiLg, SiGarmin } from "react-icons/si";
 import sunnyLogo from "@assets/image_1775118121182.png";
 import productsPhoto from "@assets/001_1775118159591.jpg";
 
@@ -150,6 +151,62 @@ export default function Home() {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      <section className="pt-20 pb-8 border-y border-border bg-muted/30">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="h-px flex-1 bg-border" />
+            <p className="text-xs font-semibold text-muted-foreground tracking-[0.2em] uppercase whitespace-nowrap">
+              Trusted by Global Industry Leaders
+            </p>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16">
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <SiLg className="w-8 h-8 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">LG</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Electronics</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <SiSamsung className="w-10 h-8 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Samsung</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Electronics</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <SiGarmin className="w-7 h-7 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Garmin</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">International</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <Factory className="w-6 h-6 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Foxconn</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Technology</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <Globe2 className="w-6 h-6 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Flex</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Ltd.</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
+              <Cpu className="w-6 h-6 text-foreground" />
+              <div>
+                <div className="text-base font-display font-bold text-foreground leading-tight">Jabil</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Inc.</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
