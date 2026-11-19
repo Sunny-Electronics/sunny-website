@@ -1,20 +1,22 @@
+import { lazy, Suspense } from "react";
 import { Switch, Route, Redirect, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
-import Documents from "@/pages/documents";
 import Home from "@/pages/home";
-import Industries from "@/pages/industries";
-import Legal from "@/pages/legal";
-import Products from "@/pages/products";
-import Quality from "@/pages/quality";
-import PartNumberGenerator from "@/pages/part-number-generator";
-import Quote from "@/pages/quote";
-import QuoteType from "@/pages/quote-type";
-import Stock from "@/pages/stock";
 import SunnyChatButton from "@/components/SunnyChatButton";
 import SunnyAnnouncements from "@/components/SunnyAnnouncements";
+
+const Documents = lazy(() => import("@/pages/documents"));
+const Industries = lazy(() => import("@/pages/industries"));
+const Legal = lazy(() => import("@/pages/legal"));
+const Products = lazy(() => import("@/pages/products"));
+const Quality = lazy(() => import("@/pages/quality"));
+const PartNumberGenerator = lazy(() => import("@/pages/part-number-generator"));
+const Quote = lazy(() => import("@/pages/quote"));
+const QuoteType = lazy(() => import("@/pages/quote-type"));
+const Stock = lazy(() => import("@/pages/stock"));
 
 const queryClient = new QueryClient();
 
@@ -46,7 +48,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
+          <Suspense fallback={<p className="p-6" role="status">Loading page...</p>}>
+            <Router />
+          </Suspense>
         </WouterRouter>
         <Toaster />
         <SunnyAnnouncements />

@@ -31,6 +31,7 @@ const sections = [
     body: [
       "Sunny Electronics Corp. keeps business information for as long as needed for RFQ, quote, order, support, audit, and legal purposes. When information is no longer needed, Sunny may delete, archive, anonymize, or retain it where required by law or legitimate business recordkeeping.",
       "SunnyKR.com may use hosting, email, analytics, file-storage, security, and business-system providers to operate the website and process requests. These providers should handle information only for the services they provide to Sunny.",
+      "Sunnychat sends the messages you enter to the Sunny chat service to answer product questions. The page clears its chat when you reload. Keep customer, order, and other confidential details out of chat.",
       "SunnyKR.com is intended for business-to-business use and is not directed to children. Visitors should not submit confidential customer data, controlled technical data, or sensitive personal information unless Sunny has specifically requested it through an approved channel.",
     ],
   },

@@ -866,6 +866,7 @@ async function callSunnyBridge({
         "X-Sunny-Project": "sunnykr",
       },
       signal: controller.signal,
+      redirect: "error",
       body: JSON.stringify({
         project: "sunnykr",
         message,

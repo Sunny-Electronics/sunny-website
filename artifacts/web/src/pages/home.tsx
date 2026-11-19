@@ -2,7 +2,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
 import { ChevronRight, Cpu, RadioReceiver, Activity, Globe2, ShieldCheck, ArrowRight, Factory, TrendingUp, Award, Users, Search, Upload, FileText, ClipboardCheck, Hash } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SiSamsung, SiLg, SiGarmin } from "react-icons/si";
 import sunnyLogo from "@assets/image_1775118121182.png";
 import productsPhoto from "@assets/001_1775118159591.jpg";
 
@@ -15,7 +14,7 @@ const quickActions = [
   },
   {
     title: "Request Quote",
-    text: "Upload a list or create an RFQ manually.",
+    text: "Choose a product and tell us what you need.",
     href: "/request-quote",
     icon: <Upload className="h-5 w-5" />,
   },
@@ -37,7 +36,7 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/5 bg-white/75 shadow-[0_1px_0_rgba(15,23,42,0.02)] backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-3 shrink-0">
-            <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-10 w-auto" />
+            <img src={sunnyLogo} width="33" height="25" alt="Sunny Electronics Corp." className="h-10 w-auto" />
             <div className="flex flex-col leading-tight">
               <span className="font-display font-bold text-lg tracking-tight text-foreground">Sunny Electronics Corp.</span>
               <span className="text-[11px] text-muted-foreground font-medium tracking-wide">KOSPI-listed (KRX: 004770)</span>
@@ -78,6 +77,9 @@ export default function Home() {
           <div className="absolute inset-x-0 bottom-0 z-10 h-44 bg-gradient-to-t from-[#f5f5f7] to-transparent" />
           <img
             src={productsPhoto}
+            fetchPriority="high"
+            width="1024"
+            height="1024"
             alt="Sunny Electronics Corp. crystal units and oscillators"
             className="absolute inset-y-10 right-[-8%] h-[82%] w-[72%] object-contain object-right opacity-80 mix-blend-multiply saturate-[0.95] lg:right-[-4%]"
           />
@@ -115,7 +117,7 @@ export default function Home() {
               <div className="mt-7 grid max-w-2xl gap-3 text-sm font-medium text-slate-500 sm:grid-cols-3">
                 <div className="flex items-center gap-2">
                   <FileText className="h-4 w-4 text-primary" />
-                  RFQ list upload
+                  Online quote requests
                 </div>
                 <div className="flex items-center gap-2">
                   <Hash className="h-4 w-4 text-primary" />
@@ -148,62 +150,6 @@ export default function Home() {
               </div>
             </Link>
           ))}
-        </div>
-      </section>
-
-      <section className="pt-20 pb-8 border-y border-border bg-muted/30">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <div className="h-px flex-1 bg-border" />
-            <p className="text-xs font-semibold text-muted-foreground tracking-[0.2em] uppercase whitespace-nowrap">
-              Trusted by Global Industry Leaders
-            </p>
-            <div className="h-px flex-1 bg-border" />
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16">
-            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
-              <SiLg className="w-8 h-8 text-foreground" />
-              <div>
-                <div className="text-base font-display font-bold text-foreground leading-tight">LG</div>
-                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Electronics</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
-              <SiSamsung className="w-10 h-8 text-foreground" />
-              <div>
-                <div className="text-base font-display font-bold text-foreground leading-tight">Samsung</div>
-                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Electronics</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
-              <SiGarmin className="w-7 h-7 text-foreground" />
-              <div>
-                <div className="text-base font-display font-bold text-foreground leading-tight">Garmin</div>
-                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">International</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
-              <Factory className="w-6 h-6 text-foreground" />
-              <div>
-                <div className="text-base font-display font-bold text-foreground leading-tight">Foxconn</div>
-                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Technology</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
-              <Globe2 className="w-6 h-6 text-foreground" />
-              <div>
-                <div className="text-base font-display font-bold text-foreground leading-tight">Flex</div>
-                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Ltd.</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5 opacity-50 hover:opacity-100 transition-opacity duration-300">
-              <Cpu className="w-6 h-6 text-foreground" />
-              <div>
-                <div className="text-base font-display font-bold text-foreground leading-tight">Jabil</div>
-                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Inc.</div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -252,7 +198,7 @@ export default function Home() {
                 Sunny Electronics is a Korea-based frequency-control component manufacturer, publicly listed on KOSPI (KRX: 004770). Since 1966, we have focused on precision, reliability, and long-term supply stability.
               </p>
               <p className="text-lg text-muted-foreground mb-8">
-                Our foundation is built on over 50 years of collaboration with leading Korean companies, including Samsung, LG, and their affiliated partners. These long-standing relationships reflect our ability to consistently meet strict quality, performance, and delivery standards in high-demand industries.
+                Sunny has worked with manufacturers for decades to meet quality, performance, and delivery needs in demanding industries.
               </p>
               <p className="text-lg text-muted-foreground mb-8">
                 Sunny Electronics combines engineering, production control, and quality assurance to deliver stable frequency-control components across a wide range of applications.
@@ -279,7 +225,7 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="relative aspect-square rounded-2xl overflow-hidden bg-muted"
             >
-              <img src="/lab-rd.png" alt="Sunny Electronics Corp. R&D Laboratory" className="w-full h-full object-cover" />
+              <img src="/lab-rd.png" loading="lazy" width="1408" height="768" alt="Sunny Electronics Corp. R&D Laboratory" className="w-full h-full object-cover" />
               <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-2xl" />
             </motion.div>
           </div>
@@ -296,7 +242,7 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="relative rounded-2xl overflow-hidden bg-white shadow-lg"
             >
-              <img src={productsPhoto} alt="Sunny Electronics Corp. crystal units and crystal oscillator portfolio" className="w-full h-auto" />
+              <img src={productsPhoto} loading="lazy" width="1024" height="1024" alt="Sunny Electronics Corp. crystal units and crystal oscillator portfolio" className="w-full h-auto" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -571,12 +517,12 @@ export default function Home() {
                   <Upload className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-display font-bold">Upload RFQ List</h3>
-                  <span className="text-sm text-slate-400">Excel, CSV, or PDF request</span>
+                  <h3 className="text-xl font-display font-bold">Request a Quote</h3>
+                  <span className="text-sm text-slate-400">Product and order requirements</span>
                 </div>
               </div>
               <p className="text-sm leading-6 text-slate-300">
-                New vendors can upload a list and answer a few simple industry-standard questions so Sunny can prepare price, lead time, and document support.
+                Tell Sunny which product you need, your specifications, and your expected annual usage.
               </p>
             </motion.div>
 
@@ -617,7 +563,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-3">
-              <img src={sunnyLogo} alt="Sunny Electronics Corp." className="h-8 w-auto" />
+              <img src={sunnyLogo} width="33" height="25" alt="Sunny Electronics Corp." className="h-8 w-auto" />
               <div className="flex flex-col leading-tight">
                 <span className="font-display font-bold tracking-tight">Sunny Electronics Corp.</span>
                 <span className="text-[10px] text-slate-400">KOSPI-listed (KRX: 004770)</span>

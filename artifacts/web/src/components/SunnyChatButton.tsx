@@ -43,32 +43,7 @@ const initialMessages: ChatMessage[] = [
 
 function getCurrentPath() {
   if (typeof window === "undefined") return "/";
-  return `${window.location.pathname}${window.location.search}` || "/";
-}
-
-function readSunnyMemory() {
-  if (typeof window === "undefined") return [];
-
-  try {
-    const parsed = JSON.parse(
-      window.localStorage.getItem(SUNNY_MEMORY_KEY) || "[]",
-    );
-    return Array.isArray(parsed)
-      ? parsed
-          .filter((item) => typeof item === "string")
-          .slice(-MAX_MEMORY_ITEMS)
-      : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeSunnyMemory(memory: string[]) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(
-    SUNNY_MEMORY_KEY,
-    JSON.stringify(memory.slice(-MAX_MEMORY_ITEMS)),
-  );
+  return window.location.pathname || "/";
 }
 
 function safeSessionLink(value: unknown): ChatLink | null {
@@ -110,32 +85,6 @@ function safeSessionMessages(value: unknown): ChatMessage[] {
     .slice(-MAX_SESSION_MESSAGES);
 }
 
-function readSunnySession() {
-  if (typeof window === "undefined") return initialMessages;
-  try {
-    const parsed = JSON.parse(
-      window.localStorage.getItem(SUNNY_SESSION_KEY) || "null",
-    );
-    const messages = safeSessionMessages(parsed?.messages);
-    return messages.length ? messages : initialMessages;
-  } catch {
-    return initialMessages;
-  }
-}
-
-function writeSunnySession(messages: ChatMessage[], memory: string[]) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(
-    SUNNY_SESSION_KEY,
-    JSON.stringify({
-      version: 1,
-      updatedAt: new Date().toISOString(),
-      messages: safeSessionMessages(messages),
-      memory: memory.slice(-MAX_MEMORY_ITEMS),
-    }),
-  );
-}
-
 function sessionMarkdown(messages: ChatMessage[]) {
   const conversation = messages
     .map(
@@ -170,7 +119,6 @@ export default function SunnyChatButton() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
   const [memory, setMemory] = useState<string[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | "all" | null>(null);
   const messagesViewportRef = useRef<HTMLDivElement | null>(null);
   const importInputRef = useRef<HTMLInputElement | null>(null);
@@ -181,14 +129,14 @@ export default function SunnyChatButton() {
   );
 
   useEffect(() => {
-    setMemory(readSunnyMemory());
-    setMessages(readSunnySession());
-    setIsHydrated(true);
+    // Clear conversations saved by earlier versions on this browser.
+    try {
+      window.localStorage.removeItem(SUNNY_MEMORY_KEY);
+      window.localStorage.removeItem(SUNNY_SESSION_KEY);
+    } catch {
+      // The chat still works when browser storage is blocked.
+    }
   }, []);
-
-  useEffect(() => {
-    if (isHydrated) writeSunnySession(messages, memory);
-  }, [isHydrated, memory, messages]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -221,7 +169,6 @@ export default function SunnyChatButton() {
 
     if (memoryNote) {
       setMemory(nextMemory);
-      writeSunnyMemory(nextMemory);
     }
 
     setMessages(nextMessages);
@@ -322,7 +269,6 @@ export default function SunnyChatButton() {
         : [];
       setMessages(importedMessages);
       setMemory(importedMemory);
-      writeSunnyMemory(importedMemory);
       setError("");
       setIsOpen(true);
     } catch {
@@ -335,7 +281,6 @@ export default function SunnyChatButton() {
     setMemory([]);
     setInput("");
     setError("");
-    writeSunnyMemory([]);
   }
 
   if (!isOpen) {
@@ -343,11 +288,11 @@ export default function SunnyChatButton() {
       <button
         type="button"
         className="fixed bottom-5 right-5 z-50 inline-flex h-14 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-xl transition hover:-translate-y-0.5 hover:bg-primary/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        aria-label="Chat with Sunnychat"
+        aria-label="Chat with Sunny"
         onClick={() => setIsOpen(true)}
       >
         <MessageCircle className="h-5 w-5" aria-hidden="true" />
-        Sunnychat
+        Chat with Sunny
       </button>
     );
   }
@@ -462,6 +407,7 @@ export default function SunnyChatButton() {
             type="button"
             className="inline-flex items-center gap-1 rounded border border-border px-2 py-1 text-[11px] font-medium hover:bg-muted"
             onClick={() => importInputRef.current?.click()}
+            disabled={isSending}
           >
             <Upload className="h-3 w-3" /> Import
           </button>
@@ -469,6 +415,7 @@ export default function SunnyChatButton() {
             type="button"
             className="inline-flex items-center gap-1 rounded border border-border px-2 py-1 text-[11px] font-medium hover:bg-muted"
             onClick={resetSession}
+            disabled={isSending}
           >
             <RotateCcw className="h-3 w-3" /> New
           </button>
@@ -481,6 +428,9 @@ export default function SunnyChatButton() {
             aria-label="Import Sunnychat session"
           />
         </div>
+        <p className="mb-2 text-xs text-slate-600" id="sunny-chat-privacy">
+          Chat clears when you reload. Keep customer and order details out of chat.
+        </p>
         <form className="flex items-end gap-2" onSubmit={sendMessage}>
           <textarea
             className="min-h-[56px] min-w-0 flex-1 resize-none rounded-md border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -499,6 +449,7 @@ export default function SunnyChatButton() {
                 event.currentTarget.form?.requestSubmit();
               }
             }}
+            aria-describedby="sunny-chat-privacy"
             aria-label="Message Sunnychat. Press Enter to send or Shift plus Enter for a new line."
           />
           <button

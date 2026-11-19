@@ -144,8 +144,7 @@ export default async function handler(req, res) {
   });
 
   if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    console.error("Resend send failed", response.status, detail.slice(0, 500));
+    console.error("Quote email delivery failed", response.status);
     sendJson(res, 502, { error: "Could not deliver the quote request." });
     return;
   }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ExternalLink, X } from "lucide-react";
-import qualityAwardImage from "@assets/sunny-quality-award-english.png";
-import cashDividendImage from "@assets/sunny-cash-dividend-60th-english.png";
+import qualityAwardImage from "@assets/sunny-quality-award-english.webp";
+import cashDividendImage from "@assets/sunny-cash-dividend-60th-english.webp";
 
 const DISMISSED_ANNOUNCEMENTS_KEY = "sunnykr-dismissed-announcements-v1";
 
@@ -10,6 +10,8 @@ type SunnyAnnouncement = {
   title: string;
   image: string;
   imageAlt: string;
+  imageWidth: number;
+  imageHeight: number;
   href: string;
   external?: boolean;
   layout: "portrait" | "landscape";
@@ -22,6 +24,8 @@ const ANNOUNCEMENTS: SunnyAnnouncement[] = [
     id: "quality-competitiveness-2022-2025-en",
     title: "Outstanding Quality Competitiveness Enterprise",
     image: qualityAwardImage,
+    imageWidth: 960,
+    imageHeight: 1005,
     imageAlt:
       "Sunny Electronics selected as an Outstanding Quality Competitiveness Enterprise for four consecutive years, 2022 through 2025.",
     href: "/quality",
@@ -31,6 +35,8 @@ const ANNOUNCEMENTS: SunnyAnnouncement[] = [
     id: "cash-dividend-60th-fiscal-year-en",
     title: "Cash Dividend Decision — 60th Fiscal Year",
     image: cashDividendImage,
+    imageWidth: 1260,
+    imageHeight: 617,
     imageAlt:
       "Sunny Electronics notice of cash dividend decision for the 60th fiscal year.",
     href: "http://www.sunny.co.kr/html/customer01.html?mode=v&bbs_data=aWR4PTI0NzQzJnN0YXJ0UGFnZT0mbGlzdE5vPTQ3JnRhYmxlPWNzX2Jic19kYXRhJmNvZGU9bm90aWNlJnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||&bgu=view",
@@ -165,6 +171,8 @@ export default function SunnyAnnouncements() {
                 <img
                   src={announcement.image}
                   alt={announcement.imageAlt}
+                  width={announcement.imageWidth}
+                  height={announcement.imageHeight}
                   className="block h-auto max-h-[68vh] w-full object-contain"
                 />
               </a>
@@ -176,7 +184,7 @@ export default function SunnyAnnouncements() {
                   {announcement.external && (
                     <ExternalLink
                       className="h-4 w-4 text-slate-300"
-                      aria-label="Opens the original Sunny website in a new tab"
+                      aria-hidden="true"
                     />
                   )}
                   <button
